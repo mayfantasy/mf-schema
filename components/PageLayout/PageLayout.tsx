@@ -1,4 +1,5 @@
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
+import './PageLayout.scss'
 
 const { SubMenu } = Menu
 const { Header, Content, Sider } = Layout
