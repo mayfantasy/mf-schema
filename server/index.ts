@@ -8,6 +8,12 @@ import koaBody from 'koa-body'
 import { HttpError } from '../types/error.type'
 import next from 'next'
 import 'reflect-metadata'
+import { createAccountRoute } from './routes/account.route'
+import { loginRoute, loginWithTokenRoute } from './routes/auth.route'
+import {
+  createCollectionRoute,
+  getCollectionListRoute
+} from './routes/collection.route'
 
 const port = parseInt(process.env.PORT || '3000', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -18,13 +24,18 @@ app.prepare().then(() => {
   const server = new Koa()
   const router = new Router()
 
-  /** Workspace */
-  // router.post('/api/workspace/create', createWorkspaceRoute)
-  // router.get('/api/workspace/list', getWorkspaceListRoute)
-  // router.put('/api/workspace/update/:id', updateWorkspaceRoute)
-  // router.get('/api/workspace/:id', getWorkspaceByIdRoute)
-  // router.delete('/api/workspace/:id', deleteWorkspaceRoute)
+  // Auth
+  router.post('/api/auth/login', loginRoute)
+  router.post('/api/auth/token', loginWithTokenRoute)
 
+  // Create account
+  router.post('/api/account/create', createAccountRoute)
+
+  // Collection
+  router.post('/api/collection/create', createCollectionRoute)
+  router.get('/api/collection/list', getCollectionListRoute)
+
+  // SSR Pages
   router.get('*', async (ctx) => {
     await handle(ctx.req, ctx.res)
     ctx.respond = false

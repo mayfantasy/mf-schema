@@ -1,0 +1,11 @@
+import { api } from '.'
+import { ILoginPayload } from '../types/auth.type'
+import { ICreateCollectionPayload } from '../types/collection.type'
+
+export const createCollectionRequest = (payload: ICreateCollectionPayload) => {
+  return api.post('/collection/create', payload)
+}
+
+export const getCollectionListRequest = () => {
+  return api.get('/collection/list')
+}

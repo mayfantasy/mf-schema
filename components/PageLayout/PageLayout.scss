@@ -1,7 +1,20 @@
-@import 'antd/dist/antd.css';
 @import url('https://fonts.googleapis.com/css?family=Rajdhani&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Rajdhani|Roboto&display=swap');
 body {
   // font-family: 'Rajdhani', sans-serif;
   font-family: 'Roboto', sans-serif;
+}
+
+.mf-page-layout {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .logo {
+      width: 75px;
+      img {
+        width: 100%;
+      }
+    }
+  }
 }
