@@ -128,32 +128,29 @@ const PageLayout = (props: IProps) => {
       </Header>
       <Layout>
         <Sider
-          width={200}
+          width={user ? 200 : 0}
           style={{ background: '#000', height: '100vh' }}
           theme="dark"
         >
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%', borderRight: 0 }}
-          >
-            {sideNavItems.map((s) => (
-              <SubMenu key={s.key} title={s.name}>
-                {!!s.children &&
-                  s.children.map((c) => (
-                    <Menu.Item key={c.key}>
-                      {c.url ? (
-                        <Link href={c.url}>
-                          <a>{c.name}</a>
-                        </Link>
-                      ) : (
-                        <span>{c.name}</span>
-                      )}
-                    </Menu.Item>
-                  ))}
-              </SubMenu>
-            ))}
+          <Menu mode="inline" style={{ height: '100%', borderRight: 0 }}>
+            {user
+              ? sideNavItems.map((s) => (
+                  <SubMenu key={s.key} title={s.name}>
+                    {!!s.children &&
+                      s.children.map((c) => (
+                        <Menu.Item key={c.key}>
+                          {c.url ? (
+                            <Link href={c.url}>
+                              <a>{c.name}</a>
+                            </Link>
+                          ) : (
+                            <span>{c.name}</span>
+                          )}
+                        </Menu.Item>
+                      ))}
+                  </SubMenu>
+                ))
+              : []}
           </Menu>
         </Sider>
         <Layout style={{ padding: '0 24px 24px' }}>
