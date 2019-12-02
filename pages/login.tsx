@@ -142,12 +142,7 @@ const LoginPage = (props: IProps) => {
         <Alert message={loginStatus.error} type="error" closable />
       )}
       <br />
-      <Row
-        type="flex"
-        justify="center"
-        align="middle"
-        style={{ height: '70%' }}
-      >
+      <div style={{ height: '70%' }}>
         {loginStatus.loading ? (
           <Loading />
         ) : loginStatus.success ? (
@@ -157,7 +152,7 @@ const LoginPage = (props: IProps) => {
             <LoginForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}
-      </Row>
+      </div>
     </PageLayout>
   )
 }

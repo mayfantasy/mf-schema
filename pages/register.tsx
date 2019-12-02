@@ -215,12 +215,7 @@ const RegisterPage = (props: IProps) => {
         <Alert message={registerStatus.error} type="error" closable />
       )}
       <br />
-      <Row
-        type="flex"
-        justify="center"
-        align="middle"
-        style={{ height: '70%' }}
-      >
+      <div style={{ height: '70%' }}>
         {registerStatus.loading ? (
           <Loading />
         ) : (
@@ -228,7 +223,7 @@ const RegisterPage = (props: IProps) => {
             <RegistrationForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}
-      </Row>
+      </div>
     </PageLayout>
   )
 }
