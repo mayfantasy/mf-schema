@@ -17,71 +17,120 @@ import {
   Spin
 } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import { createAccountRequest } from '../../requests/account.request'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import Loading from '../../components/Loading/Loading'
-import { setToken, setUser } from '../../helpers/auth.helper'
 import router from 'next/router'
 import {
-  ICreateSchemaPayload,
   ESchemaFieldType,
   ISchemaFieldDef,
-  ISchemaFieldDefKeys
+  ISchemaFieldDefKeys,
+  IUpdateSchemaPayload,
+  ISchema
 } from '../../types/schema.type'
-import { createSchemaRequest } from '../../requests/schema.request'
+import {
+  updateSchemaRequest,
+  getSchemaById
+} from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { enumToKeyArray } from '../../helpers/utils.helper'
-import Moment from 'moment'
-import { string } from 'prop-types'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import { ICollection } from '../../types/collection.type'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
-interface ICreateSchemaFormProps<V> {
+interface IUpdateSchemaFormProps<V> {
   handleSubmit: (e: any) => void
   form: WrappedFormUtils<V>
 }
 
-interface ICreateSchemaFormValues extends ICreateSchemaPayload {
+interface IUpdateSchemaFormValues extends IUpdateSchemaPayload {
   _defKeys: ISchemaFieldDefKeys[]
   _defValues: { [key: string]: any }
 }
 
 let fieldIndex = 0
 
-const CreateSchemaForm = (
-  props: ICreateSchemaFormProps<ICreateSchemaFormValues>
+const UpdateSchemaForm = (
+  props: IUpdateSchemaFormProps<IUpdateSchemaFormValues>
 ) => {
   const { form, handleSubmit } = props
   const { getFieldDecorator, getFieldValue } = form
-  const [collectionList, setCollectionList] = useState<ICollection[]>([])
-  const [collectionStatus, setCollectionStatus] = useState({
+  const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
+  const [currentSchemaStatus, setCurrentSchemaStatus] = useState({
     loading: false,
     success: false,
     error: ''
   })
+  const router = useRouter()
 
-  useEffect(() => {
-    setCollectionStatus({
+  const initialFormValues = (schema: ISchema) => {
+    const map = (i: number) => ({
+      key: `key-${i}`,
+      type: `type-${i}`,
+      name: `name-${i}`,
+      helper: `helper-${i}`,
+      order: `order-${i}`,
+      grid: `grid-${i}`,
+      new_line: `new_line-${i}`
+    })
+    getFieldDecorator('name', { initialValue: schema.name })
+    getFieldDecorator('handle', { initialValue: schema.handle })
+    getFieldDecorator('description', { initialValue: schema.description })
+    getFieldDecorator('_defKeys', {
+      initialValue: schema.def.map((d, i) => map(i))
+    })
+    const defValues = schema.def.reduce((a, c, i) => {
+      return {
+        ...a,
+        [map(i)['key']]: c.key,
+        [map(i)['type']]: c.type,
+        [map(i)['name']]: c.name,
+        [map(i)['helper']]: c.helper,
+        [map(i)['order']]: c.order,
+        [map(i)['grid']]: c.grid,
+        [map(i)['new_line']]: c.new_line
+      }
+    }, {} as { [key: string]: any })
+    Object.keys(defValues).forEach((k) => {
+      getFieldDecorator(`_defValues[${k}]`, {
+        initialValue: defValues[k]
+      })
+    })
+  }
+
+  const getCurrentSchema = (id: string) => {
+    setCurrentSchemaStatus({
       loading: true,
       success: false,
       error: ''
     })
-    getCollectionListRequest()
+    getSchemaById(id as string)
       .then((res) => {
-        setCollectionStatus({
+        setCurrentSchemaStatus({
           loading: false,
           success: true,
           error: ''
         })
-        setCollectionList(res.data.result)
+        const data = res.data.result
+        setCurrentSchema(data)
+        initialFormValues(data)
+        console.log(data)
       })
-      .catch((err: AxiosError) => {
-        setCollectionStatus({
+      .catch((err) => {
+        setCurrentSchemaStatus({
           loading: false,
           success: false,
           error: err.message || JSON.stringify(err, null, '  ')
         })
       })
+  }
+
+  useEffect(() => {
+    const { id } = router.query
+    console.log(router.query)
+    if (id) {
+      getCurrentSchema(id as string)
+    }
   }, [])
 
   const removeField = (key: string) => {
@@ -111,7 +160,28 @@ const CreateSchemaForm = (
     })
   }
 
-  getFieldDecorator('_defKeys', { initialValue: [] as ISchemaFieldDefKeys[] })
+  if (currentSchemaStatus.loading) {
+    return <Spin />
+  }
+
+  if (currentSchemaStatus.error) {
+    return <Alert message={currentSchemaStatus.error} type="error" closable />
+  }
+
+  if (!currentSchema) {
+    return (
+      <Button onClick={() => getCurrentSchema(router.query.id as string)}>
+        Load
+      </Button>
+    )
+  }
+
+  console.log(currentSchema)
+
+  if (currentSchema) {
+    initialFormValues(currentSchema)
+  }
+
   const _defKeys = getFieldValue('_defKeys')
 
   const formItems = _defKeys.map((def: ISchemaFieldDefKeys, index: number) => (
@@ -223,8 +293,7 @@ const CreateSchemaForm = (
             <Col span={7}>
               <Form.Item label="New Line ?" key="new_line">
                 {getFieldDecorator(`_defValues[${def.new_line}]`, {
-                  valuePropName: 'checked',
-                  initialValue: false
+                  valuePropName: 'checked'
                 })(<Checkbox />)}
               </Form.Item>
             </Col>
@@ -249,34 +318,13 @@ const CreateSchemaForm = (
       {/* Meta */}
       <Row>
         <Col span={12}>
-          {collectionStatus.loading ? (
-            <Spin />
-          ) : collectionStatus.error ? (
-            <Alert message={collectionStatus.error} type="error" closable />
-          ) : (
-            <Form.Item label="Collection" required={true} key="collection_id">
-              {getFieldDecorator(`collection_id`, {
-                validateTrigger: ['onChange', 'onBlur'],
-                rules: [
-                  {
-                    required: true,
-                    whitespace: true,
-                    message: 'Collection is required'
-                  }
-                ]
-              })(
-                <Select placeholder="Select a Collection">
-                  {collectionList.map((c) => (
-                    <Select.Option value={c.id} key={c.id}>
-                      {c.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              )}
-            </Form.Item>
-          )}
+          <h3>Collection</h3>
+          <Link href={`/collection?id=${currentSchema.collection.id}`}>
+            <a>{currentSchema.collection.name}</a>
+          </Link>
         </Col>
       </Row>
+      <br />
       <Row gutter={2}>
         <Col span={12}>
           <Form.Item label="Name">
@@ -331,22 +379,23 @@ const CreateSchemaForm = (
       {/* Submit */}
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Create
+          Update
         </Button>
       </Form.Item>
     </Form>
   )
 }
 
-interface IProps extends FormComponentProps<ICreateSchemaFormValues> {}
+interface IProps extends FormComponentProps<IUpdateSchemaFormValues> {}
 
-const CreateSchemaPage = (props: IProps) => {
+const UpdateSchemaPage = (props: IProps) => {
   const [schemaStatus, setSchemaStatus] = useState({
     loading: false,
     success: false,
     error: ''
   })
   const { form } = props
+  const router = useRouter()
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
@@ -364,18 +413,20 @@ const CreateSchemaPage = (props: IProps) => {
         })
         console.log('Merged values:', defs)
 
-        // Create schema
+        // Update schema
         setSchemaStatus({
           loading: true,
           success: false,
           error: ''
         })
-        createSchemaRequest({
-          name: values.name,
-          handle: values.handle,
-          description: values.description,
-          def: defs as ISchemaFieldDef[],
-          collection_id: values.collection_id
+        updateSchemaRequest({
+          id: 'asdfasdfasdf',
+          ...(values.name ? { name: values.name.trim() } : {}),
+          ...(values.handle ? { handle: values.handle.trim() } : {}),
+          ...(values.description
+            ? { description: values.description.trim() }
+            : {}),
+          def: defs as ISchemaFieldDef[]
         })
           .then((res) => {
             setSchemaStatus({
@@ -405,9 +456,9 @@ const CreateSchemaPage = (props: IProps) => {
           name: 'Schema'
         },
         {
-          key: 'create',
-          url: '/schema/create',
-          name: 'Create'
+          key: 'update',
+          url: '/schema/update',
+          name: 'Update'
         }
       ]}
     >
@@ -419,10 +470,10 @@ const CreateSchemaPage = (props: IProps) => {
         {schemaStatus.loading ? (
           <Loading />
         ) : schemaStatus.success ? (
-          <div style={{ color: 'green' }}>Schema created successfully.</div>
+          <div style={{ color: 'green' }}>Schema updated successfully.</div>
         ) : (
           <div style={{ width: '70%' }}>
-            <CreateSchemaForm form={form} handleSubmit={handleSubmit} />
+            <UpdateSchemaForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}
       </div>
@@ -430,8 +481,8 @@ const CreateSchemaPage = (props: IProps) => {
   )
 }
 
-const WrappedSchemaPage = Form.create({ name: 'create-schema' })(
-  CreateSchemaPage
+const WrappedSchemaPage = Form.create({ name: 'update-schema' })(
+  UpdateSchemaPage
 )
 
 export default WrappedSchemaPage

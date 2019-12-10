@@ -4,6 +4,7 @@ import { getSchemaListRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
 import { Alert, Table } from 'antd'
+import { ICollection } from '../../types/collection.type'
 
 const columns = [
   {
@@ -15,6 +16,11 @@ const columns = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name'
+  },
+  {
+    title: 'Collection',
+    dataIndex: 'collection',
+    render: (collection: ICollection) => <span>{collection.name}</span>
   },
   {
     title: 'Description',

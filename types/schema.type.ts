@@ -1,9 +1,13 @@
+import { ICollection } from './collection.type'
+
 export enum ESchemaFieldType {
   string = 'string',
   number = 'number',
   boolean = 'boolean',
-  array = 'array',
-  object = 'object'
+  // array = 'array',
+  // object = 'object',
+  textarea = 'textarea',
+  datepicker = 'datepicker'
 }
 export interface ISchemaFieldDef {
   type: ESchemaFieldType
@@ -14,6 +18,20 @@ export interface ISchemaFieldDef {
   order: number
   grid: number
   new_line: boolean
+}
+
+/**
+ * for antd form usage
+ */
+export interface ISchemaFieldDefKeys {
+  type: string
+  child_type?: string
+  key: string
+  name: string
+  helper: string
+  order: string
+  grid: string
+  new_line: string
 }
 export interface ICreateSchemaPayload {
   name: string
@@ -30,6 +48,7 @@ export interface ISchema {
   description: string
   def: ISchemaFieldDef[]
   collection_id: string
+  collection: ICollection
 }
 
 export interface IUpdateSchemaPayload {

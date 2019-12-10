@@ -26,7 +26,8 @@ import {
   ICreateSchemaPayload,
   ESchemaFieldType,
   ISchemaFieldDef,
-  ISchemaFieldDefKeys
+  ISchemaFieldDefKeys,
+  ISchema
 } from '../../types/schema.type'
 import { createSchemaRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
@@ -36,21 +37,21 @@ import { string } from 'prop-types'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import { ICollection } from '../../types/collection.type'
 
-interface ICreateSchemaFormProps<V> {
+interface ISchemaFormProps<V> {
   handleSubmit: (e: any) => void
   form: WrappedFormUtils<V>
+  isCreate: boolean
+  data: ISchema
 }
 
-interface ICreateSchemaFormValues extends ICreateSchemaPayload {
+interface ISchemaFormValues extends ICreateSchemaPayload {
   _defKeys: ISchemaFieldDefKeys[]
   _defValues: { [key: string]: any }
 }
 
 let fieldIndex = 0
 
-const CreateSchemaForm = (
-  props: ICreateSchemaFormProps<ICreateSchemaFormValues>
-) => {
+const SchemaForm = (props: ISchemaFormProps<ISchemaFormValues>) => {
   const { form, handleSubmit } = props
   const { getFieldDecorator, getFieldValue } = form
   const [collectionList, setCollectionList] = useState<ICollection[]>([])
@@ -331,22 +332,26 @@ const CreateSchemaForm = (
       {/* Submit */}
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Create
+          Submit
         </Button>
       </Form.Item>
     </Form>
   )
 }
 
-interface IProps extends FormComponentProps<ICreateSchemaFormValues> {}
+interface IProps extends FormComponentProps<ISchemaFormValues> {
+  isCreate: boolean
+  requestFunction: any
+  data?: ISchema
+}
 
-const CreateSchemaPage = (props: IProps) => {
+const SchemaPageContent = (props: IProps) => {
   const [schemaStatus, setSchemaStatus] = useState({
     loading: false,
     success: false,
     error: ''
   })
-  const { form } = props
+  const { form, isCreate, requestFunction, data } = props
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
@@ -370,14 +375,14 @@ const CreateSchemaPage = (props: IProps) => {
           success: false,
           error: ''
         })
-        createSchemaRequest({
+        requestFunction({
           name: values.name,
           handle: values.handle,
           description: values.description,
           def: defs as ISchemaFieldDef[],
           collection_id: values.collection_id
         })
-          .then((res) => {
+          .then(() => {
             setSchemaStatus({
               loading: false,
               success: true,
@@ -422,7 +427,12 @@ const CreateSchemaPage = (props: IProps) => {
           <div style={{ color: 'green' }}>Schema created successfully.</div>
         ) : (
           <div style={{ width: '70%' }}>
-            <CreateSchemaForm form={form} handleSubmit={handleSubmit} />
+            <SchemaForm
+              isCreate={isCreate}
+              form={form}
+              data={data}
+              handleSubmit={handleSubmit}
+            />
           </div>
         )}
       </div>
@@ -430,8 +440,4 @@ const CreateSchemaPage = (props: IProps) => {
   )
 }
 
-const WrappedSchemaPage = Form.create({ name: 'create-schema' })(
-  CreateSchemaPage
-)
-
-export default WrappedSchemaPage
+export default SchemaPageContent

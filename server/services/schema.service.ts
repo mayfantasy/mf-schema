@@ -36,8 +36,46 @@ export const getSchemaList = async (api_key: string) => {
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )
-  return schemas.data.map((c: any) => ({
+  const collections: any = await clientDB.query(
+    q.Map(
+      q.Paginate(q.Match(q.Index('all_collections'))),
+      q.Lambda('X', q.Get(q.Var('X')))
+    )
+  )
+
+  const schemaListData = schemas.data.map((c: any) => ({
     id: c.ref.id,
     ...c.data
   }))
+  const collectionListData = collections.data.map((c: any) => ({
+    id: c.ref.id,
+    ...c.data
+  }))
+  return schemaListData.map((s: any) => ({
+    collection:
+      collectionListData.find((c: any) => c.id === s.collection_id) || null,
+    ...s
+  }))
+}
+
+export const getSchemaById = async (api_key: string, id: string) => {
+  const clientDB = client(api_key)
+  const schema: any = await clientDB.query(
+    q.Get(q.Ref(q.Collection('schema'), id))
+  )
+
+  const collectionId = schema.data.collection_id
+
+  const collection: any = await clientDB.query(
+    q.Get(q.Ref(q.Collection('collection'), schema.data.collection_id))
+  )
+
+  return {
+    id: schema.ref.id,
+    collection: {
+      id: collectionId,
+      ...collection.data
+    },
+    ...schema.data
+  }
 }
