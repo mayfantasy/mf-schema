@@ -264,7 +264,6 @@ const UpdateSchemaForm = (
             <Col span={7}>
               <Form.Item label="Grid" key="grid">
                 {getFieldDecorator(`_defValues[${def.grid}]`, {
-                  initialValue: 24,
                   validateTrigger: ['onChange', 'onBlur'],
                   rules: [
                     {
@@ -284,7 +283,6 @@ const UpdateSchemaForm = (
             <Col span={7}>
               <Form.Item label="Order" key="order">
                 {getFieldDecorator(`_defValues[${def.order}]`, {
-                  initialValue: 1,
                   validateTrigger: ['onChange', 'onBlur']
                 })(<InputNumber placeholder="Grid" />)}
               </Form.Item>
@@ -319,7 +317,7 @@ const UpdateSchemaForm = (
       <Row>
         <Col span={12}>
           <h3>Collection</h3>
-          <Link href={`/collection?id=${currentSchema.collection.id}`}>
+          <Link href={`/collection/detail?id=${currentSchema.collection.id}`}>
             <a>{currentSchema.collection.name}</a>
           </Link>
         </Col>
