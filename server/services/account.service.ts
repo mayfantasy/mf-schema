@@ -2,7 +2,7 @@ import {
   IServerCreateAccountPayload,
   IClientCreateAccountPayload
 } from '../../types/account.type'
-import { master, accountDb } from './db/admin.db'
+import { accountDb } from './db/admin.db'
 import randomstring from 'randomstring'
 import { query as q } from 'faunadb'
 import { client } from './db/client.db'
@@ -14,9 +14,9 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
   const db_id = randomstring.generate(15)
   const db_key = `mf-schema-client-${db_id}`
 
-  await master.query(q.CreateDatabase({ name: db_key }))
+  await accountDb.query(q.CreateDatabase({ name: db_key }))
 
-  const role = await master.query<any>(
+  const role = await accountDb.query<any>(
     q.CreateKey({
       database: q.Database(db_key),
       role: 'server'

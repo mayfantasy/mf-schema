@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { getCollectionListRequest } from '../../requests/collection.request'
+import { getSchemaListRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
 import { Alert, Table } from 'antd'
@@ -23,30 +23,30 @@ const columns = [
   }
 ]
 
-const CollectionListPage = () => {
-  const [collectionStatus, setCollectionStatus] = useState({
+const SchemaListPage = () => {
+  const [schemaStatus, setSchemaStatus] = useState({
     loading: false,
     success: false,
     error: ''
   })
-  const [collections, setCollections] = useState([])
+  const [schemas, setSchemas] = useState([])
   useEffect(() => {
-    setCollectionStatus({
+    setSchemaStatus({
       loading: true,
       success: false,
       error: ''
     })
-    getCollectionListRequest()
+    getSchemaListRequest()
       .then((res) => {
-        setCollectionStatus({
+        setSchemaStatus({
           loading: false,
           success: true,
           error: ''
         })
-        setCollections(res.data.result)
+        setSchemas(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setCollectionStatus({
+        setSchemaStatus({
           loading: false,
           success: false,
           error: err.message || JSON.stringify(err)
@@ -57,29 +57,29 @@ const CollectionListPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'collection',
-          name: 'Collection'
+          key: 'schema',
+          name: 'Schema'
         },
         {
           key: 'create',
-          url: '/collection/list',
+          url: '/schema/list',
           name: 'List'
         }
       ]}
     >
-      {collectionStatus.error && (
-        <Alert message={collectionStatus.error} type="error" closable />
+      {schemaStatus.error && (
+        <Alert message={schemaStatus.error} type="error" closable />
       )}
       <br />
       <div>
-        {collectionStatus.loading ? (
+        {schemaStatus.loading ? (
           <Loading />
         ) : (
-          <Table dataSource={collections} columns={columns} />
+          <Table dataSource={schemas} columns={columns} />
         )}
       </div>
     </PageLayout>
   )
 }
 
-export default CollectionListPage
+export default SchemaListPage

@@ -14,6 +14,7 @@ import {
   createCollectionRoute,
   getCollectionListRoute
 } from './routes/collection.route'
+import { createSchemaRoute, getSchemaListRoute } from './routes/schema.route'
 
 const port = parseInt(process.env.PORT || '3000', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -34,6 +35,10 @@ app.prepare().then(() => {
   // Collection
   router.post('/api/collection/create', createCollectionRoute)
   router.get('/api/collection/list', getCollectionListRoute)
+
+  // Schema
+  router.post('/api/schema/create', createSchemaRoute)
+  router.get('/api/schema/list', getSchemaListRoute)
 
   // SSR Pages
   router.get('*', async (ctx) => {

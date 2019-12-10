@@ -57,6 +57,27 @@ const sideNavItems: INavItem[] = [
         name: 'List'
       }
     ]
+  },
+  {
+    key: 'schema',
+    name: (
+      <span>
+        <Icon type="build" />
+        Schema
+      </span>
+    ),
+    children: [
+      {
+        key: 'create',
+        url: '/schema/create',
+        name: 'Create'
+      },
+      {
+        key: 'list',
+        url: '/schema/list',
+        name: 'List'
+      }
+    ]
   }
 ]
 
@@ -66,7 +87,6 @@ const PageLayout = (props: IProps) => {
   useEffect(() => {
     if (window) {
       const token = getToken()
-      console.log(token, router.pathname)
       if (token) {
         loginWithTokenRequest({ token })
           .then((res) => {
@@ -74,7 +94,6 @@ const PageLayout = (props: IProps) => {
             setUser(user)
           })
           .catch((e) => {
-            console.log('here, why', e)
             removeToken()
             removeUser()
             if (router.pathname !== '/register') {

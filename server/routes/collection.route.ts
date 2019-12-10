@@ -16,8 +16,6 @@ export const createCollectionRoute = async (ctx: Koa.Context) => {
 
   const collection = await createCollection(api_key, payload)
 
-  console.log('collection: ', collection)
-
   ctx.body = {
     result: collection
   }
