@@ -22,6 +22,38 @@ export const createSchema = async (
     })
   )
 
+  // Create object collection
+  await clientDB.query(q.CreateCollection({ name: 'object' }))
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'all_objects',
+      source: q.Collection('object')
+    })
+  )
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'get_object_by_handle',
+      source: q.Collection('object'),
+      terms: [
+        {
+          field: ['data', '_handle']
+        }
+      ],
+      uniqueness: true
+    })
+  )
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'get_objects_by_schema_handle',
+      source: q.Collection('object'),
+      terms: [
+        {
+          field: ['data', '_schema_handle']
+        }
+      ]
+    })
+  )
+
   return {
     id: schema.ref.id,
     ...schema.data

@@ -5,22 +5,32 @@ import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
 import { Alert, Table } from 'antd'
 import { ICollection } from '../../types/collection.type'
+import { ISchema } from '../../types/schema.type'
+import Link from 'next/link'
 
 const columns = [
   {
-    title: 'Handle',
-    dataIndex: 'handle',
-    key: 'handle'
-  },
-  {
     title: 'Name',
     dataIndex: 'name',
-    key: 'name'
+    key: 'name',
+    render: (name: string, schema: ISchema) => (
+      <div>
+        <Link href={`/schema/detail?id=${schema.id}`}>{name}</Link>
+        <br />
+        <small>{schema.handle}</small>
+      </div>
+    )
   },
   {
     title: 'Collection',
     dataIndex: 'collection',
-    render: (collection: ICollection) => <span>{collection.name}</span>
+    render: (collection: ICollection) => (
+      <div>
+        <Link href={`/collection/detail?id=${collection.id}`}>
+          {collection.name}
+        </Link>
+      </div>
+    )
   },
   {
     title: 'Description',

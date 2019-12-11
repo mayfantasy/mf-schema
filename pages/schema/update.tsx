@@ -13,7 +13,6 @@ import {
   Card,
   Select,
   InputNumber,
-  DatePicker,
   Spin
 } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
@@ -33,8 +32,6 @@ import {
 } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { enumToKeyArray } from '../../helpers/utils.helper'
-import { getCollectionListRequest } from '../../requests/collection.request'
-import { ICollection } from '../../types/collection.type'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -43,11 +40,22 @@ interface IUpdateSchemaFormProps<V> {
   form: WrappedFormUtils<V>
 }
 
+/**
+ * payload
+ * adjusts special form values structure
+ * _defKeys: array, schema definition structure, stores the value index
+ * _defValues: object, stores the actual value
+ */
 interface IUpdateSchemaFormValues extends IUpdateSchemaPayload {
   _defKeys: ISchemaFieldDefKeys[]
   _defValues: { [key: string]: any }
 }
 
+/**
+ * Ensure key uniqueness of each field
+ * during modifing the structure
+ * (Always increasing)
+ */
 let fieldIndex = 0
 
 const UpdateSchemaForm = (
@@ -63,7 +71,12 @@ const UpdateSchemaForm = (
   })
   const router = useRouter()
 
-  const initialFormValues = (schema: ISchema) => {
+  /**
+   *
+   * @param schema shema to load to the form
+   * Set initial form values based on the schema
+   */
+  const setInitialFormValues = (schema: ISchema) => {
     const map = (i: number) => ({
       key: `key-${i}`,
       type: `type-${i}`,
@@ -91,6 +104,7 @@ const UpdateSchemaForm = (
         [map(i)['new_line']]: c.new_line
       }
     }, {} as { [key: string]: any })
+
     Object.keys(defValues).forEach((k) => {
       getFieldDecorator(`_defValues[${k}]`, {
         initialValue: defValues[k]
@@ -98,6 +112,11 @@ const UpdateSchemaForm = (
     })
   }
 
+  /**
+   *
+   * @param id schema ID
+   * Get current schema by ID
+   */
   const getCurrentSchema = (id: string) => {
     setCurrentSchemaStatus({
       loading: true,
@@ -113,7 +132,7 @@ const UpdateSchemaForm = (
         })
         const data = res.data.result
         setCurrentSchema(data)
-        initialFormValues(data)
+        setInitialFormValues(data)
         console.log(data)
       })
       .catch((err) => {
@@ -133,6 +152,11 @@ const UpdateSchemaForm = (
     }
   }, [])
 
+  /**
+   *
+   * @param key schema definitioin key
+   * Remove from schema definition array
+   */
   const removeField = (key: string) => {
     const _defKeys: ISchemaFieldDefKeys[] = form.getFieldValue('_defKeys')
 
@@ -142,6 +166,9 @@ const UpdateSchemaForm = (
     })
   }
 
+  /**
+   * Add schema definition field
+   */
   const addField = () => {
     const _defKeys = form.getFieldValue('_defKeys') as ISchemaFieldDefKeys[]
     const newDefs = _defKeys.concat({
@@ -176,12 +203,13 @@ const UpdateSchemaForm = (
     )
   }
 
-  console.log(currentSchema)
-
   if (currentSchema) {
-    initialFormValues(currentSchema)
+    setInitialFormValues(currentSchema)
   }
 
+  /**
+   * Render schema definition form structure
+   */
   const _defKeys = getFieldValue('_defKeys')
 
   const formItems = _defKeys.map((def: ISchemaFieldDefKeys, index: number) => (
@@ -395,6 +423,11 @@ const UpdateSchemaPage = (props: IProps) => {
   const { form } = props
   const router = useRouter()
 
+  /**
+   *
+   * @param e
+   * Handle schema update submission
+   */
   const handleSubmit = (e: any) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {

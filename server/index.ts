@@ -19,6 +19,13 @@ import {
   getSchemaListRoute,
   getSchemaByIdRoute
 } from './routes/schema.route'
+import {
+  createObjectRoute,
+  getObjectListRoute,
+  updateObjectByIdRoute,
+  getObjectByIdRoute,
+  deleteObjectByIdRoute
+} from './routes/object.route'
 
 const port = parseInt(process.env.PORT || '3000', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -45,6 +52,28 @@ app.prepare().then(() => {
   router.get('/api/schema/list', getSchemaListRoute)
   // router.put('/api/schema/update', updateSchemaRoute)
   router.get('/api/schema/:id', getSchemaByIdRoute)
+
+  // Object
+  router.post(
+    '/api/object/:collection_handle/:schema_handle/create',
+    createObjectRoute
+  )
+  router.get(
+    '/api/object/:collection_handle/:schema_handle/list',
+    getObjectListRoute
+  )
+  router.put(
+    '/api/object/:collection_handle/:schema_handle/update/:id',
+    updateObjectByIdRoute
+  )
+  router.get(
+    '/api/object/:collection_handle/:schema_handle/:id',
+    getObjectByIdRoute
+  )
+  router.delete(
+    '/api/object/:collection_handle/:schema_handle/delete/:id',
+    deleteObjectByIdRoute
+  )
 
   // SSR Pages
   router.get('*', async (ctx) => {
