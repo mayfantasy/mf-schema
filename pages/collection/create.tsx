@@ -7,17 +7,17 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 import Loading from '../../components/Loading/Loading'
 import { setToken, setUser } from '../../helpers/auth.helper'
 import router from 'next/router'
-import { ICreateSchemaPayload } from '../../types/schema.type'
-import { createSchemaRequest } from '../../requests/schema.request'
+import { ICreateCollectionPayload } from '../../types/collection.type'
+import { createCollectionRequest } from '../../requests/collection.request'
 import { AxiosError } from 'axios'
 
-interface ICreateSchemaFormProps<V> {
+interface ICreateCollectionFormProps<V> {
   handleSubmit: (e: any) => void
   form: WrappedFormUtils<V>
 }
 
-const CreateSchemaForm = (
-  props: ICreateSchemaFormProps<ICreateSchemaPayload>
+const CreateCollectionForm = (
+  props: ICreateCollectionFormProps<ICreateCollectionPayload>
 ) => {
   const { form, handleSubmit } = props
   const { getFieldDecorator } = form
@@ -52,7 +52,7 @@ const CreateSchemaForm = (
           rules: [
             {
               required: true,
-              message: 'Please input the schema name'
+              message: 'Please input the collection name'
             }
           ]
         })(<Input />)}
@@ -62,7 +62,7 @@ const CreateSchemaForm = (
           rules: [
             {
               required: true,
-              message: 'Please input the schema handle'
+              message: 'Please input the collection handle'
             }
           ]
         })(<Input />)}
@@ -72,7 +72,7 @@ const CreateSchemaForm = (
           rules: [
             {
               required: true,
-              message: 'Please input the schema desctiption'
+              message: 'Please input the collection desctiption'
             }
           ]
         })(<Input.TextArea />)}
@@ -86,10 +86,10 @@ const CreateSchemaForm = (
   )
 }
 
-interface IProps extends FormComponentProps<ICreateSchemaPayload> {}
+interface IProps extends FormComponentProps<ICreateCollectionPayload> {}
 
-const CreateSchemaPage = (props: IProps) => {
-  const [schemaStatus, setSchemaStatus] = useState({
+const CreateCollectionPage = (props: IProps) => {
+  const [collectionStatus, setCollectionStatus] = useState({
     loading: false,
     success: false,
     error: ''
@@ -100,27 +100,27 @@ const CreateSchemaPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setSchemaStatus({
+        setCollectionStatus({
           loading: true,
           success: false,
           error: ''
         })
-        createSchemaRequest({
+        createCollectionRequest({
           name: values.name,
           handle: values.handle,
           description: values.description
         } as any)
           .then((res) => {
-            setSchemaStatus({
+            setCollectionStatus({
               loading: false,
               success: true,
               error: ''
             })
 
-            router.push('/schema/list')
+            router.push('/collection/list')
           })
           .catch((err: AxiosError) => {
-            setSchemaStatus({
+            setCollectionStatus({
               loading: false,
               success: false,
               error: err.message || JSON.stringify(err, null, '  ')
@@ -135,28 +135,28 @@ const CreateSchemaPage = (props: IProps) => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
-          name: 'Schema'
+          key: 'collection',
+          name: 'Collection'
         },
         {
           key: 'create',
-          url: '/schema/create',
+          url: '/collection/create',
           name: 'Create'
         }
       ]}
     >
-      {schemaStatus.error && (
-        <Alert message={schemaStatus.error} type="error" closable />
+      {collectionStatus.error && (
+        <Alert message={collectionStatus.error} type="error" closable />
       )}
       <br />
       <div style={{ height: '70%' }}>
-        {schemaStatus.loading ? (
+        {collectionStatus.loading ? (
           <Loading />
-        ) : schemaStatus.success ? (
-          <div style={{ color: 'green' }}>Schema created successfully.</div>
+        ) : collectionStatus.success ? (
+          <div style={{ color: 'green' }}>Collection created successfully.</div>
         ) : (
           <div style={{ width: '70%' }}>
-            <CreateSchemaForm form={form} handleSubmit={handleSubmit} />
+            <CreateCollectionForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}
       </div>
@@ -164,6 +164,8 @@ const CreateSchemaPage = (props: IProps) => {
   )
 }
 
-const WrappedSchemaPage = Form.create({ name: 'schema' })(CreateSchemaPage)
+const WrappedCollectionPage = Form.create({ name: 'collection' })(
+  CreateCollectionPage
+)
 
-export default WrappedSchemaPage
+export default WrappedCollectionPage

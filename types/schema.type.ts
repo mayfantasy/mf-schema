@@ -18,6 +18,7 @@ export interface ISchemaFieldDef {
   order: number
   grid: number
   new_line: boolean
+  show: boolean
 }
 
 /**
@@ -32,7 +33,9 @@ export interface ISchemaFieldDefKeys {
   order: string
   grid: string
   new_line: string
+  show: string
 }
+
 export interface ICreateSchemaPayload {
   name: string
   handle: string

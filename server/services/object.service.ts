@@ -43,32 +43,21 @@ export const getObjectList = async (
   meta: IObjectServiceMeta
 ) => {
   const clientDB = client(api_key)
-  // const objects: any = await clientDB.query(
-  //   q.Map(
-  //     q.Paginate(q.Match(q.Index('all_objects'))),
-  //     q.Lambda('X', q.Get(q.Var('X')))
-  //   )
-  // )
-  // const collections: any = await clientDB.query(
-  //   q.Map(
-  //     q.Paginate(q.Match(q.Index('all_collections'))),
-  //     q.Lambda('X', q.Get(q.Var('X')))
-  //   )
-  // )
-
-  // const objectListData = objects.data.map((c: any) => ({
-  //   id: c.ref.id,
-  //   ...c.data
-  // }))
-  // const collectionListData = collections.data.map((c: any) => ({
-  //   id: c.ref.id,
-  //   ...c.data
-  // }))
-  // return objectListData.map((s: any) => ({
-  //   collection:
-  //     collectionListData.find((c: any) => c.id === s.collection_id) || null,
-  //   ...s
-  // }))
+  const { schema_handle } = meta
+  const objects: any = await clientDB.query(
+    q.Map(
+      q.Paginate(
+        q.Match(q.Index('get_objects_by_schema_handle'), schema_handle)
+      ),
+      q.Lambda('X', q.Get(q.Var('X')))
+    )
+  )
+  return objects.data.map((o: any) => {
+    return {
+      id: o.ref.id,
+      ...o.data
+    }
+  })
 }
 
 export const getObjectById = async (

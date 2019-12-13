@@ -28,6 +28,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import moment from 'moment'
+import {
+  createObjectRequest,
+  getObjectListRequest
+} from '../../requests/object.request'
+import { getCollectionList } from '../../server/services/collection.service'
 
 interface IFormStructureItem {
   value: any
@@ -44,11 +49,53 @@ const SchemaListPage = () => {
     success: false,
     error: ''
   })
+  const [objectListStatus, setObjectListStatus] = useState({
+    loading: false,
+    success: false,
+    error: ''
+  })
+  const [objectCreateStatus, setObjectCreateStatus] = useState({
+    loading: false,
+    success: false,
+    error: ''
+  })
+  const [objectList, setObjectList] = useState<any[]>([])
   const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
   const [form, setForm] = useState<IFormStructure | null>(null)
   const [handle, setHandle] = useState('')
 
   const router = useRouter()
+
+  /**
+   *
+   * @param collection_handle Collection handle
+   * @param schema_handle Schema handle
+   * Get object list by collection handle and schema handle
+   */
+  const getObjectList = (collection_handle: string, schema_handle: string) => {
+    setObjectListStatus({
+      loading: true,
+      success: false,
+      error: ''
+    })
+    getObjectListRequest(collection_handle, schema_handle)
+      .then((res) => {
+        setObjectListStatus({
+          loading: false,
+          success: true,
+          error: ''
+        })
+        setObjectList(res.data.result)
+      })
+      .catch((err) => {
+        setObjectListStatus({
+          loading: false,
+          success: false,
+          error: err.message || JSON.stringify(err)
+        })
+        console.log(err)
+      })
+  }
 
   /**
    *
@@ -69,7 +116,9 @@ const SchemaListPage = () => {
           success: true,
           error: ''
         })
-        setCurrentSchema(res.data.result)
+        const schema = res.data.result as ISchema
+        setCurrentSchema(schema)
+        getObjectList(schema.collection.handle, schema.handle)
       })
       .catch((err: AxiosError) => {
         setSchemaStatus({
@@ -198,6 +247,35 @@ const SchemaListPage = () => {
       }
     }
 
+    const createObject = (
+      collection_handle: string,
+      schema_handle: string,
+      values: any
+    ) => {
+      setObjectCreateStatus({
+        loading: true,
+        success: false,
+        error: ''
+      })
+      createObjectRequest(collection_handle, schema_handle, values)
+        .then((res) => {
+          setObjectCreateStatus({
+            loading: false,
+            success: true,
+            error: ''
+          })
+          getObjectList(collection_handle, schema_handle)
+        })
+        .catch((err) => {
+          setObjectCreateStatus({
+            loading: false,
+            success: false,
+            error: err.message || JSON.stringify(err)
+          })
+          console.log(err)
+        })
+    }
+
     /**
      * Handle create object
      */
@@ -220,8 +298,21 @@ const SchemaListPage = () => {
           ...formValues,
           _handle: handle
         }
-        console.log(values)
+        createObject(
+          currentSchema.collection.handle,
+          currentSchema.handle,
+          values
+        )
       }
+    }
+
+    const getShownFields = () => {
+      if (form) {
+        return Object.keys(form)
+          .filter((field) => form[field].meta.show)
+          .map((field) => form[field].meta.key)
+      }
+      return []
     }
     content = (
       <>
@@ -275,6 +366,7 @@ const SchemaListPage = () => {
                 const name = form[field].meta.name
                 const grid = form[field].meta.grid
                 const newLine = form[field].meta.new_line
+                const show = form[field].meta.show
                 const helper = form[field].meta.helper
                 const value = form[field].value
                 let input
@@ -348,7 +440,26 @@ const SchemaListPage = () => {
             </Card>
           )}
         </div>
-        {/* <pre>{JSON.stringify(currentSchema, null, ' ')}</pre> */}
+        {!!objectList.length && (
+          <Table
+            dataSource={objectList}
+            columns={[
+              {
+                title: 'Handle',
+                dataIndex: '_handle',
+                key: '_handle',
+                render: (handle: string, row: any) => (
+                  <Link href={`/object/update?id=${row.id}`}>{handle}</Link>
+                )
+              },
+              ...getShownFields().map((f) => ({
+                title: f,
+                dataIndex: f,
+                key: f
+              }))
+            ]}
+          />
+        )}
       </>
     )
   }

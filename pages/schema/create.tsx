@@ -102,7 +102,8 @@ const CreateSchemaForm = (
       helper: `helper-${fieldIndex}`,
       order: `order-${fieldIndex}`,
       grid: `grid-${fieldIndex}`,
-      new_line: `new_line-${fieldIndex}`
+      new_line: `new_line-${fieldIndex}`,
+      show: `show-${fieldIndex}`
     })
     fieldIndex++
 
@@ -219,10 +220,19 @@ const CreateSchemaForm = (
                 })(<InputNumber placeholder="Grid" />)}
               </Form.Item>
             </Col>
-            {/* Order */}
+            {/* New Line */}
             <Col span={7}>
               <Form.Item label="New Line ?" key="new_line">
                 {getFieldDecorator(`_defValues[${def.new_line}]`, {
+                  valuePropName: 'checked',
+                  initialValue: false
+                })(<Checkbox />)}
+              </Form.Item>
+            </Col>
+            {/* Show on list */}
+            <Col span={7}>
+              <Form.Item label="Show in List ?" key="show">
+                {getFieldDecorator(`_defValues[${def.show}]`, {
                   valuePropName: 'checked',
                   initialValue: false
                 })(<Checkbox />)}
