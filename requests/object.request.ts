@@ -30,7 +30,7 @@ export const getObjectListRequest = (
   return api.get(`/object/${collection_handle}/${schema_handle}/list`)
 }
 
-export const getObjectById = (
+export const getObjectByIdRequest = (
   collection_handle: string,
   schema_handle: string,
   id: string
@@ -38,7 +38,7 @@ export const getObjectById = (
   return api.get(`/object/${collection_handle}/${schema_handle}/${id}`)
 }
 
-export const deleteObjectById = (
+export const deleteObjectByIdRequest = (
   collection_handle: string,
   schema_handle: string,
   object_id: string

@@ -64,25 +64,33 @@ export const getObjectById = async (
   api_key: string,
   meta: IObjectServiceMetaWithID
 ) => {
+  const { collection_handle, schema_handle, id } = meta
   const clientDB = client(api_key)
-  // const object: any = await clientDB.query(
-  //   q.Get(q.Ref(q.Collection('object'), id))
-  // )
 
-  // const collectionId = object.data.collection_id
+  // Check collection handle
+  await clientDB.query(
+    q.Paginate(q.Match(q.Index('get_collection_by_handle'), collection_handle))
+  )
 
-  // const collection: any = await clientDB.query(
-  //   q.Get(q.Ref(q.Collection('collection'), object.data.collection_id))
-  // )
+  // Check schema handle
+  const schema: any = await clientDB.query(
+    q.Get(q.Match(q.Index('get_schema_by_handle'), schema_handle))
+  )
 
-  // return {
-  //   id: object.ref.id,
-  //   collection: {
-  //     id: collectionId,
-  //     ...collection.data
-  //   },
-  //   ...object.data
-  // }
+  console.log(schema)
+
+  const object: any = await clientDB.query(
+    q.Get(q.Ref(q.Collection('object'), id))
+  )
+
+  return {
+    id: object.ref.id,
+    schema: {
+      id: schema.ref.id,
+      ...schema.data
+    },
+    ...object.data
+  }
 }
 
 export const updateObjectById = async (

@@ -10,7 +10,7 @@ export const createSchemaRequest = (payload: ICreateSchemaPayload) => {
 }
 
 export const updateSchemaRequest = (payload: IUpdateSchemaPayload) => {
-  return api.post('/schema/update', payload)
+  return api.put('/schema/update', payload)
 }
 
 export const getSchemaListRequest = () => {

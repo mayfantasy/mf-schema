@@ -34,6 +34,7 @@ import { AxiosError } from 'axios'
 import { enumToKeyArray } from '../../helpers/utils.helper'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import PageHeader from '../../components/PageHeader/PageHeader'
 
 interface IUpdateSchemaFormProps<V> {
   handleSubmit: (e: any) => void
@@ -77,14 +78,15 @@ const UpdateSchemaForm = (
    * Set initial form values based on the schema
    */
   const setInitialFormValues = (schema: ISchema) => {
-    const map = (i: number) => ({
+    const map = (i: number): ISchemaFieldDefKeys => ({
       key: `key-${i}`,
       type: `type-${i}`,
       name: `name-${i}`,
       helper: `helper-${i}`,
       order: `order-${i}`,
       grid: `grid-${i}`,
-      new_line: `new_line-${i}`
+      new_line: `new_line-${i}`,
+      show: `show-${i}`
     })
     getFieldDecorator('name', { initialValue: schema.name })
     getFieldDecorator('handle', { initialValue: schema.handle })
@@ -101,7 +103,8 @@ const UpdateSchemaForm = (
         [map(i)['helper']]: c.helper,
         [map(i)['order']]: c.order,
         [map(i)['grid']]: c.grid,
-        [map(i)['new_line']]: c.new_line
+        [map(i)['new_line']]: c.new_line,
+        [map(i)['show']]: c.show
       }
     }, {} as { [key: string]: any })
 
@@ -178,7 +181,8 @@ const UpdateSchemaForm = (
       helper: `helper-${fieldIndex}`,
       order: `order-${fieldIndex}`,
       grid: `grid-${fieldIndex}`,
-      new_line: `new_line-${fieldIndex}`
+      new_line: `new_line-${fieldIndex}`,
+      show: `show-${fieldIndex}`
     })
     fieldIndex++
 
@@ -188,7 +192,7 @@ const UpdateSchemaForm = (
   }
 
   if (currentSchemaStatus.loading) {
-    return <Spin />
+    return <Loading />
   }
 
   if (currentSchemaStatus.error) {
@@ -217,7 +221,7 @@ const UpdateSchemaForm = (
       <Col span={24}>
         <Card
           size="small"
-          title="Small size card"
+          title="Field Definition"
           extra={
             _defKeys.length > 1 ? (
               <Icon
@@ -289,7 +293,7 @@ const UpdateSchemaForm = (
           </Row>
           <Row type="flex" gutter={2} align="middle">
             {/* Grid */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="Grid" key="grid">
                 {getFieldDecorator(`_defValues[${def.grid}]`, {
                   validateTrigger: ['onChange', 'onBlur'],
@@ -308,7 +312,7 @@ const UpdateSchemaForm = (
               </Form.Item>
             </Col>
             {/* Order */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="Order" key="order">
                 {getFieldDecorator(`_defValues[${def.order}]`, {
                   validateTrigger: ['onChange', 'onBlur']
@@ -316,9 +320,17 @@ const UpdateSchemaForm = (
               </Form.Item>
             </Col>
             {/* Order */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="New Line ?" key="new_line">
                 {getFieldDecorator(`_defValues[${def.new_line}]`, {
+                  valuePropName: 'checked'
+                })(<Checkbox />)}
+              </Form.Item>
+            </Col>
+            {/* Show on list */}
+            <Col span={5}>
+              <Form.Item label="Show in List ?" key="show">
+                {getFieldDecorator(`_defValues[${def.show}]`, {
                   valuePropName: 'checked'
                 })(<Checkbox />)}
               </Form.Item>
@@ -341,6 +353,13 @@ const UpdateSchemaForm = (
 
   return (
     <Form layout="vertical" onSubmit={handleSubmit}>
+      <PageHeader
+        name={currentSchema.name}
+        sub={currentSchema.handle}
+        buttonLink={`/schema/detail?id=${currentSchema.id}`}
+        buttonWord="View Schema"
+        description={currentSchema.description}
+      />
       {/* Meta */}
       <Row>
         <Col span={12}>
@@ -373,7 +392,7 @@ const UpdateSchemaForm = (
                   message: 'Please input the schema handle'
                 }
               ]
-            })(<Input />)}
+            })(<Input disabled />)}
           </Form.Item>
         </Col>
       </Row>
@@ -423,6 +442,32 @@ const UpdateSchemaPage = (props: IProps) => {
   const { form } = props
   const router = useRouter()
 
+  const updateSchema = (payload: IUpdateSchemaPayload) => {
+    // Update schema
+    setSchemaStatus({
+      loading: true,
+      success: false,
+      error: ''
+    })
+    updateSchemaRequest(payload)
+      .then((res) => {
+        setSchemaStatus({
+          loading: false,
+          success: true,
+          error: ''
+        })
+
+        router.push(`/schema/detail?id=${payload.id}`)
+      })
+      .catch((err: AxiosError) => {
+        setSchemaStatus({
+          loading: false,
+          success: false,
+          error: err.message || JSON.stringify(err, null, '  ')
+        })
+      })
+  }
+
   /**
    *
    * @param e
@@ -443,38 +488,17 @@ const UpdateSchemaPage = (props: IProps) => {
           return obj
         })
         console.log('Merged values:', defs)
-
-        // Update schema
-        setSchemaStatus({
-          loading: true,
-          success: false,
-          error: ''
-        })
-        updateSchemaRequest({
-          id: 'asdfasdfasdf',
-          ...(values.name ? { name: values.name.trim() } : {}),
-          ...(values.handle ? { handle: values.handle.trim() } : {}),
-          ...(values.description
-            ? { description: values.description.trim() }
-            : {}),
-          def: defs as ISchemaFieldDef[]
-        })
-          .then((res) => {
-            setSchemaStatus({
-              loading: false,
-              success: true,
-              error: ''
-            })
-
-            router.push('/schema/list')
+        if (router.query.id) {
+          updateSchema({
+            id: router.query.id as string,
+            ...(values.name ? { name: values.name.trim() } : {}),
+            ...(values.handle ? { handle: values.handle.trim() } : {}),
+            ...(values.description
+              ? { description: values.description.trim() }
+              : {}),
+            def: defs as ISchemaFieldDef[]
           })
-          .catch((err: AxiosError) => {
-            setSchemaStatus({
-              loading: false,
-              success: false,
-              error: err.message || JSON.stringify(err, null, '  ')
-            })
-          })
+        }
       }
     })
   }
@@ -484,6 +508,7 @@ const UpdateSchemaPage = (props: IProps) => {
       breadCrumb={[
         {
           key: 'schema',
+          url: '/schema/list',
           name: 'Schema'
         },
         {

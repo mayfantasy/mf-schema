@@ -120,7 +120,7 @@ const CreateSchemaForm = (
       <Col span={24}>
         <Card
           size="small"
-          title="Small size card"
+          title="Field Definition"
           extra={
             _defKeys.length > 1 ? (
               <Icon
@@ -192,7 +192,7 @@ const CreateSchemaForm = (
           </Row>
           <Row type="flex" gutter={2} align="middle">
             {/* Grid */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="Grid" key="grid">
                 {getFieldDecorator(`_defValues[${def.grid}]`, {
                   initialValue: 24,
@@ -212,7 +212,7 @@ const CreateSchemaForm = (
               </Form.Item>
             </Col>
             {/* Order */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="Order" key="order">
                 {getFieldDecorator(`_defValues[${def.order}]`, {
                   initialValue: 1,
@@ -221,7 +221,7 @@ const CreateSchemaForm = (
               </Form.Item>
             </Col>
             {/* New Line */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="New Line ?" key="new_line">
                 {getFieldDecorator(`_defValues[${def.new_line}]`, {
                   valuePropName: 'checked',
@@ -230,7 +230,7 @@ const CreateSchemaForm = (
               </Form.Item>
             </Col>
             {/* Show on list */}
-            <Col span={7}>
+            <Col span={5}>
               <Form.Item label="Show in List ?" key="show">
                 {getFieldDecorator(`_defValues[${def.show}]`, {
                   valuePropName: 'checked',
@@ -412,6 +412,7 @@ const CreateSchemaPage = (props: IProps) => {
       breadCrumb={[
         {
           key: 'schema',
+          url: '/schema/list',
           name: 'Schema'
         },
         {

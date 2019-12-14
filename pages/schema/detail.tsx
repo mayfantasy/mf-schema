@@ -16,7 +16,8 @@ import {
   InputNumber,
   Checkbox,
   DatePicker,
-  Card
+  Card,
+  Descriptions
 } from 'antd'
 import { ICollection } from '../../types/collection.type'
 import {
@@ -145,6 +146,7 @@ const SchemaListPage = () => {
       breadCrumb={[
         {
           key: 'schema',
+          url: '/schema/list',
           name: 'Schema'
         },
         {
@@ -307,10 +309,10 @@ const SchemaListPage = () => {
     }
 
     const getShownFields = () => {
-      if (form) {
-        return Object.keys(form)
-          .filter((field) => form[field].meta.show)
-          .map((field) => form[field].meta.key)
+      if (currentSchema.def) {
+        return currentSchema.def
+          .filter((field) => field.show)
+          .map((field) => field.key)
       }
       return []
     }
@@ -325,6 +327,30 @@ const SchemaListPage = () => {
             description={currentSchema.description}
           />
         </div>
+        <div>
+          <Descriptions bordered>
+            {currentSchema.def.map((d) => {
+              return (
+                <Descriptions.Item
+                  label={
+                    <div>
+                      <div>
+                        <b>{d.key}</b>
+                      </div>
+                      <div>
+                        <small>{d.name}</small>
+                      </div>
+                    </div>
+                  }
+                  key={d.key}
+                >
+                  {d.helper}
+                </Descriptions.Item>
+              )
+            })}
+          </Descriptions>
+        </div>
+        <br />
         <div style={{ marginBottom: '20px' }}>
           <Row>
             <Col>
@@ -449,7 +475,11 @@ const SchemaListPage = () => {
                 dataIndex: '_handle',
                 key: '_handle',
                 render: (handle: string, row: any) => (
-                  <Link href={`/object/update?id=${row.id}`}>{handle}</Link>
+                  <Link
+                    href={`/object/update?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
+                  >
+                    {handle}
+                  </Link>
                 )
               },
               ...getShownFields().map((f) => ({

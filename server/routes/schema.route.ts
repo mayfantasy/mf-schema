@@ -3,11 +3,15 @@ import { ILoginPayload } from '../../types/auth.type'
 import { getAccountByEmail } from '../services/auth.service'
 import { sign, varify } from '../jwt'
 import { IBasicAccountInfo } from '../../types/account.type'
-import { ICreateSchemaPayload } from '../../types/schema.type'
+import {
+  ICreateSchemaPayload,
+  IUpdateSchemaPayload
+} from '../../types/schema.type'
 import {
   createSchema,
   getSchemaList,
-  getSchemaById
+  getSchemaById,
+  updateSchema
 } from '../services/schema.service'
 import { getApiKey } from './helper'
 
@@ -18,6 +22,17 @@ export const createSchemaRoute = async (ctx: Koa.Context) => {
   const schema = await createSchema(api_key, payload)
 
   console.log('schema: ', schema)
+
+  ctx.body = {
+    result: schema
+  }
+}
+
+export const updateSchemaRoute = async (ctx: Koa.Context) => {
+  const api_key = await getApiKey(ctx)
+  const payload = ctx.request.body as IUpdateSchemaPayload
+
+  const schema = await updateSchema(api_key, payload)
 
   ctx.body = {
     result: schema

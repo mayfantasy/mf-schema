@@ -1,7 +1,11 @@
 import { accountDb } from './db/admin.db'
 import { query as q } from 'faunadb'
 import { IAccount } from '../../types/account.type'
-import { ICreateSchemaPayload, ISchema } from '../../types/schema.type'
+import {
+  ICreateSchemaPayload,
+  ISchema,
+  IUpdateSchemaPayload
+} from '../../types/schema.type'
 import { client } from './db/client.db'
 
 export const createSchema = async (
@@ -51,6 +55,25 @@ export const createSchema = async (
           field: ['data', '_schema_handle']
         }
       ]
+    })
+  )
+
+  return {
+    id: schema.ref.id,
+    ...schema.data
+  }
+}
+
+export const updateSchema = async (
+  api_key: string,
+  payload: IUpdateSchemaPayload
+) => {
+  const clientDB = client(api_key)
+
+  // Update schema
+  const schema: any = await clientDB.query(
+    q.Update(q.Ref(q.Collection('schema'), payload.id), {
+      data: payload
     })
   )
 

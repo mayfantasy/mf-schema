@@ -17,7 +17,8 @@ import {
 import {
   createSchemaRoute,
   getSchemaListRoute,
-  getSchemaByIdRoute
+  getSchemaByIdRoute,
+  updateSchemaRoute
 } from './routes/schema.route'
 import {
   createObjectRoute,
@@ -50,7 +51,7 @@ app.prepare().then(() => {
   // Schema
   router.post('/api/schema/create', createSchemaRoute)
   router.get('/api/schema/list', getSchemaListRoute)
-  // router.put('/api/schema/update', updateSchemaRoute)
+  router.put('/api/schema/update', updateSchemaRoute)
   router.get('/api/schema/:id', getSchemaByIdRoute)
 
   // Object
