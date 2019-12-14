@@ -11,7 +11,7 @@ export const createObjectRequest = (
   )
 }
 
-export const updateObjectRequest = (
+export const updateObjectByIdRequest = (
   collection_handle: string,
   schema_handle: string,
   object_id: string,
@@ -41,9 +41,9 @@ export const getObjectByIdRequest = (
 export const deleteObjectByIdRequest = (
   collection_handle: string,
   schema_handle: string,
-  object_id: string
+  id: string
 ) => {
   return api.delete(
-    `/object/${collection_handle}/${schema_handle}/delete/${object_id}`
+    `/object/${collection_handle}/${schema_handle}/delete/${id}`
   )
 }

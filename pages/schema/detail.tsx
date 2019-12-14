@@ -17,7 +17,8 @@ import {
   Checkbox,
   DatePicker,
   Card,
-  Descriptions
+  Descriptions,
+  Icon
 } from 'antd'
 import { ICollection } from '../../types/collection.type'
 import {
@@ -33,7 +34,6 @@ import {
   createObjectRequest,
   getObjectListRequest
 } from '../../requests/object.request'
-import { getCollectionList } from '../../server/services/collection.service'
 
 interface IFormStructureItem {
   value: any
@@ -169,6 +169,9 @@ const SchemaListPage = () => {
     return layout(content)
   }
 
+  /**
+   * If schema is not found, show load schema button
+   */
   if (!currentSchema) {
     content = (
       <Button onClick={() => getCurrentSchema(router.query.id as string)}>
@@ -249,6 +252,13 @@ const SchemaListPage = () => {
       }
     }
 
+    /**
+     *
+     * @param collection_handle
+     * @param schema_handle
+     * @param values
+     * Create object request
+     */
     const createObject = (
       collection_handle: string,
       schema_handle: string,
@@ -267,6 +277,8 @@ const SchemaListPage = () => {
             error: ''
           })
           getObjectList(collection_handle, schema_handle)
+          setForm(null)
+          setHandle('')
         })
         .catch((err) => {
           setObjectCreateStatus({
@@ -279,7 +291,7 @@ const SchemaListPage = () => {
     }
 
     /**
-     * Handle create object
+     * Handle click create object
      */
     const handleSaveObject = () => {
       if (form && handle) {
@@ -308,6 +320,9 @@ const SchemaListPage = () => {
       }
     }
 
+    /**
+     * Retrieve fields that tag as show in list
+     */
     const getShownFields = () => {
       if (currentSchema.def) {
         return currentSchema.def
@@ -316,6 +331,10 @@ const SchemaListPage = () => {
       }
       return []
     }
+
+    /**
+     * Set Page content
+     */
     content = (
       <>
         <div>
@@ -360,6 +379,11 @@ const SchemaListPage = () => {
             </Col>
           </Row>
         </div>
+        {objectCreateStatus.loading ? (
+          <Loading />
+        ) : objectCreateStatus.error ? (
+          <Alert message={objectCreateStatus.error} type="error" closable />
+        ) : null}
         <div>
           {!!form && (
             <Card
@@ -485,7 +509,26 @@ const SchemaListPage = () => {
               ...getShownFields().map((f) => ({
                 title: f,
                 dataIndex: f,
-                key: f
+                key: f,
+                render: (value: any) => {
+                  return typeof value === 'boolean' ? (
+                    value ? (
+                      <Icon
+                        type="check-circle"
+                        theme="twoTone"
+                        twoToneColor="#52c41a"
+                      />
+                    ) : (
+                      <Icon
+                        type="close-circle"
+                        theme="twoTone"
+                        twoToneColor="#eb2f96"
+                      />
+                    )
+                  ) : (
+                    value
+                  )
+                }
               }))
             ]}
           />

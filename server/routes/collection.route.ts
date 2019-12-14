@@ -8,11 +8,14 @@ import {
   createCollection,
   getCollectionList
 } from '../services/collection.service'
-import { getApiKey } from './helper'
+import { getApiKey, testHandle } from './helper'
+import { handleRxp } from '../../helpers/utils.helper'
 
 export const createCollectionRoute = async (ctx: Koa.Context) => {
   const api_key = await getApiKey(ctx)
   const payload = ctx.request.body as ICreateCollectionPayload
+
+  testHandle(ctx, payload.handle)
 
   const collection = await createCollection(api_key, payload)
 

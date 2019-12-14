@@ -13,11 +13,13 @@ import {
   getSchemaById,
   updateSchema
 } from '../services/schema.service'
-import { getApiKey } from './helper'
+import { getApiKey, testHandle } from './helper'
 
 export const createSchemaRoute = async (ctx: Koa.Context) => {
   const api_key = await getApiKey(ctx)
   const payload = ctx.request.body as ICreateSchemaPayload
+
+  testHandle(ctx, payload.handle)
 
   const schema = await createSchema(api_key, payload)
 
@@ -31,6 +33,10 @@ export const createSchemaRoute = async (ctx: Koa.Context) => {
 export const updateSchemaRoute = async (ctx: Koa.Context) => {
   const api_key = await getApiKey(ctx)
   const payload = ctx.request.body as IUpdateSchemaPayload
+
+  if (payload.handle) {
+    testHandle(ctx, payload.handle)
+  }
 
   const schema = await updateSchema(api_key, payload)
 

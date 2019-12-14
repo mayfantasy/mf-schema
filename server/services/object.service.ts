@@ -1,5 +1,5 @@
 import { accountDb } from './db/admin.db'
-import { query as q } from 'faunadb'
+import faunadb, { query as q } from 'faunadb'
 import { IAccount } from '../../types/account.type'
 import { client } from './db/client.db'
 
@@ -14,17 +14,48 @@ interface IObjectServiceMetaWithID {
   id: string
 }
 
+const validateCollectionAndSchemaHandles = async (
+  client: faunadb.Client,
+  collection_handle: string,
+  schema_handle: string
+) => {
+  // Check collection handle
+  await client.query(
+    q.Paginate(q.Match(q.Index('get_collection_by_handle'), collection_handle))
+  )
+
+  // Check schema handle
+  const schema: any = await client.query(
+    q.Get(q.Match(q.Index('get_schema_by_handle'), schema_handle))
+  )
+
+  return schema
+}
+
+const validateObjectHandle = async (
+  client: faunadb.Client,
+  object_handle: string
+) => {
+  // Check handle uniqueness
+  await client.query(
+    q.Paginate(q.Match(q.Index('get_object_by_handle'), object_handle))
+  )
+}
+
 export const createObject = async (
   api_key: string,
   payload: any,
   meta: IObjectServiceMeta
 ) => {
   const clientDB = client(api_key)
+  const { collection_handle, schema_handle } = meta
 
-  // Check handle uniqueness
-  await clientDB.query(
-    q.Paginate(q.Match(q.Index('get_object_by_handle'), payload._handle))
+  await validateCollectionAndSchemaHandles(
+    clientDB,
+    collection_handle,
+    schema_handle
   )
+  await validateObjectHandle(clientDB, payload._handle)
 
   // Create object
   const object: any = await clientDB.query(
@@ -43,7 +74,15 @@ export const getObjectList = async (
   meta: IObjectServiceMeta
 ) => {
   const clientDB = client(api_key)
-  const { schema_handle } = meta
+  const { schema_handle, collection_handle } = meta
+
+  await validateCollectionAndSchemaHandles(
+    clientDB,
+    collection_handle,
+    schema_handle
+  )
+
+  // Object list
   const objects: any = await clientDB.query(
     q.Map(
       q.Paginate(
@@ -67,18 +106,13 @@ export const getObjectById = async (
   const { collection_handle, schema_handle, id } = meta
   const clientDB = client(api_key)
 
-  // Check collection handle
-  await clientDB.query(
-    q.Paginate(q.Match(q.Index('get_collection_by_handle'), collection_handle))
+  const schema = await validateCollectionAndSchemaHandles(
+    clientDB,
+    collection_handle,
+    schema_handle
   )
 
-  // Check schema handle
-  const schema: any = await clientDB.query(
-    q.Get(q.Match(q.Index('get_schema_by_handle'), schema_handle))
-  )
-
-  console.log(schema)
-
+  // Get object
   const object: any = await clientDB.query(
     q.Get(q.Ref(q.Collection('object'), id))
   )
@@ -99,24 +133,30 @@ export const updateObjectById = async (
   meta: IObjectServiceMetaWithID
 ) => {
   const clientDB = client(api_key)
-  // const object: any = await clientDB.query(
-  //   q.Get(q.Ref(q.Collection('object'), id))
-  // )
+  const { collection_handle, schema_handle, id } = meta
 
-  // const collectionId = object.data.collection_id
+  const schema = await validateCollectionAndSchemaHandles(
+    clientDB,
+    collection_handle,
+    schema_handle
+  )
+  await validateObjectHandle(clientDB, payload._handle)
 
-  // const collection: any = await clientDB.query(
-  //   q.Get(q.Ref(q.Collection('collection'), object.data.collection_id))
-  // )
+  // Update object
+  const object: any = await clientDB.query(
+    q.Update(q.Ref(q.Collection('object'), id), {
+      data: payload
+    })
+  )
 
-  // return {
-  //   id: object.ref.id,
-  //   collection: {
-  //     id: collectionId,
-  //     ...collection.data
-  //   },
-  //   ...object.data
-  // }
+  return {
+    id: object.ref.id,
+    schema: {
+      id: schema.ref.id,
+      ...schema.data
+    },
+    ...object.data
+  }
 }
 
 export const deleteObjectById = async (
@@ -124,22 +164,25 @@ export const deleteObjectById = async (
   meta: IObjectServiceMetaWithID
 ) => {
   const clientDB = client(api_key)
-  // const object: any = await clientDB.query(
-  //   q.Get(q.Ref(q.Collection('object'), id))
-  // )
+  const { collection_handle, schema_handle, id } = meta
 
-  // const collectionId = object.data.collection_id
+  const schema = await validateCollectionAndSchemaHandles(
+    clientDB,
+    collection_handle,
+    schema_handle
+  )
 
-  // const collection: any = await clientDB.query(
-  //   q.Get(q.Ref(q.Collection('collection'), object.data.collection_id))
-  // )
+  // Delete object
+  const object: any = await clientDB.query(
+    q.Delete(q.Ref(q.Collection('object'), id))
+  )
 
-  // return {
-  //   id: object.ref.id,
-  //   collection: {
-  //     id: collectionId,
-  //     ...collection.data
-  //   },
-  //   ...object.data
-  // }
+  return {
+    id: object.ref.id,
+    schema: {
+      id: schema.ref.id,
+      ...schema.data
+    },
+    ...object.data
+  }
 }

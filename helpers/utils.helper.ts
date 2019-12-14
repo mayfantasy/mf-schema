@@ -6,3 +6,5 @@ export const enumToKeyArray = <T>(e: T): string[] => {
 
   return list
 }
+
+export const handleRxp = /^[a-z0-9\-]+$/i

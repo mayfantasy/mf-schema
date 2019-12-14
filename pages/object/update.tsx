@@ -1,6 +1,10 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { getObjectByIdRequest } from '../../requests/object.request'
+import {
+  getObjectByIdRequest,
+  deleteObjectByIdRequest,
+  updateObjectByIdRequest
+} from '../../requests/object.request'
 import PageLayout from '../../components/PageLayout/PageLayout'
 import {
   Alert,
@@ -25,26 +29,119 @@ const ObjectUpdatePage = () => {
   const router = useRouter()
   const [currentObject, setCurrentObject] = useState<IObject | null>(null)
   const [form, setForm] = useState<IFormStructure>({})
-  const [currentObjectStatus, setCurrentObjectStatus] = useState({
+  const [getCurrentObjectStatus, setGetCurrentObjectStatus] = useState({
+    loading: false,
+    success: false,
+    error: ''
+  })
+  const [updateCurrentObjectStatus, setUpdateCurrentObjectStatus] = useState({
+    loading: false,
+    success: false,
+    error: ''
+  })
+  const [deleteObjectStatus, setDeleteObjectStatus] = useState({
     loading: false,
     success: false,
     error: ''
   })
   const [handle, setHandle] = useState('')
 
+  /**
+   *
+   * @param collection_handle
+   * @param schema_handle
+   * @param id
+   * Delete object request
+   */
+  const deleteCurrentObject = (
+    collection_handle: string,
+    schema_handle: string,
+    id: string
+  ) => {
+    setDeleteObjectStatus({
+      loading: true,
+      success: false,
+      error: ''
+    })
+    if (currentObject) {
+      let schemaId = currentObject.schema.id
+      deleteObjectByIdRequest(collection_handle, schema_handle, id)
+        .then((res) => {
+          setDeleteObjectStatus({
+            loading: false,
+            success: true,
+            error: ''
+          })
+          router.push(`/schema/detail?id=${schemaId}`)
+        })
+        .catch((err) => {
+          setDeleteObjectStatus({
+            loading: false,
+            success: false,
+            error: err.message || JSON.stringify(err, null, '  ')
+          })
+        })
+    }
+  }
+
+  /**
+   *
+   * @param collection_handle
+   * @param schema_handle
+   * @param id
+   * Delete object request
+   */
+  const updateCurrentObject = (
+    collection_handle: string,
+    schema_handle: string,
+    id: string,
+    payload: any
+  ) => {
+    setUpdateCurrentObjectStatus({
+      loading: true,
+      success: false,
+      error: ''
+    })
+    if (currentObject) {
+      let schemaId = currentObject.schema.id
+      updateObjectByIdRequest(collection_handle, schema_handle, id, payload)
+        .then((res) => {
+          setUpdateCurrentObjectStatus({
+            loading: false,
+            success: true,
+            error: ''
+          })
+        })
+        .catch((err) => {
+          setUpdateCurrentObjectStatus({
+            loading: false,
+            success: false,
+            error: err.message || JSON.stringify(err, null, '  ')
+          })
+        })
+    }
+  }
+
+  /**
+   *
+   * @param collection_handle
+   * @param schema_handle
+   * @param id
+   * Get current object request
+   */
   const getCurrentObject = (
     collection_handle: string,
     schema_handle: string,
     id: string
   ) => {
-    setCurrentObjectStatus({
+    setGetCurrentObjectStatus({
       loading: true,
       success: false,
       error: ''
     })
     getObjectByIdRequest(collection_handle, schema_handle, id)
       .then((res) => {
-        setCurrentObjectStatus({
+        setGetCurrentObjectStatus({
           loading: false,
           success: true,
           error: ''
@@ -63,7 +160,7 @@ const ObjectUpdatePage = () => {
         setForm(formData)
       })
       .catch((err) => {
-        setCurrentObjectStatus({
+        setGetCurrentObjectStatus({
           loading: false,
           success: false,
           error: err.message || JSON.stringify(err, null, '  ')
@@ -107,13 +204,13 @@ const ObjectUpdatePage = () => {
     </PageLayout>
   )
 
-  if (currentObjectStatus.loading) {
+  if (getCurrentObjectStatus.loading || updateCurrentObjectStatus.loading) {
     return layout(<Loading />)
   }
 
-  if (currentObjectStatus.error) {
+  if (getCurrentObjectStatus.error) {
     return layout(
-      <Alert message={currentObjectStatus.error} type="error" closable />
+      <Alert message={getCurrentObjectStatus.error} type="error" closable />
     )
   }
 
@@ -138,7 +235,13 @@ const ObjectUpdatePage = () => {
       _handle: handle,
       ...form
     }
-    console.log(values)
+    const { collection_handle, schema_handle, id } = router.query
+    updateCurrentObject(
+      collection_handle as string,
+      schema_handle as string,
+      id as string,
+      values
+    )
   }
 
   /**
@@ -250,12 +353,20 @@ const ObjectUpdatePage = () => {
       </Row>
     )
   }
-  const handleDeleteObject = () => {
-    console.log(router.query)
-  }
 
   return layout(
     <div style={{ width: '70%' }}>
+      {!!updateCurrentObjectStatus.error && (
+        <Alert
+          message={updateCurrentObjectStatus.error}
+          type="error"
+          closable
+        />
+      )}
+      {!!updateCurrentObjectStatus.success && (
+        <Alert message="Object updated successfully." type="success" closable />
+      )}
+      <br />
       <Card
         title="Update Object"
         extra={
@@ -296,7 +407,16 @@ const ObjectUpdatePage = () => {
         <br />
         <br />
         <div>
-          <Button type="danger" onClick={handleDeleteObject}>
+          <Button
+            type="danger"
+            onClick={() =>
+              deleteCurrentObject(
+                router.query.collection_handle as string,
+                router.query.schema_handle as string,
+                router.query.id as string
+              )
+            }
+          >
             Delete
           </Button>
         </div>
