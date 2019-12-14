@@ -92,7 +92,9 @@ const ObjectUpdatePage = () => {
         },
         {
           key: 'objects',
-          url: `/schema/detail?id=${router.query.id}`,
+          url: `/schema/detail?id=${
+            currentObject ? currentObject.schema.id : ''
+          }`,
           name: 'Objects'
         },
         {
@@ -248,6 +250,9 @@ const ObjectUpdatePage = () => {
       </Row>
     )
   }
+  const handleDeleteObject = () => {
+    console.log(router.query)
+  }
 
   return layout(
     <div style={{ width: '70%' }}>
@@ -287,6 +292,14 @@ const ObjectUpdatePage = () => {
           const grid = foundSchemaDef ? foundSchemaDef.grid : null
           return !!type && findFormFieldByKey(type, key, value, grid, helper)
         })}
+        <br />
+        <br />
+        <br />
+        <div>
+          <Button type="danger" onClick={handleDeleteObject}>
+            Delete
+          </Button>
+        </div>
       </Card>
     </div>
   )
