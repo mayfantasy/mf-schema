@@ -13,6 +13,7 @@ interface INavItem {
   url?: string
   name: string | React.ReactNode
   children?: INavItem[]
+  open?: boolean
 }
 
 interface IProps {
@@ -39,6 +40,7 @@ const headerItems: INavItem[] = [
 const sideNavItems: INavItem[] = [
   {
     key: 'collection',
+    open: true,
     name: (
       <span>
         <Icon type="user" />
@@ -60,6 +62,7 @@ const sideNavItems: INavItem[] = [
   },
   {
     key: 'schema',
+    open: true,
     name: (
       <span>
         <Icon type="build" />
@@ -151,7 +154,13 @@ const PageLayout = (props: IProps) => {
           style={{ background: '#000', height: '100vh' }}
           theme="dark"
         >
-          <Menu mode="inline" style={{ height: '100%', borderRight: 0 }}>
+          <Menu
+            mode="inline"
+            style={{ height: '100%', borderRight: 0 }}
+            defaultOpenKeys={sideNavItems
+              .filter((s) => s.open)
+              .map((s) => s.key)}
+          >
             {user
               ? sideNavItems.map((s) => (
                   <SubMenu key={s.key} title={s.name}>

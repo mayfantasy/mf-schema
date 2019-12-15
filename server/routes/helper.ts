@@ -29,5 +29,6 @@ export const testHandle = async (ctx: Koa.Context, value: string) => {
     ctx.body = {
       message: `Invalid handle or key [${value}]`
     }
+    throw new Error(`Invalid handle or key [${value}]`)
   }
 }

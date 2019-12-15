@@ -10,12 +10,14 @@ import {
   updateObjectById,
   deleteObjectById
 } from '../services/object.service'
-import { getApiKey } from './helper'
+import { getApiKey, testHandle } from './helper'
 
 export const createObjectRoute = async (ctx: Koa.Context) => {
   const api_key = await getApiKey(ctx)
   const { collection_handle, schema_handle } = ctx.params
   const payload = ctx.request.body as any
+
+  await testHandle(ctx, payload._handle)
 
   const object = await createObject(api_key, payload, {
     collection_handle,
@@ -33,6 +35,7 @@ export const updateObjectByIdRoute = async (ctx: Koa.Context) => {
   const api_key = await getApiKey(ctx)
   const { collection_handle, schema_handle, id } = ctx.params
   const payload = ctx.request.body
+  await testHandle(ctx, payload._handle)
   const object = await updateObjectById(api_key, payload, {
     collection_handle,
     schema_handle,

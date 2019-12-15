@@ -457,7 +457,7 @@ const UpdateSchemaPage = (props: IProps) => {
           error: ''
         })
 
-        router.push(`/schema/detail?id=${payload.id}`)
+        // router.push(`/schema/detail?id=${payload.id}`)
       })
       .catch((err: AxiosError) => {
         setSchemaStatus({
@@ -519,16 +519,25 @@ const UpdateSchemaPage = (props: IProps) => {
       ]}
     >
       {schemaStatus.error && (
-        <Alert message={schemaStatus.error} type="error" closable />
+        <>
+          <Alert message={schemaStatus.error} type="error" closable />
+          <br />
+        </>
       )}
-      <br />
+
       <div style={{ height: '70%' }}>
         {schemaStatus.loading ? (
           <Loading />
-        ) : schemaStatus.success ? (
-          <div style={{ color: 'green' }}>Schema updated successfully.</div>
         ) : (
           <div style={{ width: '70%' }}>
+            {schemaStatus.success && (
+              <Alert
+                message="Schema updated successfully."
+                type="success"
+                closable
+              />
+            )}
+            <br />
             <UpdateSchemaForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}
