@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon",
     "build": "next build && tsc --project tsconfig.server.json",
-    "start": "node dist/server/index.js"
+    "start": "nodemon"
   },
   "dependencies": {
     "@google-cloud/storage": "^4.1.0",

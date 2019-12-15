@@ -1,0 +1,4 @@
+runtime: nodejs10
+env_variables:
+  MF_SCHEMA_ACCOUNT_DB_KEY: 'fnADekK1_oACExkeSdTKIbz0q7b9VEejj2n6nuTT'
+  JWT_SECRET: 'mf-schema-admin-2019'

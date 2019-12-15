@@ -1,0 +1,5 @@
+.next
+backup
+node_modules
+.prettierignore
+.prettierrc
