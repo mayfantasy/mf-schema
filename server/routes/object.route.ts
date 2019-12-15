@@ -24,8 +24,6 @@ export const createObjectRoute = async (ctx: Koa.Context) => {
     schema_handle
   })
 
-  console.log('object: ', object)
-
   ctx.body = {
     result: object
   }

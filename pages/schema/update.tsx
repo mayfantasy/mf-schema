@@ -136,7 +136,6 @@ const UpdateSchemaForm = (
         const data = res.data.result
         setCurrentSchema(data)
         setInitialFormValues(data)
-        console.log(data)
       })
       .catch((err) => {
         setCurrentSchemaStatus({
@@ -149,7 +148,6 @@ const UpdateSchemaForm = (
 
   useEffect(() => {
     const { id } = router.query
-    console.log(router.query)
     if (id) {
       getCurrentSchema(id as string)
     }
@@ -477,7 +475,6 @@ const UpdateSchemaPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // console.log('Received values of form: ', values)
         const { _defKeys, _defValues } = values
         const defs = (_defKeys as ISchemaFieldDefKeys[]).map((def) => {
           const obj = {} as { [key: string]: any }

@@ -96,7 +96,6 @@ const SchemaListPage = () => {
           success: false,
           error: err.message || JSON.stringify(err)
         })
-        console.log(err)
       })
   }
 
@@ -288,7 +287,6 @@ const SchemaListPage = () => {
             success: false,
             error: err.message || JSON.stringify(err)
           })
-          console.log(err)
         })
     }
 

@@ -126,7 +126,6 @@ const CreateCollectionPage = (props: IProps) => {
               error: err.message || JSON.stringify(err, null, '  ')
             })
           })
-        console.log('Received values of form: ', values)
       }
     })
   }
