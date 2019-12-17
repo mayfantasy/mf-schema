@@ -20,6 +20,7 @@ import {
 import Loading from '../../components/Loading/Loading'
 import { ESchemaFieldType, ISchemaFieldDef } from '../../types/schema.type'
 import { IObject } from '../../types/object.type'
+import Moment from 'moment'
 
 interface IFormStructure {
   [key: string]: any
@@ -150,12 +151,21 @@ const ObjectUpdatePage = () => {
         setCurrentObject(data)
         const formData = { ...data }
 
+        // convert datepicker value to moment
+        data.schema.def.forEach((d: ISchemaFieldDef) => {
+          if (d.type === ESchemaFieldType.datepicker) {
+            formData[d.key] = Moment(data[d.key])
+          }
+        })
+
         setHandle(data._handle)
 
         delete formData.id
         delete formData.schema
         delete formData._schema_handle
         delete formData._handle
+
+        console.log(formData)
 
         setForm(formData)
       })
