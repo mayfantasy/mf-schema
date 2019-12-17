@@ -1,1 +1,1 @@
-# mf-product
+# mf-schema

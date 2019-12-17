@@ -18,7 +18,9 @@ import {
   DatePicker,
   Card,
   Descriptions,
-  Icon
+  Icon,
+  List,
+  Typography
 } from 'antd'
 import { ICollection } from '../../types/collection.type'
 import {
@@ -94,7 +96,6 @@ const SchemaListPage = () => {
           success: false,
           error: err.message || JSON.stringify(err)
         })
-        console.log(err)
       })
   }
 
@@ -286,7 +287,6 @@ const SchemaListPage = () => {
             success: false,
             error: err.message || JSON.stringify(err)
           })
-          console.log(err)
         })
     }
 
@@ -346,7 +346,10 @@ const SchemaListPage = () => {
             description={currentSchema.description}
           />
         </div>
+        <br />
+
         <div>
+          <h3>Data Structure</h3>
           <Descriptions bordered>
             {currentSchema.def.map((d) => {
               return (
@@ -369,6 +372,44 @@ const SchemaListPage = () => {
             })}
           </Descriptions>
         </div>
+        <br />
+
+        <h3 style={{ marginBottom: 16 }}>API</h3>
+        <List
+          header={<div>Header</div>}
+          footer={<div>Footer</div>}
+          bordered
+          dataSource={[
+            {
+              head: '[List][GET]',
+              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`
+            },
+            {
+              head: '[Create][POST]',
+              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`
+            },
+            {
+              head: '[Read][GET]',
+              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/:id`
+            },
+            {
+              head: '[Update][PUT]',
+              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`
+            },
+            {
+              head: '[Delete][DELETE]',
+              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`
+            }
+          ]}
+          renderItem={(item) => (
+            <List.Item>
+              <span style={{ width: '120px', display: 'inline-block' }}>
+                <Typography.Text mark>{item.head}</Typography.Text>
+              </span>{' '}
+              {item.content}
+            </List.Item>
+          )}
+        />
         <br />
         <div style={{ marginBottom: '20px' }}>
           <Row>
@@ -490,6 +531,7 @@ const SchemaListPage = () => {
             </Card>
           )}
         </div>
+
         {!!objectList.length && (
           <Table
             dataSource={objectList}

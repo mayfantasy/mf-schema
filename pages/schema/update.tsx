@@ -136,7 +136,6 @@ const UpdateSchemaForm = (
         const data = res.data.result
         setCurrentSchema(data)
         setInitialFormValues(data)
-        console.log(data)
       })
       .catch((err) => {
         setCurrentSchemaStatus({
@@ -149,7 +148,6 @@ const UpdateSchemaForm = (
 
   useEffect(() => {
     const { id } = router.query
-    console.log(router.query)
     if (id) {
       getCurrentSchema(id as string)
     }
@@ -457,7 +455,7 @@ const UpdateSchemaPage = (props: IProps) => {
           error: ''
         })
 
-        router.push(`/schema/detail?id=${payload.id}`)
+        // router.push(`/schema/detail?id=${payload.id}`)
       })
       .catch((err: AxiosError) => {
         setSchemaStatus({
@@ -477,7 +475,6 @@ const UpdateSchemaPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // console.log('Received values of form: ', values)
         const { _defKeys, _defValues } = values
         const defs = (_defKeys as ISchemaFieldDefKeys[]).map((def) => {
           const obj = {} as { [key: string]: any }
@@ -519,16 +516,25 @@ const UpdateSchemaPage = (props: IProps) => {
       ]}
     >
       {schemaStatus.error && (
-        <Alert message={schemaStatus.error} type="error" closable />
+        <>
+          <Alert message={schemaStatus.error} type="error" closable />
+          <br />
+        </>
       )}
-      <br />
+
       <div style={{ height: '70%' }}>
         {schemaStatus.loading ? (
           <Loading />
-        ) : schemaStatus.success ? (
-          <div style={{ color: 'green' }}>Schema updated successfully.</div>
         ) : (
           <div style={{ width: '70%' }}>
+            {schemaStatus.success && (
+              <Alert
+                message="Schema updated successfully."
+                type="success"
+                closable
+              />
+            )}
+            <br />
             <UpdateSchemaForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}

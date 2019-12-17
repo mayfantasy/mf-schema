@@ -1,0 +1,6 @@
+.next
+dist
+backup
+node_modules
+.prettierignore
+.prettierrc

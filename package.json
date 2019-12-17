@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "build": "next build && tsc --project tsconfig.server.json",
-    "start": "node dist/server/index.js"
+    "gcp-build": "next build && tsc --project tsconfig.server.json",
+    "start": "node dist/server/index.js",
+    "deploy": "gcloud app deploy"
   },
   "dependencies": {
     "@google-cloud/storage": "^4.1.0",

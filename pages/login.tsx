@@ -123,7 +123,6 @@ const LoginPage = (props: IProps) => {
               error: err.message || JSON.stringify(err)
             })
           })
-        console.log('Received values of form: ', values)
       }
     })
   }
