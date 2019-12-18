@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 import Koa from 'koa'
+const cors = require('@koa/cors')
 
 // import * as bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
@@ -36,6 +37,8 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   const server = new Koa()
   const router = new Router()
+
+  server.use(cors())
 
   // Auth
   router.post('/api/auth/login', loginRoute)
