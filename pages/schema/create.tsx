@@ -60,7 +60,10 @@ const CreateSchemaForm = (
     error: ''
   })
 
-  useEffect(() => {
+  /**
+   * Get Collection list
+   */
+  const getCollections = () => {
     setCollectionStatus({
       loading: true,
       success: false,
@@ -82,8 +85,17 @@ const CreateSchemaForm = (
           error: err.message || JSON.stringify(err, null, '  ')
         })
       })
+  }
+
+  useEffect(() => {
+    getCollections()
   }, [])
 
+  /**
+   *
+   * @param key schema definitioin key
+   * Remove from schema definition array
+   */
   const removeField = (key: string) => {
     const _defKeys: ISchemaFieldDefKeys[] = form.getFieldValue('_defKeys')
 
@@ -93,6 +105,9 @@ const CreateSchemaForm = (
     })
   }
 
+  /**
+   * Add schema definition field
+   */
   const addField = () => {
     const _defKeys = form.getFieldValue('_defKeys') as ISchemaFieldDefKeys[]
     const newDefs = _defKeys.concat({
@@ -244,7 +259,7 @@ const CreateSchemaForm = (
             <Col span={22}>
               <Form.Item label="Helper Text" key="helper">
                 {getFieldDecorator(`_defValues[${def.helper}]`)(
-                  <Input.TextArea />
+                  <Input.TextArea autoSize={{ minRows: 8 }} />
                 )}
               </Form.Item>
             </Col>
@@ -322,7 +337,7 @@ const CreateSchemaForm = (
                 message: 'Please input the schema desctiption'
               }
             ]
-          })(<Input.TextArea />)}
+          })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
         </Form.Item>
       </Row>
 

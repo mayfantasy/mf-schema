@@ -36,6 +36,7 @@ import {
   createObjectRequest,
   getObjectListRequest
 } from '../../requests/object.request'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
 
 interface IFormStructureItem {
   value: any
@@ -203,6 +204,8 @@ const SchemaListPage = () => {
           case ESchemaFieldType.datepicker:
             value = moment()
             break
+          case ESchemaFieldType.image:
+            value = ''
           default:
             value = ''
         }
@@ -238,6 +241,9 @@ const SchemaListPage = () => {
           value = e.target.value
           break
         case ESchemaFieldType.datepicker:
+          value = e
+          break
+        case ESchemaFieldType.image:
           value = e
           break
         default:
@@ -500,6 +506,14 @@ const SchemaListPage = () => {
                   case ESchemaFieldType.datepicker:
                     input = (
                       <DatePicker
+                        value={value}
+                        onChange={(e: any) => handleFieldChange(e, type, key)}
+                      />
+                    )
+                    break
+                  case ESchemaFieldType.image:
+                    input = (
+                      <ImageUploader
                         value={value}
                         onChange={(e: any) => handleFieldChange(e, type, key)}
                       />

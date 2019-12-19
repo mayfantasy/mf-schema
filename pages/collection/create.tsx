@@ -75,7 +75,7 @@ const CreateCollectionForm = (
               message: 'Please input the collection desctiption'
             }
           ]
-        })(<Input.TextArea />)}
+        })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">

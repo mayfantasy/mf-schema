@@ -5,7 +5,7 @@ import './PageLayout.scss'
 import Link from 'next/link'
 import { getToken, removeToken, removeUser } from '../../helpers/auth.helper'
 import { loginWithTokenRequest } from '../../requests/auth.request'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import { IBasicAccountInfo } from '../../types/account.type'
 
 interface INavItem {
@@ -49,12 +49,12 @@ const sideNavItems: INavItem[] = [
     ),
     children: [
       {
-        key: 'create',
+        key: 'collection-create',
         url: '/collection/create',
         name: 'Create'
       },
       {
-        key: 'list',
+        key: 'collection-list',
         url: '/collection/list',
         name: 'List'
       }
@@ -71,12 +71,12 @@ const sideNavItems: INavItem[] = [
     ),
     children: [
       {
-        key: 'create',
+        key: 'schema-create',
         url: '/schema/create',
         name: 'Create'
       },
       {
-        key: 'list',
+        key: 'schema-list',
         url: '/schema/list',
         name: 'List'
       }
@@ -87,6 +87,7 @@ const sideNavItems: INavItem[] = [
 const PageLayout = (props: IProps) => {
   const { children, breadCrumb } = props
   const [user, setUser] = useState<IBasicAccountInfo | null>(null)
+  const router = useRouter()
   useEffect(() => {
     if (window) {
       const token = getToken()
@@ -113,6 +114,28 @@ const PageLayout = (props: IProps) => {
     removeUser()
     window.location.href = '/login'
   }
+  const getDefaultSelectedKeys = () => {
+    if (router) {
+      const foundNavItem = sideNavItems.find((s) =>
+        s.children ? s.children.some((c) => c.url === router.pathname) : false
+      )
+      if (foundNavItem) {
+        if (foundNavItem.children) {
+          const foundChild = foundNavItem.children.find(
+            (c) => c.url === router.pathname
+          )
+          if (foundChild) {
+            return [foundChild.key]
+          }
+          return []
+        }
+        return []
+      }
+      return []
+    }
+    return []
+  }
+
   return (
     <Layout className="mf-page-layout">
       <Header className="header" style={{ background: '#fff' }}>
@@ -157,6 +180,7 @@ const PageLayout = (props: IProps) => {
           <Menu
             mode="inline"
             style={{ height: '100%', borderRight: 0 }}
+            defaultSelectedKeys={getDefaultSelectedKeys()}
             defaultOpenKeys={sideNavItems
               .filter((s) => s.open)
               .map((s) => s.key)}

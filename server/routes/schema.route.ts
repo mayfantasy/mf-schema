@@ -20,12 +20,15 @@ export const createSchemaRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as ICreateSchemaPayload
 
   await testHandle(ctx, payload.handle)
+  console.log('1')
 
   for (let i = 0; i < payload.def.length; i++) {
     await testHandle(ctx, payload.def[i].key)
   }
+  console.log('2')
 
   const schema = await createSchema(api_key, payload)
+  console.log('3')
 
   ctx.body = {
     result: schema

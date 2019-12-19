@@ -1,6 +1,7 @@
 export const env = {
   MF_SCHEMA_ACCOUNT_DB_KEY: process.env.MF_SCHEMA_ACCOUNT_DB_KEY,
   JWT_SECRET: process.env.JWT_SECRET,
+  GOOGLE_STORAGE_BUCKET_NAME: process.env.GOOGLE_STORAGE_BUCKET_NAME,
 
   NODE_ENV: process.env.NODE_ENV
 }

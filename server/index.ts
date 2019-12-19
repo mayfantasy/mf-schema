@@ -28,6 +28,7 @@ import {
   getObjectByIdRoute,
   deleteObjectByIdRoute
 } from './routes/object.route'
+import { uploadImageRoute } from './routes/upload.route'
 
 const port = parseInt(process.env.PORT || '3000', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -56,6 +57,9 @@ app.prepare().then(() => {
   router.get('/api/schema/list', getSchemaListRoute)
   router.put('/api/schema/update', updateSchemaRoute)
   router.get('/api/schema/:id', getSchemaByIdRoute)
+
+  // Image Upload
+  router.post('/api/upload/image', uploadImageRoute)
 
   // Object
   router.post(

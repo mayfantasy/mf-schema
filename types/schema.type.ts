@@ -4,6 +4,7 @@ export enum ESchemaFieldType {
   string = 'string',
   number = 'number',
   boolean = 'boolean',
+  image = 'image',
   // array = 'array',
   // object = 'object',
   textarea = 'textarea',

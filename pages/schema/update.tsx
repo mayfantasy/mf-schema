@@ -339,7 +339,7 @@ const UpdateSchemaForm = (
             <Col span={22}>
               <Form.Item label="Helper Text" key="helper">
                 {getFieldDecorator(`_defValues[${def.helper}]`)(
-                  <Input.TextArea />
+                  <Input.TextArea autoSize={{ minRows: 8 }} />
                 )}
               </Form.Item>
             </Col>
@@ -403,7 +403,7 @@ const UpdateSchemaForm = (
                 message: 'Please input the schema desctiption'
               }
             ]
-          })(<Input.TextArea />)}
+          })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
         </Form.Item>
       </Row>
 
