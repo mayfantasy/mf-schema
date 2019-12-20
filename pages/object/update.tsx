@@ -15,12 +15,15 @@ import {
   Col,
   InputNumber,
   Checkbox,
-  DatePicker
+  DatePicker,
+  Typography
 } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import { ESchemaFieldType, ISchemaFieldDef } from '../../types/schema.type'
 import { IObject } from '../../types/object.type'
 import Moment from 'moment'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
+import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 
 interface IFormStructure {
   [key: string]: any
@@ -278,6 +281,8 @@ const ObjectUpdatePage = () => {
         break
       case ESchemaFieldType.datepicker:
         value = e
+      case ESchemaFieldType.image:
+        value = e
         break
       default:
         value = e.target.value
@@ -293,6 +298,7 @@ const ObjectUpdatePage = () => {
     type: ESchemaFieldType,
     key: string,
     value: any,
+    name: string | null,
     grid: number | null,
     helper: string | null
   ) => {
@@ -341,6 +347,14 @@ const ObjectUpdatePage = () => {
           />
         )
         break
+      case ESchemaFieldType.image:
+        input = (
+          <ImageUploader
+            value={value}
+            onChange={(e: any) => handleFieldChange(e, type, key)}
+          />
+        )
+        break
       default:
         input = (
           <Input
@@ -352,13 +366,19 @@ const ObjectUpdatePage = () => {
     return (
       <Row style={{ marginBottom: '15px' }} key={key}>
         <Col span={Number(grid || 24)}>
-          <label>
-            <b>{key}</b> <small>{name}</small>
-          </label>
-          <br />
+          <FormFieldLabel>
+            <Typography.Text strong>{key}</Typography.Text>&nbsp;&nbsp;
+            <Typography.Text type="secondary">
+              <small>{name}</small>
+            </Typography.Text>
+          </FormFieldLabel>
           {input}
           <br />
-          {!!helper && <small>{helper}</small>}
+          {!!helper && (
+            <Typography.Text type="secondary">
+              <small>{helper}</small>
+            </Typography.Text>
+          )}
         </Col>
       </Row>
     )
@@ -380,23 +400,26 @@ const ObjectUpdatePage = () => {
       <Card
         title="Update Object"
         extra={
-          <Button type="primary" onClick={handleUpdateObject}>
+          <Button
+            type="primary"
+            onClick={handleUpdateObject}
+            disabled={!handle}
+          >
             Save Object
           </Button>
         }
       >
         <Row>
           <Col span={12}>
-            <label>
-              <b>Handle</b>
-            </label>
-            <br />
+            <FormFieldLabel>Handle</FormFieldLabel>
             <Input
               value={handle}
               onChange={(e: any) => setHandle(e.target.value)}
             />
             <br />
-            <small>Unique Object Handle</small>
+            <Typography.Text type="secondary">
+              <small>Unique Object Handle</small>
+            </Typography.Text>
           </Col>
         </Row>
         <br />
@@ -411,7 +434,10 @@ const ObjectUpdatePage = () => {
           const value = form[key]
           const helper = foundSchemaDef ? foundSchemaDef.helper : null
           const grid = foundSchemaDef ? foundSchemaDef.grid : null
-          return !!type && findFormFieldByKey(type, key, value, grid, helper)
+          const name = foundSchemaDef ? foundSchemaDef.name : null
+          return (
+            !!type && findFormFieldByKey(type, key, value, name, grid, helper)
+          )
         })}
         <br />
         <br />
@@ -427,7 +453,7 @@ const ObjectUpdatePage = () => {
               )
             }
           >
-            Delete
+            Delete Object
           </Button>
         </div>
       </Card>

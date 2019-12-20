@@ -1,4 +1,4 @@
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Typography } from 'antd'
 import Link from 'next/link'
 
 interface IProps {
@@ -14,15 +14,17 @@ const PageHeader = (props: IProps) => {
     <Row type="flex" justify="space-between">
       <Col>
         <h2>
-          <b>{name}</b>
+          <Typography.Text strong>{name}</Typography.Text>
           {!!sub && (
-            <span>
+            <Typography.Text>
               &nbsp;&nbsp;
               <small>{sub}</small>
-            </span>
+            </Typography.Text>
           )}
         </h2>
-        {!!description && <p>{description}</p>}
+        {!!description && (
+          <Typography.Text type="secondary">{description}</Typography.Text>
+        )}
       </Col>
       {!!buttonLink && (
         <Col>

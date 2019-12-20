@@ -343,6 +343,7 @@ const CreateSchemaForm = (
 
       {/* Schema field */}
       {formItems}
+      <br />
 
       {/* Add schema field */}
       <Row>

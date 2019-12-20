@@ -409,6 +409,7 @@ const UpdateSchemaForm = (
 
       {/* Schema field */}
       {formItems}
+      <br />
 
       {/* Add schema field */}
       <Row>
@@ -422,7 +423,7 @@ const UpdateSchemaForm = (
       {/* Submit */}
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Update
+          Update Schema
         </Button>
       </Form.Item>
     </Form>

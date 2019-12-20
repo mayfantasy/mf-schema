@@ -20,7 +20,8 @@ import {
   Descriptions,
   Icon,
   List,
-  Typography
+  Typography,
+  Collapse
 } from 'antd'
 import { ICollection } from '../../types/collection.type'
 import {
@@ -37,6 +38,7 @@ import {
   getObjectListRequest
 } from '../../requests/object.request'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
+import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 
 interface IFormStructureItem {
   value: any
@@ -157,7 +159,7 @@ const SchemaListPage = () => {
         }
       ]}
     >
-      {c}
+      <div style={{ width: '70%' }}>{c}</div>
     </PageLayout>
   )
 
@@ -355,67 +357,77 @@ const SchemaListPage = () => {
         <br />
 
         <div>
-          <h3>Data Structure</h3>
-          <Descriptions bordered>
-            {currentSchema.def.map((d) => {
-              return (
-                <Descriptions.Item
-                  label={
-                    <div>
-                      <div>
-                        <b>{d.key}</b>
-                      </div>
-                      <div>
-                        <small>{d.name}</small>
-                      </div>
-                    </div>
-                  }
-                  key={d.key}
-                >
-                  {d.helper}
-                </Descriptions.Item>
-              )
-            })}
-          </Descriptions>
+          <Collapse bordered={false}>
+            <Collapse.Panel header="Data Structure" key="1">
+              <Descriptions bordered>
+                {currentSchema.def.map((d) => {
+                  return (
+                    <Descriptions.Item
+                      label={
+                        <div>
+                          <div>
+                            <b>{d.key}</b>
+                          </div>
+                          <div>
+                            <small>{d.name}</small>
+                          </div>
+                        </div>
+                      }
+                      key={d.key}
+                    >
+                      {d.helper}
+                    </Descriptions.Item>
+                  )
+                })}
+              </Descriptions>
+            </Collapse.Panel>
+          </Collapse>
         </div>
         <br />
 
-        <h3 style={{ marginBottom: 16 }}>API</h3>
-        <List
-          header={<div>Header</div>}
-          footer={<div>Footer</div>}
-          bordered
-          dataSource={[
-            {
-              head: '[List][GET]',
-              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`
-            },
-            {
-              head: '[Create][POST]',
-              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`
-            },
-            {
-              head: '[Read][GET]',
-              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/:id`
-            },
-            {
-              head: '[Update][PUT]',
-              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`
-            },
-            {
-              head: '[Delete][DELETE]',
-              content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`
-            }
-          ]}
-          renderItem={(item) => (
-            <List.Item>
-              <span style={{ width: '120px', display: 'inline-block' }}>
-                <Typography.Text mark>{item.head}</Typography.Text>
-              </span>{' '}
-              {item.content}
-            </List.Item>
-          )}
-        />
+        <Collapse bordered={false}>
+          <Collapse.Panel header="API" key="1">
+            <List
+              bordered
+              dataSource={[
+                {
+                  head: '[List][GET]',
+                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`,
+                  helper: 'Get the object list.'
+                },
+                {
+                  head: '[Create][POST]',
+                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`,
+                  helper: 'Create an object.'
+                },
+                {
+                  head: '[Read][GET]',
+                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/:id`,
+                  helper: 'Get the object by its ID.'
+                },
+                {
+                  head: '[Update][PUT]',
+                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`,
+                  helper: 'Update the object by its ID.'
+                },
+                {
+                  head: '[Delete][DELETE]',
+                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`,
+                  helper: 'Delete the object by its ID.'
+                }
+              ]}
+              renderItem={(item, index) => (
+                <List.Item>
+                  <List.Item.Meta title={item.head} description={item.helper} />
+                  <div>
+                    <Typography.Text mark>{item.content}</Typography.Text>
+                  </div>
+                </List.Item>
+              )}
+            />
+          </Collapse.Panel>
+        </Collapse>
+
         <br />
         <div style={{ marginBottom: '20px' }}>
           <Row>
@@ -436,23 +448,26 @@ const SchemaListPage = () => {
             <Card
               title="Add Object"
               extra={
-                <Button type="primary" onClick={handleSaveObject}>
+                <Button
+                  type="primary"
+                  onClick={handleSaveObject}
+                  disabled={!handle}
+                >
                   Save Object
                 </Button>
               }
             >
               <Row>
                 <Col span={12}>
-                  <label>
-                    <b>Handle</b>
-                  </label>
-                  <br />
+                  <FormFieldLabel>Handle</FormFieldLabel>
                   <Input
                     value={handle}
                     onChange={(e: any) => setHandle(e.target.value)}
                   />
                   <br />
-                  <small>Unique Object Handle</small>
+                  <Typography.Text type="secondary">
+                    <small>Unique Object Handle</small>
+                  </Typography.Text>
                 </Col>
               </Row>
               <br />
@@ -531,13 +546,22 @@ const SchemaListPage = () => {
                 return (
                   <Row style={{ marginBottom: '15px' }} key={key}>
                     <Col span={Number(grid)}>
-                      <label>
-                        <b>{key}</b> <small>{name}</small>
-                      </label>
-                      <br />
+                      <FormFieldLabel>
+                        <Typography.Text strong>{key}</Typography.Text>
+                        &nbsp;&nbsp;
+                        <Typography.Text type="secondary">
+                          <small>{name}</small>
+                        </Typography.Text>
+                      </FormFieldLabel>
+
                       {input}
+
                       <br />
-                      <small>{helper}</small>
+                      {!!helper && (
+                        <Typography.Text type="secondary">
+                          <small>{helper}</small>
+                        </Typography.Text>
+                      )}
                     </Col>
                   </Row>
                 )
@@ -547,47 +571,50 @@ const SchemaListPage = () => {
         </div>
 
         {!!objectList.length && (
-          <Table
-            dataSource={objectList}
-            columns={[
-              {
-                title: 'Handle',
-                dataIndex: '_handle',
-                key: '_handle',
-                render: (handle: string, row: any) => (
-                  <Link
-                    href={`/object/update?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
-                  >
-                    {handle}
-                  </Link>
-                )
-              },
-              ...getShownFields().map((f) => ({
-                title: f,
-                dataIndex: f,
-                key: f,
-                render: (value: any) => {
-                  return typeof value === 'boolean' ? (
-                    value ? (
-                      <Icon
-                        type="check-circle"
-                        theme="twoTone"
-                        twoToneColor="#52c41a"
-                      />
-                    ) : (
-                      <Icon
-                        type="close-circle"
-                        theme="twoTone"
-                        twoToneColor="#eb2f96"
-                      />
-                    )
-                  ) : (
-                    value
+          <>
+            <br />
+            <Table
+              dataSource={objectList}
+              columns={[
+                {
+                  title: 'Handle',
+                  dataIndex: '_handle',
+                  key: '_handle',
+                  render: (handle: string, row: any) => (
+                    <Link
+                      href={`/object/update?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
+                    >
+                      {handle}
+                    </Link>
                   )
-                }
-              }))
-            ]}
-          />
+                },
+                ...getShownFields().map((f) => ({
+                  title: f,
+                  dataIndex: f,
+                  key: f,
+                  render: (value: any) => {
+                    return typeof value === 'boolean' ? (
+                      value ? (
+                        <Icon
+                          type="check-circle"
+                          theme="twoTone"
+                          twoToneColor="#52c41a"
+                        />
+                      ) : (
+                        <Icon
+                          type="close-circle"
+                          theme="twoTone"
+                          twoToneColor="#eb2f96"
+                        />
+                      )
+                    ) : (
+                      value
+                    )
+                  }
+                }))
+              ]}
+            />
+          </>
         )}
       </>
     )

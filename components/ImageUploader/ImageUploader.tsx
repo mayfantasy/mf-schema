@@ -7,7 +7,8 @@ interface IProps {
 }
 
 const ImageUploader = (props: IProps) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const { value, onChange } = props
+  const [imageUrl, setImageUrl] = useState<string | null>(value || null)
   const [uploadStatus, setUploadStatus] = useState({
     loading: false,
     success: false,
@@ -35,33 +36,57 @@ const ImageUploader = (props: IProps) => {
       return
     }
     if (info.file.status === 'done') {
+      setUploadStatus({
+        loading: false,
+        success: true,
+        error: ''
+      })
       const url = info.file.response.result[1].mediaLink
       setImageUrl(url)
-      console.log(url)
+      onChange(url)
     }
   }
 
   const uploadButton = (
-    <div>
-      <Icon type={uploadStatus.loading ? 'loading' : 'plus'} />
-      <div className="ant-upload-text">Upload</div>
-    </div>
+    <Button type="primary">
+      <Icon type={uploadStatus.loading ? 'loading' : 'plus'} /> Upload Image
+    </Button>
   )
 
   return (
     <>
-      <Upload
-        accept="image/*"
-        name="avatar"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={true}
-        action="/api/upload/image"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-      >
-        Upload
-      </Upload>
+      <div>
+        <Upload
+          accept="image/*"
+          name="avatar"
+          className="avatar-uploader"
+          showUploadList={false}
+          action="/api/upload/image"
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+        >
+          {uploadButton}
+        </Upload>
+      </div>
+
+      {!!imageUrl && (
+        <>
+          <br />
+          <div style={{ maxWidth: '500px' }}>
+            <img style={{ width: '100%' }} src={imageUrl || ''} />
+          </div>
+          <br />
+          <div>
+            <a href={imageUrl || ''}>{imageUrl}</a>
+          </div>
+          <br />
+          <div>
+            <Button type="danger" onClick={() => setImageUrl(null)}>
+              Remove Image
+            </Button>
+          </div>
+        </>
+      )}
     </>
   )
 }
