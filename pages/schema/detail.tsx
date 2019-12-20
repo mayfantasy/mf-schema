@@ -358,16 +358,21 @@ const SchemaListPage = () => {
 
         <div>
           <Collapse bordered={false}>
-            <Collapse.Panel header="Data Structure" key="1">
-              <Descriptions bordered>
+            <Collapse.Panel header="Data Definition" key="1">
+              <Descriptions
+                layout="vertical"
+                bordered
+                size="small"
+                style={{ overflowX: 'scroll' }}
+                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+              >
                 {currentSchema.def.map((d) => {
                   return (
                     <Descriptions.Item
                       label={
                         <div>
-                          <div>
-                            <b>{d.key}</b>
-                          </div>
+                          <FormFieldLabel>{d.key}</FormFieldLabel>
+
                           <div>
                             <small>{d.name}</small>
                           </div>
@@ -387,44 +392,57 @@ const SchemaListPage = () => {
 
         <Collapse bordered={false}>
           <Collapse.Panel header="API" key="1">
-            <List
+            <Descriptions
+              layout="vertical"
               bordered
-              dataSource={[
+              size="small"
+              column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+              style={{ overflowX: 'scroll' }}
+            >
+              {[
                 {
-                  head: '[List][GET]',
+                  head: 'List - GET',
                   content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`,
                   helper: 'Get the object list.'
                 },
                 {
-                  head: '[Create][POST]',
+                  head: 'Create - POST',
                   content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`,
                   helper: 'Create an object.'
                 },
                 {
-                  head: '[Read][GET]',
+                  head: 'Read - GET',
                   content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/:id`,
                   helper: 'Get the object by its ID.'
                 },
                 {
-                  head: '[Update][PUT]',
+                  head: 'Update - PUT',
                   content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`,
                   helper: 'Update the object by its ID.'
                 },
                 {
-                  head: '[Delete][DELETE]',
+                  head: 'Delete - DELETE',
                   content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`,
                   helper: 'Delete the object by its ID.'
                 }
-              ]}
-              renderItem={(item, index) => (
-                <List.Item>
-                  <List.Item.Meta title={item.head} description={item.helper} />
-                  <div>
-                    <Typography.Text mark>{item.content}</Typography.Text>
-                  </div>
-                </List.Item>
-              )}
-            />
+              ].map((item, index) => {
+                return (
+                  <Descriptions.Item
+                    label={
+                      <div>
+                        <FormFieldLabel>{item.head}</FormFieldLabel>
+                        <div>
+                          <small>{item.helper}</small>
+                        </div>
+                      </div>
+                    }
+                    key={index}
+                  >
+                    {item.content}
+                  </Descriptions.Item>
+                )
+              })}
+            </Descriptions>
           </Collapse.Panel>
         </Collapse>
 
@@ -520,10 +538,12 @@ const SchemaListPage = () => {
                     break
                   case ESchemaFieldType.datepicker:
                     input = (
-                      <DatePicker
-                        value={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
+                      <div>
+                        <DatePicker
+                          value={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      </div>
                     )
                     break
                   case ESchemaFieldType.image:
@@ -546,16 +566,11 @@ const SchemaListPage = () => {
                 return (
                   <Row style={{ marginBottom: '15px' }} key={key}>
                     <Col span={Number(grid)}>
-                      <FormFieldLabel>
-                        <Typography.Text strong>{key}</Typography.Text>
-                        &nbsp;&nbsp;
-                        <Typography.Text type="secondary">
-                          <small>{name}</small>
-                        </Typography.Text>
-                      </FormFieldLabel>
-
+                      <FormFieldLabel>{key}</FormFieldLabel>&nbsp;&nbsp;
+                      <Typography.Text type="secondary">
+                        <small>{name}</small>
+                      </Typography.Text>
                       {input}
-
                       <br />
                       {!!helper && (
                         <Typography.Text type="secondary">

@@ -35,6 +35,7 @@ import { enumToKeyArray } from '../../helpers/utils.helper'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 
 interface IUpdateSchemaFormProps<V> {
   handleSubmit: (e: any) => void
@@ -234,7 +235,11 @@ const UpdateSchemaForm = (
           <Row type="flex" gutter={2} align="middle">
             {/* Key */}
             <Col span={11}>
-              <Form.Item label="Key" required={true} key="key">
+              <Form.Item
+                label={<FormFieldLabel>Key</FormFieldLabel>}
+                required={true}
+                key="key"
+              >
                 {getFieldDecorator(`_defValues[${def.key}]`, {
                   validateTrigger: ['onChange', 'onBlur'],
                   rules: [
@@ -250,7 +255,11 @@ const UpdateSchemaForm = (
 
             {/* Type */}
             <Col span={11}>
-              <Form.Item label="Type" required={true} key="type">
+              <Form.Item
+                label={<FormFieldLabel>Type</FormFieldLabel>}
+                required={true}
+                key="type"
+              >
                 {getFieldDecorator(`_defValues[${def.type}]`, {
                   validateTrigger: ['onChange', 'onBlur'],
                   rules: [
@@ -275,7 +284,11 @@ const UpdateSchemaForm = (
           <Row type="flex" gutter={2} align="middle">
             {/* Name */}
             <Col span={22}>
-              <Form.Item label="Name" required={true} key="name">
+              <Form.Item
+                label={<FormFieldLabel>Name</FormFieldLabel>}
+                required={true}
+                key="name"
+              >
                 {getFieldDecorator(`_defValues[${def.name}]`, {
                   validateTrigger: ['onChange', 'onBlur'],
                   rules: [
@@ -292,7 +305,10 @@ const UpdateSchemaForm = (
           <Row type="flex" gutter={2} align="middle">
             {/* Grid */}
             <Col span={5}>
-              <Form.Item label="Grid" key="grid">
+              <Form.Item
+                label={<FormFieldLabel>Grid</FormFieldLabel>}
+                key="grid"
+              >
                 {getFieldDecorator(`_defValues[${def.grid}]`, {
                   validateTrigger: ['onChange', 'onBlur'],
                   rules: [
@@ -311,7 +327,10 @@ const UpdateSchemaForm = (
             </Col>
             {/* Order */}
             <Col span={5}>
-              <Form.Item label="Order" key="order">
+              <Form.Item
+                label={<FormFieldLabel>Order</FormFieldLabel>}
+                key="order"
+              >
                 {getFieldDecorator(`_defValues[${def.order}]`, {
                   validateTrigger: ['onChange', 'onBlur']
                 })(<InputNumber placeholder="Grid" />)}
@@ -319,7 +338,10 @@ const UpdateSchemaForm = (
             </Col>
             {/* Order */}
             <Col span={5}>
-              <Form.Item label="New Line ?" key="new_line">
+              <Form.Item
+                label={<FormFieldLabel>New Line ?</FormFieldLabel>}
+                key="new_line"
+              >
                 {getFieldDecorator(`_defValues[${def.new_line}]`, {
                   valuePropName: 'checked'
                 })(<Checkbox />)}
@@ -327,7 +349,10 @@ const UpdateSchemaForm = (
             </Col>
             {/* Show on list */}
             <Col span={5}>
-              <Form.Item label="Show in List ?" key="show">
+              <Form.Item
+                label={<FormFieldLabel>Show in List ?</FormFieldLabel>}
+                key="show"
+              >
                 {getFieldDecorator(`_defValues[${def.show}]`, {
                   valuePropName: 'checked'
                 })(<Checkbox />)}
@@ -337,7 +362,10 @@ const UpdateSchemaForm = (
           <Row>
             {/* Helper Text */}
             <Col span={22}>
-              <Form.Item label="Helper Text" key="helper">
+              <Form.Item
+                label={<FormFieldLabel>Helper Text</FormFieldLabel>}
+                key="helper"
+              >
                 {getFieldDecorator(`_defValues[${def.helper}]`)(
                   <Input.TextArea autoSize={{ minRows: 8 }} />
                 )}
@@ -358,10 +386,11 @@ const UpdateSchemaForm = (
         buttonWord="View Schema"
         description={currentSchema.description}
       />
+      <br />
+      <br />
       {/* Meta */}
       <Row>
         <Col span={12}>
-          <h3>Collection</h3>
           <Link href={`/collection/detail?id=${currentSchema.collection.id}`}>
             <a>{currentSchema.collection.name}</a>
           </Link>
@@ -370,7 +399,7 @@ const UpdateSchemaForm = (
       <br />
       <Row gutter={2}>
         <Col span={12}>
-          <Form.Item label="Name">
+          <Form.Item label={<FormFieldLabel>Name</FormFieldLabel>}>
             {getFieldDecorator('name', {
               rules: [
                 {
@@ -382,7 +411,7 @@ const UpdateSchemaForm = (
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Handle">
+          <Form.Item label={<FormFieldLabel>Handle</FormFieldLabel>}>
             {getFieldDecorator('handle', {
               rules: [
                 {
@@ -395,7 +424,10 @@ const UpdateSchemaForm = (
         </Col>
       </Row>
       <Row>
-        <Form.Item label="Description" hasFeedback>
+        <Form.Item
+          label={<FormFieldLabel>Description</FormFieldLabel>}
+          hasFeedback
+        >
           {getFieldDecorator('description', {
             rules: [
               {
@@ -421,11 +453,14 @@ const UpdateSchemaForm = (
       </Row>
 
       {/* Submit */}
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Update Schema
-        </Button>
-      </Form.Item>
+      <Row type="flex" justify="space-between">
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Update Schema
+          </Button>
+        </Form.Item>
+        <Button href={`/schema/detail?id=${currentSchema.id}`}>Back</Button>
+      </Row>
     </Form>
   )
 }

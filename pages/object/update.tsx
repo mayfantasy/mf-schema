@@ -367,7 +367,10 @@ const ObjectUpdatePage = () => {
       <Row style={{ marginBottom: '15px' }} key={key}>
         <Col span={Number(grid || 24)}>
           <FormFieldLabel>
-            <Typography.Text strong>{key}</Typography.Text>&nbsp;&nbsp;
+            <Typography.Text strong style={{ color: 'black' }}>
+              {key}
+            </Typography.Text>
+            &nbsp;&nbsp;
             <Typography.Text type="secondary">
               <small>{name}</small>
             </Typography.Text>
