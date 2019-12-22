@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Checkbox,
-  Button,
-  Row,
-  Alert,
-  Col,
-  Card,
-  Select,
-  InputNumber,
-  Spin
-} from 'antd'
+import { Form, Button, Alert } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import Loading from '../../components/Loading/Loading'
-import router from 'next/router'
 import {
-  ESchemaFieldType,
   ISchemaFieldDef,
   ISchemaFieldDefKeys,
   IUpdateSchemaPayload,
@@ -32,13 +16,8 @@ import {
   getSchemaById
 } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
-import { enumToKeyArray } from '../../helpers/utils.helper'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
-import PageHeader from '../../components/PageHeader/PageHeader'
-import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
-import FormItems from '../../components/shema/FormItems'
-import { addField, setInitialFormValues } from '../../helpers/schema/form'
+import { setInitialFormValues } from '../../helpers/schema/form'
 import { RequestStatus } from '../../helpers/request'
 import SchemaForm from '../../components/shema/Form'
 

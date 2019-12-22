@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import {
-  getSchemaListRequest,
-  getSchemaById
-} from '../../requests/schema.request'
+import { getSchemaById } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
 import {

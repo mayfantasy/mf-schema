@@ -1,44 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Checkbox,
-  Button,
-  Row,
-  Alert,
-  Col,
-  Card,
-  Select,
-  InputNumber,
-  DatePicker,
-  Spin
-} from 'antd'
+import { Form, Alert } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import { createAccountRequest } from '../../requests/account.request'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import Loading from '../../components/Loading/Loading'
-import { setToken, setUser } from '../../helpers/auth.helper'
 import router from 'next/router'
 import {
-  ICreateSchemaPayload,
-  ESchemaFieldType,
   ISchemaFieldDef,
   ISchemaFieldDefKeys,
   ICreateSchemaFormValues
 } from '../../types/schema.type'
 import { createSchemaRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
-import { enumToKeyArray } from '../../helpers/utils.helper'
-import Moment from 'moment'
-import { string } from 'prop-types'
-import { getCollectionListRequest } from '../../requests/collection.request'
-import { ICollection } from '../../types/collection.type'
-import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
-import FormItems from '../../components/shema/FormItems'
-import { addField, removeField } from '../../helpers/schema/form'
 import { RequestStatus } from '../../helpers/request'
 import SchemaForm from '../../components/shema/Form'
 
