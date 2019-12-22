@@ -81,6 +81,45 @@ const sideNavItems: INavItem[] = [
         name: 'List'
       }
     ]
+  },
+  {
+    key: 'user',
+    open: true,
+    name: (
+      <span>
+        <Icon type="user" />
+        User
+      </span>
+    ),
+    children: [
+      {
+        key: 'user-create',
+        url: '/user/create',
+        name: 'Create'
+      },
+      {
+        key: 'user-list',
+        url: '/user/list',
+        name: 'List'
+      }
+    ]
+  },
+  {
+    key: 'settings',
+    open: true,
+    name: (
+      <span>
+        <Icon type="setting" />
+        Settings
+      </span>
+    ),
+    children: [
+      {
+        key: 'access-key',
+        url: '/settings/access-key',
+        name: 'Access Key'
+      }
+    ]
   }
 ]
 
