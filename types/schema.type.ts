@@ -62,3 +62,25 @@ export interface IUpdateSchemaPayload {
   description?: string
   def?: ISchemaFieldDef[]
 }
+
+/**
+ * payload
+ * adjusts special form values structure
+ * _defKeys: array, schema definition structure, stores the value index
+ * _defValues: object, stores the actual value
+ */
+export interface ICreateSchemaFormValues extends ICreateSchemaPayload {
+  _defKeys: ISchemaFieldDefKeys[]
+  _defValues: { [key: string]: any }
+}
+
+/**
+ * payload
+ * adjusts special form values structure
+ * _defKeys: array, schema definition structure, stores the value index
+ * _defValues: object, stores the actual value
+ */
+export interface IUpdateSchemaFormValues extends IUpdateSchemaPayload {
+  _defKeys: ISchemaFieldDefKeys[]
+  _defValues: { [key: string]: any }
+}

@@ -24,6 +24,7 @@ import { IObject } from '../../types/object.type'
 import Moment from 'moment'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import { RequestStatus } from '../../helpers/request'
 
 interface IFormStructure {
   [key: string]: any
@@ -31,23 +32,26 @@ interface IFormStructure {
 
 const ObjectUpdatePage = () => {
   const router = useRouter()
-  const [currentObject, setCurrentObject] = useState<IObject | null>(null)
   const [form, setForm] = useState<IFormStructure>({})
-  const [getCurrentObjectStatus, setGetCurrentObjectStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
-  const [updateCurrentObjectStatus, setUpdateCurrentObjectStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
-  const [deleteObjectStatus, setDeleteObjectStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+
+  // Current
+  const [currentObject, setCurrentObject] = useState<IObject | null>(null)
+  const currentObjectRequestStatus = new RequestStatus()
+  const [getCurrentObjectStatus, setGetCurrentObjectStatus] = useState(
+    currentObjectRequestStatus.status
+  )
+
+  // Update
+  const updateCurrentObjectRequestStatus = new RequestStatus()
+  const [updateCurrentObjectStatus, setUpdateCurrentObjectStatus] = useState(
+    updateCurrentObjectRequestStatus.status
+  )
+
+  // Delete
+  const deleteCurrentObjectRequestStatus = new RequestStatus()
+  const [deleteObjectStatus, setDeleteObjectStatus] = useState(
+    deleteCurrentObjectRequestStatus.status
+  )
   const [handle, setHandle] = useState('')
 
   /**
@@ -62,28 +66,20 @@ const ObjectUpdatePage = () => {
     schema_handle: string,
     id: string
   ) => {
-    setDeleteObjectStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
+    setDeleteObjectStatus(deleteCurrentObjectRequestStatus.setLoadingStatus())
     if (currentObject) {
       let schemaId = currentObject.schema.id
       deleteObjectByIdRequest(collection_handle, schema_handle, id)
         .then((res) => {
-          setDeleteObjectStatus({
-            loading: false,
-            success: true,
-            error: ''
-          })
+          setDeleteObjectStatus(
+            deleteCurrentObjectRequestStatus.setSuccessStatus()
+          )
           router.push(`/schema/detail?id=${schemaId}`)
         })
         .catch((err) => {
-          setDeleteObjectStatus({
-            loading: false,
-            success: false,
-            error: err.message || JSON.stringify(err, null, '  ')
-          })
+          setDeleteObjectStatus(
+            deleteCurrentObjectRequestStatus.setErrorStatus(err)
+          )
         })
     }
   }
@@ -101,27 +97,20 @@ const ObjectUpdatePage = () => {
     id: string,
     payload: any
   ) => {
-    setUpdateCurrentObjectStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
+    setUpdateCurrentObjectStatus(
+      updateCurrentObjectRequestStatus.setLoadingStatus()
+    )
     if (currentObject) {
-      let schemaId = currentObject.schema.id
       updateObjectByIdRequest(collection_handle, schema_handle, id, payload)
         .then((res) => {
-          setUpdateCurrentObjectStatus({
-            loading: false,
-            success: true,
-            error: ''
-          })
+          setUpdateCurrentObjectStatus(
+            updateCurrentObjectRequestStatus.setSuccessStatus()
+          )
         })
         .catch((err) => {
-          setUpdateCurrentObjectStatus({
-            loading: false,
-            success: false,
-            error: err.message || JSON.stringify(err, null, '  ')
-          })
+          setUpdateCurrentObjectStatus(
+            updateCurrentObjectRequestStatus.setErrorStatus(err)
+          )
         })
     }
   }
@@ -138,18 +127,10 @@ const ObjectUpdatePage = () => {
     schema_handle: string,
     id: string
   ) => {
-    setGetCurrentObjectStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
+    setGetCurrentObjectStatus(currentObjectRequestStatus.setLoadingStatus())
     getObjectByIdRequest(collection_handle, schema_handle, id)
       .then((res) => {
-        setGetCurrentObjectStatus({
-          loading: false,
-          success: true,
-          error: ''
-        })
+        setGetCurrentObjectStatus(currentObjectRequestStatus.setSuccessStatus())
         const data = res.data.result
         setCurrentObject(data)
         const formData = { ...data }
@@ -173,11 +154,9 @@ const ObjectUpdatePage = () => {
         setForm(formData)
       })
       .catch((err) => {
-        setGetCurrentObjectStatus({
-          loading: false,
-          success: false,
-          error: err.message || JSON.stringify(err, null, '  ')
-        })
+        setGetCurrentObjectStatus(
+          currentObjectRequestStatus.setErrorStatus(err)
+        )
       })
   }
 
@@ -341,10 +320,12 @@ const ObjectUpdatePage = () => {
         break
       case ESchemaFieldType.datepicker:
         input = (
-          <DatePicker
-            value={value}
-            onChange={(e: any) => handleFieldChange(e, type, key)}
-          />
+          <div>
+            <DatePicker
+              value={value}
+              onChange={(e: any) => handleFieldChange(e, type, key)}
+            />
+          </div>
         )
         break
       case ESchemaFieldType.image:

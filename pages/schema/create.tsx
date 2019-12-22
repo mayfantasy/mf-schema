@@ -26,7 +26,8 @@ import {
   ICreateSchemaPayload,
   ESchemaFieldType,
   ISchemaFieldDef,
-  ISchemaFieldDefKeys
+  ISchemaFieldDefKeys,
+  ICreateSchemaFormValues
 } from '../../types/schema.type'
 import { createSchemaRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
@@ -36,378 +37,59 @@ import { string } from 'prop-types'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import { ICollection } from '../../types/collection.type'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import FormItems from '../../components/shema/FormItems'
+import { addField, removeField } from '../../helpers/schema/form'
+import { RequestStatus } from '../../helpers/request'
+import SchemaForm from '../../components/shema/Form'
 
 interface ICreateSchemaFormProps<V> {
   handleSubmit: (e: any) => void
   form: WrappedFormUtils<V>
 }
 
-interface ICreateSchemaFormValues extends ICreateSchemaPayload {
-  _defKeys: ISchemaFieldDefKeys[]
-  _defValues: { [key: string]: any }
-}
-
-let fieldIndex = 0
-
 const CreateSchemaForm = (
   props: ICreateSchemaFormProps<ICreateSchemaFormValues>
 ) => {
   const { form, handleSubmit } = props
-  const { getFieldDecorator, getFieldValue } = form
-  const [collectionList, setCollectionList] = useState<ICollection[]>([])
-  const [collectionStatus, setCollectionStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
+  const { getFieldDecorator } = form
+
+  /** Intialize empty _defKeys */
+  getFieldDecorator('_defKeys', {
+    initialValue: [] as ISchemaFieldDefKeys[]
   })
 
-  /**
-   * Get Collection list
-   */
-  const getCollections = () => {
-    setCollectionStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
-    getCollectionListRequest()
-      .then((res) => {
-        setCollectionStatus({
-          loading: false,
-          success: true,
-          error: ''
-        })
-        setCollectionList(res.data.result)
-      })
-      .catch((err: AxiosError) => {
-        setCollectionStatus({
-          loading: false,
-          success: false,
-          error: err.message || JSON.stringify(err, null, '  ')
-        })
-      })
-  }
-
-  useEffect(() => {
-    getCollections()
-  }, [])
-
-  /**
-   *
-   * @param key schema definitioin key
-   * Remove from schema definition array
-   */
-  const removeField = (key: string) => {
-    const _defKeys: ISchemaFieldDefKeys[] = form.getFieldValue('_defKeys')
-
-    const _newDefKeys = _defKeys.filter((def) => def.key !== key)
-    form.setFieldsValue({
-      _defKeys: _newDefKeys
-    })
-  }
-
-  /**
-   * Add schema definition field
-   */
-  const addField = () => {
-    const _defKeys = form.getFieldValue('_defKeys') as ISchemaFieldDefKeys[]
-    const newDefs = _defKeys.concat({
-      key: `key-${fieldIndex}`,
-      type: `type-${fieldIndex}`,
-      name: `name-${fieldIndex}`,
-      helper: `helper-${fieldIndex}`,
-      order: `order-${fieldIndex}`,
-      grid: `grid-${fieldIndex}`,
-      new_line: `new_line-${fieldIndex}`,
-      show: `show-${fieldIndex}`
-    })
-    fieldIndex++
-
-    form.setFieldsValue({
-      _defKeys: newDefs
-    })
-  }
-
-  getFieldDecorator('_defKeys', { initialValue: [] as ISchemaFieldDefKeys[] })
-  const _defKeys = getFieldValue('_defKeys')
-
-  const formItems = _defKeys.map((def: ISchemaFieldDefKeys, index: number) => (
-    <Row key={index}>
-      <Col span={24}>
-        <Card
-          size="small"
-          title="Field Definition"
-          extra={
-            _defKeys.length > 1 ? (
-              <Icon
-                className="dynamic-delete-button"
-                type="minus-circle-o"
-                onClick={() => removeField(def.key)}
-              />
-            ) : null
-          }
-          style={{ width: '100%' }}
-        >
-          <Row type="flex" gutter={2} align="middle">
-            {/* Key */}
-            <Col span={11}>
-              <Form.Item
-                label={<FormFieldLabel>Key</FormFieldLabel>}
-                required={true}
-                key="key"
-              >
-                {getFieldDecorator(`_defValues[${def.key}]`, {
-                  validateTrigger: ['onChange', 'onBlur'],
-                  rules: [
-                    {
-                      required: true,
-                      whitespace: true,
-                      message: 'Key is required'
-                    }
-                  ]
-                })(<Input placeholder="Key" />)}
-              </Form.Item>
-            </Col>
-
-            {/* Type */}
-            <Col span={11}>
-              <Form.Item
-                label={<FormFieldLabel>Type</FormFieldLabel>}
-                required={true}
-                key="type"
-              >
-                {getFieldDecorator(`_defValues[${def.type}]`, {
-                  validateTrigger: ['onChange', 'onBlur'],
-                  rules: [
-                    {
-                      required: true,
-                      whitespace: true,
-                      message: 'Type is required'
-                    }
-                  ]
-                })(
-                  <Select placeholder="Select a type">
-                    {enumToKeyArray(ESchemaFieldType).map((t) => (
-                      <Select.Option value={t} key={t}>
-                        {t}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                )}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row type="flex" gutter={2} align="middle">
-            {/* Name */}
-            <Col span={22}>
-              <Form.Item
-                label={<FormFieldLabel>Name</FormFieldLabel>}
-                required={true}
-                key="name"
-              >
-                {getFieldDecorator(`_defValues[${def.name}]`, {
-                  validateTrigger: ['onChange', 'onBlur'],
-                  rules: [
-                    {
-                      required: true,
-                      whitespace: true,
-                      message: 'Name is required'
-                    }
-                  ]
-                })(<Input placeholder="Name" />)}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row type="flex" gutter={2} align="middle">
-            {/* Grid */}
-            <Col span={5}>
-              <Form.Item
-                label={<FormFieldLabel>Grid</FormFieldLabel>}
-                key="grid"
-              >
-                {getFieldDecorator(`_defValues[${def.grid}]`, {
-                  initialValue: 24,
-                  validateTrigger: ['onChange', 'onBlur'],
-                  rules: [
-                    {
-                      validator: (rule: any, value: number, callback: any) => {
-                        if (value > 24 || value < 1) {
-                          callback('Please input a number between 1 and 24.')
-                        } else {
-                          callback()
-                        }
-                      }
-                    }
-                  ]
-                })(<InputNumber placeholder="Grid" min={1} max={24} />)}
-              </Form.Item>
-            </Col>
-            {/* Order */}
-            <Col span={5}>
-              <Form.Item
-                label={<FormFieldLabel>Order</FormFieldLabel>}
-                key="order"
-              >
-                {getFieldDecorator(`_defValues[${def.order}]`, {
-                  initialValue: 1,
-                  validateTrigger: ['onChange', 'onBlur']
-                })(<InputNumber placeholder="Grid" />)}
-              </Form.Item>
-            </Col>
-            {/* New Line */}
-            <Col span={5}>
-              <Form.Item
-                label={<FormFieldLabel>New Line ?</FormFieldLabel>}
-                key="new_line"
-              >
-                {getFieldDecorator(`_defValues[${def.new_line}]`, {
-                  valuePropName: 'checked',
-                  initialValue: false
-                })(<Checkbox />)}
-              </Form.Item>
-            </Col>
-            {/* Show on list */}
-            <Col span={5}>
-              <Form.Item
-                label={<FormFieldLabel>Show in List ?</FormFieldLabel>}
-                key="show"
-              >
-                {getFieldDecorator(`_defValues[${def.show}]`, {
-                  valuePropName: 'checked',
-                  initialValue: false
-                })(<Checkbox />)}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row>
-            {/* Helper Text */}
-            <Col span={22}>
-              <Form.Item
-                label={<FormFieldLabel>Helper Text</FormFieldLabel>}
-                key="helper"
-              >
-                {getFieldDecorator(`_defValues[${def.helper}]`)(
-                  <Input.TextArea autoSize={{ minRows: 8 }} />
-                )}
-              </Form.Item>
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-    </Row>
-  ))
-
-  return (
-    <Form layout="vertical" onSubmit={handleSubmit}>
-      {/* Meta */}
-      <Row>
-        <Col span={12}>
-          {collectionStatus.loading ? (
-            <Spin />
-          ) : collectionStatus.error ? (
-            <Alert message={collectionStatus.error} type="error" closable />
-          ) : (
-            <Form.Item
-              label={<FormFieldLabel>Collection</FormFieldLabel>}
-              required={true}
-              key="collection_id"
-            >
-              {getFieldDecorator(`collection_id`, {
-                validateTrigger: ['onChange', 'onBlur'],
-                rules: [
-                  {
-                    required: true,
-                    whitespace: true,
-                    message: 'Collection is required'
-                  }
-                ]
-              })(
-                <Select placeholder="Select a Collection">
-                  {collectionList.map((c) => (
-                    <Select.Option value={c.id} key={c.id}>
-                      {c.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              )}
-            </Form.Item>
-          )}
-        </Col>
-      </Row>
-      <Row gutter={2}>
-        <Col span={12}>
-          <Form.Item label={<FormFieldLabel>Name</FormFieldLabel>}>
-            {getFieldDecorator('name', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input the schema name'
-                }
-              ]
-            })(<Input />)}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label={<FormFieldLabel>Handle</FormFieldLabel>}>
-            {getFieldDecorator('handle', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input the schema handle'
-                }
-              ]
-            })(<Input />)}
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row>
-        <Form.Item
-          label={<FormFieldLabel>Description</FormFieldLabel>}
-          hasFeedback
-        >
-          {getFieldDecorator('description', {
-            rules: [
-              {
-                required: true,
-                message: 'Please input the schema desctiption'
-              }
-            ]
-          })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
-        </Form.Item>
-      </Row>
-
-      {/* Schema field */}
-      {formItems}
-      <br />
-
-      {/* Add schema field */}
-      <Row>
-        <Form.Item>
-          <Button type="dashed" onClick={addField}>
-            <Icon type="plus" /> Add field
-          </Button>
-        </Form.Item>
-      </Row>
-
-      {/* Submit */}
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Create
-        </Button>
-      </Form.Item>
-    </Form>
-  )
+  return <SchemaForm form={form} handleSubmit={handleSubmit} />
 }
 
 interface IProps extends FormComponentProps<ICreateSchemaFormValues> {}
 
 const CreateSchemaPage = (props: IProps) => {
-  const [schemaStatus, setSchemaStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  const schemaRequestStatus = new RequestStatus()
+  const [schemaStatus, setSchemaStatus] = useState(schemaRequestStatus.status)
   const { form } = props
+
+  const createSchema = (
+    values: ICreateSchemaFormValues,
+    defs: ISchemaFieldDef[]
+  ) => {
+    // Create schema
+    setSchemaStatus(schemaRequestStatus.setLoadingStatus())
+    createSchemaRequest({
+      name: values.name,
+      handle: values.handle,
+      description: values.description,
+      def: defs as ISchemaFieldDef[],
+      collection_id: values.collection_id
+    })
+      .then((res) => {
+        setSchemaStatus(schemaRequestStatus.setSuccessStatus())
+
+        router.push('/schema/list')
+      })
+      .catch((err: AxiosError) => {
+        setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
+      })
+  }
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
@@ -424,34 +106,7 @@ const CreateSchemaPage = (props: IProps) => {
         })
 
         // Create schema
-        setSchemaStatus({
-          loading: true,
-          success: false,
-          error: ''
-        })
-        createSchemaRequest({
-          name: values.name,
-          handle: values.handle,
-          description: values.description,
-          def: defs as ISchemaFieldDef[],
-          collection_id: values.collection_id
-        })
-          .then((res) => {
-            setSchemaStatus({
-              loading: false,
-              success: true,
-              error: ''
-            })
-
-            router.push('/schema/list')
-          })
-          .catch((err: AxiosError) => {
-            setSchemaStatus({
-              loading: false,
-              success: false,
-              error: err.message || JSON.stringify(err, null, '  ')
-            })
-          })
+        createSchema(values, defs as ISchemaFieldDef[])
       }
     })
   }
