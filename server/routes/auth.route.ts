@@ -1,14 +1,17 @@
 import Koa from 'koa'
 import { ILoginPayload } from '../../types/auth.type'
-import { getAccountByEmail } from '../services/auth.service'
+import {
+  getAccountByEmail,
+  getAccountByEmailAndPassword
+} from '../services/auth.service'
 import { sign, varify } from '../jwt'
 import { IBasicAccountInfo } from '../../types/account.type'
 
 export const loginRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as ILoginPayload
 
-  const email = payload.email
-  const account = await getAccountByEmail(email)
+  const { email, password } = payload
+  const account = await getAccountByEmailAndPassword(email, password)
 
   const token = sign(payload)
 
