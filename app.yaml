@@ -2,3 +2,7 @@ runtime: nodejs10
 env_variables:
   MF_SCHEMA_ACCOUNT_DB_KEY: 'fnADekK1_oACExkeSdTKIbz0q7b9VEejj2n6nuTT'
   JWT_SECRET: 'mf-schema-admin-2019'
+  USER_JWT_SECRET: 'user-jwt-secret'
+  RECOVER_EMAIL_ADDRESS: 'yuelun123321@hotmail.com'
+  RECOVER_EMAIL_PASSWORD: '199051qQqQ'
+  MF_SCHEMA_BASE_URL: 'https://mf-schema.appspot.com'
