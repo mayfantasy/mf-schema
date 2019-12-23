@@ -13,22 +13,19 @@ import {
   getSchemaById,
   updateSchema
 } from '../services/schema.service'
-import { getApiKey, testHandle } from './helper'
+import { getAuth, testHandle } from './helper'
 
 export const createSchemaRoute = async (ctx: Koa.Context) => {
-  const api_key = await getApiKey(ctx)
+  const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ICreateSchemaPayload
 
   await testHandle(ctx, payload.handle)
-  console.log('1')
 
   for (let i = 0; i < payload.def.length; i++) {
     await testHandle(ctx, payload.def[i].key)
   }
-  console.log('2')
 
-  const schema = await createSchema(api_key, payload)
-  console.log('3')
+  const schema = await createSchema(auth.api_key, payload)
 
   ctx.body = {
     result: schema
@@ -36,7 +33,7 @@ export const createSchemaRoute = async (ctx: Koa.Context) => {
 }
 
 export const updateSchemaRoute = async (ctx: Koa.Context) => {
-  const api_key = await getApiKey(ctx)
+  const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as IUpdateSchemaPayload
 
   if (payload.handle) {
@@ -49,7 +46,7 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
     }
   }
 
-  const schema = await updateSchema(api_key, payload)
+  const schema = await updateSchema(auth.api_key, payload)
 
   ctx.body = {
     result: schema
@@ -57,17 +54,17 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
 }
 
 export const getSchemaListRoute = async (ctx: Koa.Context) => {
-  const api_key = await getApiKey(ctx)
-  const schemas = await getSchemaList(api_key)
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const schemas = await getSchemaList(auth.api_key)
   ctx.body = {
     result: schemas
   }
 }
 
 export const getSchemaByIdRoute = async (ctx: Koa.Context) => {
-  const api_key = await getApiKey(ctx)
+  const auth = (await getAuth(ctx)) || ({} as any)
   const { id } = ctx.params
-  const schema = await getSchemaById(api_key, id)
+  const schema = await getSchemaById(auth.api_key, id)
   ctx.body = {
     result: schema
   }

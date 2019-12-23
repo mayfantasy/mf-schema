@@ -8,16 +8,16 @@ import {
   createCollection,
   getCollectionList
 } from '../services/collection.service'
-import { getApiKey, testHandle } from './helper'
+import { getAuth, testHandle } from './helper'
 import { handleRxp } from '../../helpers/utils.helper'
 
 export const createCollectionRoute = async (ctx: Koa.Context) => {
-  const api_key = await getApiKey(ctx)
+  const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ICreateCollectionPayload
 
   await testHandle(ctx, payload.handle)
 
-  const collection = await createCollection(api_key, payload)
+  const collection = await createCollection(auth.api_key, payload)
 
   ctx.body = {
     result: collection
@@ -25,8 +25,8 @@ export const createCollectionRoute = async (ctx: Koa.Context) => {
 }
 
 export const getCollectionListRoute = async (ctx: Koa.Context) => {
-  const api_key = await getApiKey(ctx)
-  const collections = await getCollectionList(api_key)
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const collections = await getCollectionList(auth.api_key)
   ctx.body = {
     result: collections
   }

@@ -3,18 +3,33 @@ import { varify } from '../jwt'
 import { ILoginPayload } from '../../types/auth.type'
 import { getAccountByEmail } from '../services/auth.service'
 import { handleRxp } from '../../helpers/utils.helper'
+import { getAccountList } from '../services/account.service'
+import { IAccount } from '../../types/account.type'
 
-export const getApiKey = async (ctx: Koa.Context) => {
+export const getAuth = async (ctx: Koa.Context) => {
   const token = ctx.headers['authentication']
+  const accessKey = ctx.headers['accesskey']
 
   try {
-    const user = varify(token)
-    const email = ((user as any).data as ILoginPayload).email
+    if (token) {
+      const user = varify(token)
+      const email = ((user as any).data as ILoginPayload).email
 
-    const account = await getAccountByEmail(email)
+      const account = await getAccountByEmail(email)
 
-    const api_key = account.data.api_key
-    return api_key
+      const api_key = account.data.api_key
+      return { api_key, account_id: account.ref.id }
+    } else if (accessKey) {
+      const accounts = await getAccountList()
+      const foundAccount = accounts.find((a: IAccount) =>
+        a.access_keys.includes(accessKey)
+      )
+
+      const api_key = foundAccount.api_key
+      return { api_key, account_id: foundAccount.id }
+    } else {
+      throw new Error('Unauthenticated.')
+    }
   } catch (e) {
     ctx.status = 401
     ctx.body = {

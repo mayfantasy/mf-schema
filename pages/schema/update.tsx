@@ -143,7 +143,6 @@ const UpdateSchemaPage = (props: IProps) => {
           })
           return obj
         })
-        console.log('Merged values:', defs)
         if (router.query.id) {
           updateSchema({
             id: router.query.id as string,

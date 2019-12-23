@@ -33,6 +33,12 @@ const RegistrationForm = (
       callback()
     }
   }
+  const validateToNextPassword = (rule: any, value: any, callback: any) => {
+    if (value && confirmDirty) {
+      form.validateFields(['confirm'], { force: true })
+    }
+    callback()
+  }
 
   const checkedAgreement = (rule: any, value: any, callback: any) => {
     if (!value) {
@@ -40,13 +46,6 @@ const RegistrationForm = (
     } else {
       callback()
     }
-  }
-
-  const validateToNextPassword = (rule: any, value: any, callback: any) => {
-    if (value && confirmDirty) {
-      form.validateFields(['confirm'], { force: true })
-    }
-    callback()
   }
 
   const formItemLayout = {

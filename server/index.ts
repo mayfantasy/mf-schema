@@ -29,6 +29,26 @@ import {
   deleteObjectByIdRoute
 } from './routes/object.route'
 import { uploadImageRoute } from './routes/upload.route'
+import {
+  getAccessKeyListRoute,
+  deleteAccessKeyRoute,
+  createAccessKeyRoute
+} from './routes/access-key.route'
+import {
+  createUserRoute,
+  getUserListRoute,
+  updateUserRoute,
+  deleteUserRoute,
+  getUserByIdRoute
+} from './routes/user.route'
+import {
+  loginUserRoute,
+  loginUserWithTokenRoute,
+  resetUserPasswordByCurrentPasswordRoute,
+  resetUserEmailRoute,
+  sendRecoverEmailRoute,
+  resetPasswordRoute
+} from './routes/user-auth.route'
 
 const port = parseInt(process.env.PORT || '3000', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -44,6 +64,11 @@ app.prepare().then(() => {
   // Auth
   router.post('/api/auth/login', loginRoute)
   router.post('/api/auth/token', loginWithTokenRoute)
+
+  // Access Key
+  router.post('/api/access-key/create', createAccessKeyRoute)
+  router.get('/api/access-key/list', getAccessKeyListRoute)
+  router.delete('/api/access-key/delete/:id', deleteAccessKeyRoute)
 
   // Create account
   router.post('/api/account/create', createAccountRoute)
@@ -82,6 +107,23 @@ app.prepare().then(() => {
     '/api/object/:collection_handle/:schema_handle/delete/:id',
     deleteObjectByIdRoute
   )
+
+  // User
+  router.post('/api/user/create', createUserRoute)
+  router.get('/api/user/:id', getUserByIdRoute)
+  router.get('/api/user/list', getUserListRoute)
+  router.put('/api/user/update', updateUserRoute)
+  router.delete('/api/user/:id', deleteUserRoute)
+  // User Auth
+  router.post('/api/user/login', loginUserRoute)
+  router.post('/api/user/token', loginUserWithTokenRoute)
+  router.post(
+    '/api/user/reset-password-by-current-password',
+    resetUserPasswordByCurrentPasswordRoute
+  )
+  router.post('/api/user/reset-email', resetUserEmailRoute)
+  router.post('/api/user/send-recover-email', sendRecoverEmailRoute)
+  router.post('/api/user/reset-password', resetPasswordRoute)
 
   // SSR Pages
   router.get('*', async (ctx) => {

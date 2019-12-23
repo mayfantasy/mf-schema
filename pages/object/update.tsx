@@ -149,8 +149,6 @@ const ObjectUpdatePage = () => {
         delete formData._schema_handle
         delete formData._handle
 
-        console.log(formData)
-
         setForm(formData)
       })
       .catch((err) => {

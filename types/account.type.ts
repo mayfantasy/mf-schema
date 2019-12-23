@@ -6,6 +6,7 @@ export interface IAccount {
   password: string
   db_key: string
   api_key: string
+  access_keys: string[]
 }
 
 export interface IClientCreateAccountPayload {

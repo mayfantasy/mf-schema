@@ -105,19 +105,24 @@ const sideNavItems: INavItem[] = [
     ]
   },
   {
-    key: 'settings',
+    key: 'access-key',
     open: true,
     name: (
       <span>
-        <Icon type="setting" />
-        Settings
+        <Icon type="key" />
+        Access Key
       </span>
     ),
     children: [
       {
-        key: 'access-key',
-        url: '/settings/access-key',
-        name: 'Access Key'
+        key: 'access-key-create',
+        url: '/access-key/create',
+        name: 'Create'
+      },
+      {
+        key: 'access-key-list',
+        url: '/access-key/list',
+        name: 'List'
       }
     ]
   }
@@ -226,7 +231,7 @@ const PageLayout = (props: IProps) => {
           >
             {user
               ? sideNavItems.map((s) => (
-                  <SubMenu key={s.key} title={s.name}>
+                  <SubMenu key={s.key} title={<b>{s.name}</b>}>
                     {!!s.children &&
                       s.children.map((c) => (
                         <Menu.Item key={c.key}>

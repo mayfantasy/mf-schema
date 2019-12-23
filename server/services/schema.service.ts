@@ -13,13 +13,11 @@ export const createSchema = async (
   payload: ICreateSchemaPayload
 ) => {
   const clientDB = client(api_key)
-  console.log(4)
 
   // Check handle uniqueness
   await clientDB.query(
     q.Paginate(q.Match(q.Index('get_schema_by_handle'), payload.handle))
   )
-  console.log(5)
 
   // Create schema
   const schema: any = await clientDB.query(
@@ -27,7 +25,6 @@ export const createSchema = async (
       data: payload
     })
   )
-  console.log(6)
 
   return {
     id: schema.ref.id,

@@ -12,7 +12,6 @@ export const uploadImage = async (
   folder1: string,
   folder2: string
 ) => {
-  console.log(src, name, bucketName, folder1, folder2)
   if (bucketName && folder1 && folder2) {
     return await storage.bucket(bucketName).upload(src, {
       gzip: true,

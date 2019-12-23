@@ -28,7 +28,30 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
   // Connect to Client database
   const clientDB = client(api_key)
 
-  // Create Collection
+  // Create Access Key Collection
+  await clientDB.query(q.CreateCollection({ name: 'access_key' }))
+
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'all_access_keys',
+      source: q.Collection('access_key')
+    })
+  )
+
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'get_access_key_by_key',
+      source: q.Collection('access_key'),
+      terms: [
+        {
+          field: ['data', 'key']
+        }
+      ],
+      unique: true
+    })
+  )
+
+  // Create Collection Collection
   await clientDB.query(q.CreateCollection({ name: 'collection' }))
 
   await clientDB.query(
@@ -51,7 +74,7 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
     })
   )
 
-  // Create Schema
+  // Create Schema Collection
   await clientDB.query(q.CreateCollection({ name: 'schema' }))
 
   await clientDB.query(
@@ -68,6 +91,45 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
       terms: [
         {
           field: ['data', 'handle']
+        }
+      ],
+      unique: true
+    })
+  )
+
+  // Create User Collection
+  await clientDB.query(q.CreateCollection({ name: 'user' }))
+
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'all_users',
+      source: q.Collection('user')
+    })
+  )
+
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'get_user_by_email',
+      source: q.Collection('user'),
+      terms: [
+        {
+          field: ['data', 'email']
+        }
+      ],
+      unique: true
+    })
+  )
+
+  await clientDB.query(
+    q.CreateIndex({
+      name: 'get_user_by_email_and_password',
+      source: q.Collection('user'),
+      terms: [
+        {
+          field: ['data', 'email']
+        },
+        {
+          field: ['data', 'password']
         }
       ],
       unique: true
@@ -121,4 +183,17 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
   )
 
   return account
+}
+
+export const getAccountList = async () => {
+  const accounts: any = await accountDb.query(
+    q.Map(
+      q.Paginate(q.Match(q.Index('all_accounts'))),
+      q.Lambda('X', q.Get(q.Var('X')))
+    )
+  )
+  return accounts.data.map((c: any) => ({
+    id: c.ref.id,
+    ...c.data
+  }))
 }
