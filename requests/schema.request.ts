@@ -18,5 +18,5 @@ export const getSchemaListRequest = () => {
 }
 
 export const getSchemaById = (id: string) => {
-  return api.get(`/schema/${id}`)
+  return api.get(`/schema/get/${id}`)
 }

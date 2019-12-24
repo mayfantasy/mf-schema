@@ -54,6 +54,7 @@ export const updateUser = async (
 }
 
 export const getUserList = async (api_key: string) => {
+  console.log(api_key)
   const clientDB = client(api_key)
   const users: any = await clientDB.query(
     q.Map(
@@ -61,6 +62,8 @@ export const getUserList = async (api_key: string) => {
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )
+
+  console.log('users: ', users)
 
   const userListData = users.data.map((c: any) => ({
     id: c.ref.id,

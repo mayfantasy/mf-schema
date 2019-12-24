@@ -43,12 +43,9 @@ export const loginUserWithToken = async (
   const { token } = payload
   const user = verifyUserToken(token) as IUserWithoutPassword
 
-  console.log(user)
-
   if (user) {
     const email = user.email
     const result = await getUserByEmail(api_key, email)
-    console.log(result)
 
     let userData = { ...result }
     delete userData.password

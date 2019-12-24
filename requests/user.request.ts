@@ -10,7 +10,7 @@ export const getUserListRequest = () => {
 }
 
 export const getUserByIdRequest = (id: string) => {
-  return api.get(`/user/${id}`)
+  return api.get(`/user/get/${id}`)
 }
 
 export const updateUserRequest = (payload: IUpdateUserInfoPayload) => {

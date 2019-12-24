@@ -13,14 +13,14 @@ export const loginRoute = async (ctx: Koa.Context) => {
   const { email, password } = payload
   const account = await getAccountByEmailAndPassword(email, password)
 
-  const token = sign(payload)
+  const token = sign(account)
 
   ctx.body = {
     result: {
       token,
       account: {
-        email: account.data.email,
-        username: account.data.username
+        email: account.email,
+        username: account.username
       } as IBasicAccountInfo
     }
   }
@@ -38,8 +38,8 @@ export const loginWithTokenRoute = async (ctx: Koa.Context) => {
   ctx.body = {
     result: {
       account: {
-        email: account.data.email,
-        username: account.data.username
+        email: account.email,
+        username: account.username
       } as IBasicAccountInfo
     }
   }

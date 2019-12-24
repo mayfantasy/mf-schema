@@ -54,6 +54,7 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
 }
 
 export const getSchemaListRoute = async (ctx: Koa.Context) => {
+  console.log('s1')
   const auth = (await getAuth(ctx)) || ({} as any)
   const schemas = await getSchemaList(auth.api_key)
   ctx.body = {
@@ -62,6 +63,7 @@ export const getSchemaListRoute = async (ctx: Koa.Context) => {
 }
 
 export const getSchemaByIdRoute = async (ctx: Koa.Context) => {
+  console.log('s2')
   const auth = (await getAuth(ctx)) || ({} as any)
   const { id } = ctx.params
   const schema = await getSchemaById(auth.api_key, id)

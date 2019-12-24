@@ -7,6 +7,7 @@ import { getAccountList } from '../services/account.service'
 import { IAccount } from '../../types/account.type'
 
 export const getAuth = async (ctx: Koa.Context) => {
+  console.log(ctx.url)
   const token = ctx.headers['authentication']
   const accessKey = ctx.headers['accesskey']
 
@@ -17,8 +18,10 @@ export const getAuth = async (ctx: Koa.Context) => {
 
       const account = await getAccountByEmail(email)
 
-      const api_key = account.data.api_key
-      return { api_key, account_id: account.ref.id }
+      console.log('varified token: ', account)
+
+      const api_key = account.api_key
+      return { api_key, account_id: account.id }
     } else if (accessKey) {
       const accounts = await getAccountList()
       const foundAccount = accounts.find((a: IAccount) =>

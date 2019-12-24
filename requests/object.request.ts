@@ -35,7 +35,7 @@ export const getObjectByIdRequest = (
   schema_handle: string,
   id: string
 ) => {
-  return api.get(`/object/${collection_handle}/${schema_handle}/${id}`)
+  return api.get(`/object/${collection_handle}/${schema_handle}/get/${id}`)
 }
 
 export const deleteObjectByIdRequest = (

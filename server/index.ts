@@ -81,7 +81,7 @@ app.prepare().then(() => {
   router.post('/api/schema/create', createSchemaRoute)
   router.get('/api/schema/list', getSchemaListRoute)
   router.put('/api/schema/update', updateSchemaRoute)
-  router.get('/api/schema/:id', getSchemaByIdRoute)
+  router.get('/api/schema/get/:id', getSchemaByIdRoute)
 
   // Image Upload
   router.post('/api/upload/image', uploadImageRoute)
@@ -100,7 +100,7 @@ app.prepare().then(() => {
     updateObjectByIdRoute
   )
   router.get(
-    '/api/object/:collection_handle/:schema_handle/:id',
+    '/api/object/:collection_handle/:schema_handle/get/:id',
     getObjectByIdRoute
   )
   router.delete(
@@ -110,8 +110,8 @@ app.prepare().then(() => {
 
   // User
   router.post('/api/user/create', createUserRoute)
-  router.get('/api/user/:id', getUserByIdRoute)
   router.get('/api/user/list', getUserListRoute)
+  router.get('/api/user/get/:id', getUserByIdRoute)
   router.put('/api/user/update', updateUserRoute)
   router.delete('/api/user/:id', deleteUserRoute)
   // User Auth

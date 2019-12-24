@@ -301,10 +301,12 @@ const ObjectUpdatePage = () => {
         break
       case ESchemaFieldType.boolean:
         input = (
-          <Checkbox
-            checked={value}
-            onChange={(e: any) => handleFieldChange(e, type, key)}
-          />
+          <div>
+            <Checkbox
+              checked={value}
+              onChange={(e: any) => handleFieldChange(e, type, key)}
+            />
+          </div>
         )
         break
       case ESchemaFieldType.textarea:
