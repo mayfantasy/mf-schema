@@ -1,6 +1,16 @@
 import React, { useState } from 'react'
 import PageLayout from '../components/PageLayout/PageLayout'
-import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Alert } from 'antd'
+import {
+  Form,
+  Input,
+  Tooltip,
+  Icon,
+  Checkbox,
+  Button,
+  Row,
+  Alert,
+  Col
+} from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { createAccountRequest } from '../requests/account.request'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
@@ -10,6 +20,8 @@ import { loginRequest } from '../requests/auth.request'
 import { setToken, setUser } from '../helpers/auth.helper'
 import router from 'next/router'
 import { AxiosError } from 'axios'
+import { RequestStatus } from '../helpers/request'
+import Link from 'next/link'
 
 interface ILoginFormProps<V> {
   handleSubmit: (e: any) => void
@@ -20,31 +32,8 @@ const LoginForm = (props: ILoginFormProps<ILoginPayload>) => {
   const { form, handleSubmit } = props
   const { getFieldDecorator } = form
 
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 }
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 }
-    }
-  }
-
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0
-      },
-      sm: {
-        span: 16,
-        offset: 8
-      }
-    }
-  }
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Form.Item label="E-mail">
         {getFieldDecorator('email', {
           rules: [
@@ -69,10 +58,19 @@ const LoginForm = (props: ILoginFormProps<ILoginPayload>) => {
           ]
         })(<Input.Password />)}
       </Form.Item>
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          Login
-        </Button>
+      <Form.Item>
+        <Row type="flex" justify="space-between">
+          <Col>
+            <Button type="primary" htmlType="submit">
+              Login
+            </Button>
+          </Col>
+          <Col>
+            <Link href="register">
+              <a>Register</a>
+            </Link>
+          </Col>
+        </Row>
       </Form.Item>
     </Form>
   )
@@ -81,32 +79,21 @@ const LoginForm = (props: ILoginFormProps<ILoginPayload>) => {
 interface IProps extends FormComponentProps<ILoginPayload> {}
 
 const LoginPage = (props: IProps) => {
-  const [loginStatus, setLoginStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  const loginRequestStatus = new RequestStatus()
+  const [loginStatus, setLoginStatus] = useState(loginRequestStatus.status)
   const { form } = props
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setLoginStatus({
-          loading: true,
-          success: false,
-          error: ''
-        })
+        setLoginStatus(loginRequestStatus.setLoadingStatus())
         loginRequest({
           email: values.email,
           password: values.password
         })
           .then((res) => {
-            setLoginStatus({
-              loading: false,
-              success: true,
-              error: ''
-            })
+            setLoginStatus(loginRequestStatus.setSuccessStatus())
 
             const user = res.data.result.account
             const token = res.data.result.token
@@ -117,11 +104,7 @@ const LoginPage = (props: IProps) => {
             router.push('/')
           })
           .catch((err: AxiosError) => {
-            setLoginStatus({
-              loading: false,
-              success: false,
-              error: err.message || JSON.stringify(err)
-            })
+            setLoginStatus(loginRequestStatus.setErrorStatus(err))
           })
       }
     })
