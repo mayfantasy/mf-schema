@@ -9,7 +9,7 @@ import { IAccount } from '../../types/account.type'
 export const getAuth = async (ctx: Koa.Context) => {
   console.log(ctx.url)
   const token = ctx.headers['authentication']
-  const accessKey = ctx.headers['accesskey']
+  const accessKey = ctx.headers['x-acc-k']
 
   try {
     if (token) {
