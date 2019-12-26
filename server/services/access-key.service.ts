@@ -16,7 +16,7 @@ export const createAccessKey = async (
     q.Get(q.Ref(q.Collection('account'), account_id))
   )
 
-  const newAccessKeys = [...account.data.access_keys, key]
+  const newAccessKeys = [...(account.data.access_keys || []), key]
 
   // Set account access key field
   await accountDb.query(
