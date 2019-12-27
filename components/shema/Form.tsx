@@ -63,6 +63,8 @@ const SchemaForm = (props: IProps) => {
   useEffect(() => {
     if (!currentSchema) {
       getCollections()
+    } else {
+      defIndex = currentSchema.def.length
     }
   }, [])
 

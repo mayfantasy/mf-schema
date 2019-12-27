@@ -28,9 +28,12 @@ export const createUser = async (
     })
   )
 
+  const userData = { ...user.data }
+  delete userData.password
+
   return {
     id: user.ref.id,
-    ...user.data
+    ...userData
   }
 }
 
