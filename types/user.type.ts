@@ -85,3 +85,12 @@ export interface IUserResetPasswordPayload {
   signature: string
   password: string
 }
+
+export interface IUpdateUserMetaPayload {
+  key: string
+  value: any
+}
+
+export interface IDeleteUserMetaItemPayload {
+  key: string
+}

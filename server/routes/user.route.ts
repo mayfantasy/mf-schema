@@ -2,21 +2,23 @@ import Koa from 'koa'
 import { getAuth } from './helper'
 import {
   ICreateUserPayload,
-  IUpdateUserInfoPayload
+  IUpdateUserInfoPayload,
+  IUpdateUserMetaPayload,
+  IDeleteUserMetaItemPayload
 } from '../../types/user.type'
 import {
   getUserList,
   updateUser,
   deleteUserById,
   createUser,
-  getUserById
+  getUserById,
+  updateUserMeta,
+  deleteUserMeta
 } from '../services/user.service'
 import { ILoginPayload } from '../../types/auth.type'
 
 export const createUserRoute = async (ctx: Koa.Context) => {
-  console.log('1')
   const auth = (await getAuth(ctx)) || ({} as any)
-  console.log(auth)
   const payload = ctx.request.body as ICreateUserPayload
 
   const user = await createUser(auth.api_key, payload)
@@ -27,7 +29,6 @@ export const createUserRoute = async (ctx: Koa.Context) => {
 }
 
 export const getUserListRoute = async (ctx: Koa.Context) => {
-  console.log('2')
   const auth = (await getAuth(ctx)) || ({} as any)
   const user = await getUserList(auth.api_key)
 
@@ -37,7 +38,6 @@ export const getUserListRoute = async (ctx: Koa.Context) => {
 }
 
 export const getUserByIdRoute = async (ctx: Koa.Context) => {
-  console.log('3')
   const auth = (await getAuth(ctx)) || ({} as any)
   const id = ctx.params.id
   const user = await getUserById(auth.api_key, id)
@@ -47,7 +47,6 @@ export const getUserByIdRoute = async (ctx: Koa.Context) => {
 }
 
 export const updateUserRoute = async (ctx: Koa.Context) => {
-  console.log('4')
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as IUpdateUserInfoPayload
   const user = await updateUser(auth.api_key, payload)
@@ -57,10 +56,31 @@ export const updateUserRoute = async (ctx: Koa.Context) => {
 }
 
 export const deleteUserRoute = async (ctx: Koa.Context) => {
-  console.log('5')
   const auth = (await getAuth(ctx)) || ({} as any)
   const id = ctx.params.id
   const user = await deleteUserById(auth.api_key, id)
+
+  ctx.body = {
+    result: user
+  }
+}
+
+export const updateUserMetaRoute = async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const id = ctx.params.id
+  const payload = ctx.request.body as IUpdateUserMetaPayload
+  const user = await updateUserMeta(auth.api_key, id, payload)
+
+  ctx.body = {
+    result: user
+  }
+}
+
+export const deleteUserMetaItemRoute = async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const id = ctx.params.id
+  const payload = ctx.request.body as IDeleteUserMetaItemPayload
+  const user = await deleteUserMeta(auth.api_key, id, payload)
 
   ctx.body = {
     result: user

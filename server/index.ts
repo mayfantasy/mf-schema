@@ -39,7 +39,9 @@ import {
   getUserListRoute,
   updateUserRoute,
   deleteUserRoute,
-  getUserByIdRoute
+  getUserByIdRoute,
+  updateUserMetaRoute,
+  deleteUserMetaItemRoute
 } from './routes/user.route'
 import {
   loginUserRoute,
@@ -114,6 +116,9 @@ app.prepare().then(() => {
   router.get('/api/user/get/:id', getUserByIdRoute)
   router.put('/api/user/update', updateUserRoute)
   router.delete('/api/user/:id', deleteUserRoute)
+  // User Meta
+  router.post('/api/user/meta/update/:id', updateUserMetaRoute)
+  router.post('/api/user/meta/delete/:id', deleteUserMetaItemRoute)
   // User Auth
   router.post('/api/user/login', loginUserRoute)
   router.post('/api/user/token', loginUserWithTokenRoute)

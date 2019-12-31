@@ -5,7 +5,9 @@ import {
   ICreateUserPayload,
   IUser,
   IUpdateUserInfoPayload,
-  IUserLoginPayload
+  IUserLoginPayload,
+  IUpdateUserMetaPayload,
+  IDeleteUserMetaItemPayload
 } from '../../types/user.type'
 import { client } from './db/client.db'
 import { generateUserJWTToken } from './user_jwt'
@@ -57,7 +59,6 @@ export const updateUser = async (
 }
 
 export const getUserList = async (api_key: string) => {
-  console.log(api_key)
   const clientDB = client(api_key)
   const users: any = await clientDB.query(
     q.Map(
@@ -65,8 +66,6 @@ export const getUserList = async (api_key: string) => {
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )
-
-  console.log('users: ', users)
 
   const userListData = users.data.map((c: any) => ({
     id: c.ref.id,
@@ -113,5 +112,64 @@ export const deleteUserById = async (api_key: string, id: string) => {
   return {
     id: user.ref.id,
     ...user.data
+  }
+}
+
+export const updateUserMeta = async (
+  api_key: string,
+  id: string,
+  payload: IUpdateUserMetaPayload
+) => {
+  const clientDB = client(api_key)
+  const user: any = await clientDB.query(q.Get(q.Ref(q.Collection('user'), id)))
+  const { key, value } = payload
+
+  const meta = user.meta || {}
+
+  // Update user
+  const updatedUser: any = await clientDB.query(
+    q.Update(q.Ref(q.Collection('user'), id), {
+      data: { meta: { ...meta, [key]: value } }
+    })
+  )
+
+  const userData = updatedUser.data
+  delete userData.password
+  return {
+    id: updatedUser.ref.id,
+    ...userData
+  }
+}
+
+export const deleteUserMeta = async (
+  api_key: string,
+  id: string,
+  payload: IDeleteUserMetaItemPayload
+) => {
+  const clientDB = client(api_key)
+  const user: any = await clientDB.query(q.Get(q.Ref(q.Collection('user'), id)))
+  const { key } = payload
+
+  const meta = user.data.meta || {}
+
+  if (meta[key]) {
+    meta[key] = null
+  } else {
+    throw new Error(`[${key}] not found in user meta.`)
+  }
+
+  // Update user
+  const updatedUser: any = await clientDB.query(
+    q.Update(q.Ref(q.Collection('user'), id), {
+      data: { meta }
+    })
+  )
+
+  const userData = updatedUser.data
+  delete userData.password
+
+  return {
+    id: updatedUser.ref.id,
+    ...userData
   }
 }
