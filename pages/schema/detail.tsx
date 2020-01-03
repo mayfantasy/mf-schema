@@ -409,7 +409,7 @@ const SchemaListPage = () => {
                 },
                 {
                   head: 'Read - GET',
-                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/:id`,
+                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/get/:id`,
                   helper: 'Get the object by its ID.'
                 },
                 {

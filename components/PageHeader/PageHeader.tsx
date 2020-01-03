@@ -12,7 +12,7 @@ const PageHeader = (props: IProps) => {
   const { name, sub, buttonLink, buttonWord, description } = props
   return (
     <Row type="flex" justify="space-between">
-      <Col>
+      <Col span={18}>
         <h2>
           <Typography.Text strong>{name}</Typography.Text>
           {!!sub && (
@@ -23,11 +23,13 @@ const PageHeader = (props: IProps) => {
           )}
         </h2>
         {!!description && (
-          <Typography.Text type="secondary">{description}</Typography.Text>
+          <Typography.Text style={{ whiteSpace: 'pre' }} type="secondary">
+            {description}
+          </Typography.Text>
         )}
       </Col>
       {!!buttonLink && (
-        <Col>
+        <Col span={5}>
           <Link href={buttonLink}>
             <Button type="primary">{buttonWord}</Button>
           </Link>
