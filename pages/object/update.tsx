@@ -19,12 +19,17 @@ import {
   Typography
 } from 'antd'
 import Loading from '../../components/Loading/Loading'
-import { ESchemaFieldType, ISchemaFieldDef } from '../../types/schema.type'
+import {
+  ESchemaFieldType,
+  ISchemaFieldDef,
+  ISchema
+} from '../../types/schema.type'
 import { IObject } from '../../types/object.type'
 import Moment from 'moment'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { RequestStatus } from '../../helpers/request'
+import StringArray from '../../components/StringArray/StringArray'
 
 interface IFormStructure {
   [key: string]: any
@@ -34,11 +39,18 @@ const ObjectUpdatePage = () => {
   const router = useRouter()
   const [form, setForm] = useState<IFormStructure>({})
 
-  // Current
+  // Current Object
   const [currentObject, setCurrentObject] = useState<IObject | null>(null)
   const currentObjectRequestStatus = new RequestStatus()
   const [getCurrentObjectStatus, setGetCurrentObjectStatus] = useState(
     currentObjectRequestStatus.status
+  )
+
+  // Current Schema
+  const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
+  const currentSchemaRequestStatus = new RequestStatus()
+  const [getCurrentSchemaStatus, setGetCurrentSchemaStatus] = useState(
+    currentSchemaRequestStatus.status
   )
 
   // Update
@@ -131,9 +143,12 @@ const ObjectUpdatePage = () => {
     getObjectByIdRequest(collection_handle, schema_handle, id)
       .then((res) => {
         setGetCurrentObjectStatus(currentObjectRequestStatus.setSuccessStatus())
-        const data = res.data.result
+        const data = res.data.result as IObject
         setCurrentObject(data)
-        const formData = { ...data }
+        const formData = data.schema.def.reduce((a, c) => {
+          a[c.key] = data[c.key] || null
+          return a
+        }, {} as { [key: string]: any })
 
         // convert datepicker value to moment
         data.schema.def.forEach((d: ISchemaFieldDef) => {
@@ -261,6 +276,9 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.image:
         value = e
         break
+      case ESchemaFieldType.string_array:
+        value = e
+        break
       default:
         value = e.target.value
     }
@@ -333,6 +351,17 @@ const ObjectUpdatePage = () => {
           <ImageUploader
             value={value}
             onChange={(e: any) => handleFieldChange(e, type, key)}
+          />
+        )
+        break
+      case ESchemaFieldType.string_array:
+        input = (
+          <StringArray
+            value={value}
+            onChange={(v: string[]) => {
+              console.log(v)
+              handleFieldChange(v, type, key)
+            }}
           />
         )
         break

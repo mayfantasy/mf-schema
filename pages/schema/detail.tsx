@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { getSchemaById } from '../../requests/schema.request'
+import { getSchemaByIdRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
 import {
@@ -111,7 +111,7 @@ const SchemaListPage = () => {
       error: ''
     })
 
-    getSchemaById(id)
+    getSchemaByIdRequest(id)
       .then((res) => {
         setSchemaStatus({
           loading: false,

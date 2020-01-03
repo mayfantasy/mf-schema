@@ -75,6 +75,9 @@ const UserDetailPage = () => {
     )
     return layout(content)
   } else {
+    const userWithoutMeta = { ...user }
+    delete userWithoutMeta.meta
+    const meta = user.meta
     content = (
       <div>
         <PageHeader
@@ -87,7 +90,7 @@ const UserDetailPage = () => {
         <br />
         <div>
           <Descriptions layout="vertical" bordered size="small">
-            {Object.keys(user).map((key: string) => {
+            {Object.keys(userWithoutMeta).map((key: string) => {
               return (
                 <Descriptions.Item
                   label={
@@ -103,6 +106,29 @@ const UserDetailPage = () => {
             })}
           </Descriptions>
         </div>
+        {
+          <>
+            <br />
+            {meta && Object.keys(meta).length && (
+              <Descriptions layout="vertical" bordered size="small">
+                {Object.keys(meta).map((key: string) => {
+                  return (
+                    <Descriptions.Item
+                      label={
+                        <div>
+                          <FormFieldLabel>{key}</FormFieldLabel>
+                        </div>
+                      }
+                      key={key}
+                    >
+                      {JSON.stringify((meta as any)[key], null, ' ')}
+                    </Descriptions.Item>
+                  )
+                })}
+              </Descriptions>
+            )}
+          </>
+        }
       </div>
     )
     return layout(content)

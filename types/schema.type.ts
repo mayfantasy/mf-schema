@@ -8,7 +8,8 @@ export enum ESchemaFieldType {
   // array = 'array',
   // object = 'object',
   textarea = 'textarea',
-  datepicker = 'datepicker'
+  datepicker = 'datepicker',
+  string_array = 'string_array'
 }
 export interface ISchemaFieldDef {
   type: ESchemaFieldType

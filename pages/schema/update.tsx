@@ -13,7 +13,7 @@ import {
 } from '../../types/schema.type'
 import {
   updateSchemaRequest,
-  getSchemaById
+  getSchemaByIdRequest
 } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
@@ -45,7 +45,7 @@ const UpdateSchemaForm = (
    */
   const getCurrentSchema = (id: string) => {
     setCurrentSchemaStatus(schemaRequestStatus.setLoadingStatus())
-    getSchemaById(id as string)
+    getSchemaByIdRequest(id as string)
       .then((res) => {
         setCurrentSchemaStatus(schemaRequestStatus.setSuccessStatus())
         const data = res.data.result

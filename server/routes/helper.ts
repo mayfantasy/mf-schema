@@ -18,8 +18,6 @@ export const getAuth = async (ctx: Koa.Context) => {
 
       const account = await getAccountByEmail(email)
 
-      console.log('varified token: ', account)
-
       const api_key = account.api_key
       return { api_key, account_id: account.id }
     } else if (accessKey) {

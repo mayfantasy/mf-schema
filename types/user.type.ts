@@ -42,6 +42,7 @@ export interface IUserWithoutPassword {
   username: string
   date_of_birth: string
   phone: string
+  meta: { [key: string]: any }
 }
 
 export interface IUserWithToken {
