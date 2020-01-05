@@ -7,6 +7,7 @@ export interface IUser {
   date_of_birth: string
   password: string
   phone: string
+  profile_img: string
 }
 
 export interface IUpdateUserInfoPayload {
@@ -17,6 +18,7 @@ export interface IUpdateUserInfoPayload {
   username?: string
   date_of_birth?: string
   phone?: string
+  profile_img?: string
 }
 
 export interface IUpdateUserPasswordPayload {
@@ -32,6 +34,7 @@ export interface ICreateUserPayload {
   date_of_birth: string
   password: string
   phone?: string
+  profile_img?: string
 }
 
 export interface IUserWithoutPassword {
@@ -43,6 +46,7 @@ export interface IUserWithoutPassword {
   date_of_birth: string
   phone: string
   meta: { [key: string]: any }
+  profile_img: string
 }
 
 export interface IUserWithToken {
@@ -54,6 +58,7 @@ export interface IUserWithToken {
   username: string
   date_of_birth: string
   phone: string
+  profile_img: string
 }
 
 export interface IUserLoginPayload {
