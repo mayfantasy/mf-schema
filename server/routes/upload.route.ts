@@ -4,7 +4,6 @@ import { format } from 'date-fns'
 import { getAuth } from './helper'
 
 export const uploadImageRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
   const files = ctx.request.files
 
   const file = (files as any).avatar
