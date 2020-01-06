@@ -27,8 +27,31 @@ interface IProps {
 }
 const FormItems = (props: IProps) => {
   const { form, isCreate } = props
-  const { getFieldDecorator, getFieldValue } = form
+  const { getFieldDecorator, getFieldValue, setFieldsValue } = form
   const _defKeys = getFieldValue('_defKeys')
+
+  const onMoveUpItem = (index: number) => {
+    const array = [..._defKeys]
+    const origItem = array[index]
+    const upItem = array[index - 1]
+    array[index] = upItem
+    array[index - 1] = origItem
+    setFieldsValue({
+      _defKeys: array
+    })
+  }
+
+  const onMoveDownItem = (index: number) => {
+    const array = [..._defKeys]
+    const origItem = array[index]
+    const upItem = array[index + 1]
+    array[index] = upItem
+    array[index + 1] = origItem
+    setFieldsValue({
+      _defKeys: array
+    })
+  }
+
   return (
     <>
       {_defKeys.map((def: ISchemaFieldDefKeys, index: number) => (
@@ -42,11 +65,32 @@ const FormItems = (props: IProps) => {
                   title=""
                   extra={
                     _defKeys.length > 1 ? (
-                      <Icon
-                        className="dynamic-delete-button"
-                        type="minus-circle-o"
-                        onClick={() => removeField(form, def.key)}
-                      />
+                      <>
+                        <Icon
+                          className="dynamic-delete-button"
+                          type="caret-up"
+                          style={{ ...(index === 0 ? { color: '#ccc' } : {}) }}
+                          onClick={() => onMoveUpItem(index)}
+                        />
+                        &nbsp;&nbsp;
+                        <Icon
+                          className="dynamic-delete-button"
+                          type="caret-down"
+                          style={{
+                            ...(index === _defKeys.length - 1
+                              ? { color: '#ccc' }
+                              : {})
+                          }}
+                          onClick={() => onMoveDownItem(index)}
+                        />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Icon
+                          className="dynamic-delete-button"
+                          type="minus-circle-o"
+                          style={{ color: 'red' }}
+                          onClick={() => removeField(form, def.key)}
+                        />
+                      </>
                     ) : null
                   }
                   style={{ width: '100%' }}
