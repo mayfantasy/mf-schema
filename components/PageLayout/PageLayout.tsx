@@ -223,6 +223,7 @@ const PageLayout = (props: IProps) => {
         >
           <Menu
             mode="inline"
+            theme="dark"
             style={{ height: '100%', borderRight: 0 }}
             defaultSelectedKeys={getDefaultSelectedKeys()}
             defaultOpenKeys={sideNavItems
