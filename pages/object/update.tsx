@@ -16,7 +16,9 @@ import {
   InputNumber,
   Checkbox,
   DatePicker,
-  Typography
+  Typography,
+  Popconfirm,
+  Icon
 } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import {
@@ -332,6 +334,7 @@ const ObjectUpdatePage = () => {
           <Input.TextArea
             style={{ width: '100%' }}
             value={value}
+            autoSize={{ minRows: 8 }}
             onChange={(e: any) => handleFieldChange(e, type, key)}
           />
         )
@@ -465,18 +468,19 @@ const ObjectUpdatePage = () => {
         <br />
         <br />
         <div>
-          <Button
-            type="danger"
-            onClick={() =>
+          <Popconfirm
+            title="Are you sure？"
+            onConfirm={() =>
               deleteCurrentObject(
                 router.query.collection_handle as string,
                 router.query.schema_handle as string,
                 router.query.id as string
               )
             }
+            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
           >
-            Delete Object
-          </Button>
+            <Button type="danger">Delete Object</Button>
+          </Popconfirm>
         </div>
       </Card>
     </div>

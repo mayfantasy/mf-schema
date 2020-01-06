@@ -527,6 +527,7 @@ const SchemaListPage = () => {
                   case ESchemaFieldType.textarea:
                     input = (
                       <Input.TextArea
+                        autoSize={{ minRows: 8 }}
                         style={{ width: '100%' }}
                         value={value}
                         onChange={(e: any) => handleFieldChange(e, type, key)}
