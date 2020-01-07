@@ -13,11 +13,6 @@ export const createCollection = async (
 ) => {
   const clientDB = client(api_key)
 
-  // Check handle uniqueness
-  await clientDB.query(
-    q.Paginate(q.Match(q.Index('get_collection_by_handle'), payload.handle))
-  )
-
   // Create collection
   const collection: any = await clientDB.query(
     q.Create(q.Collection('collection'), {

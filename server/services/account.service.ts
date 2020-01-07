@@ -10,34 +10,44 @@ import { client } from './db/client.db'
 export const createAccount = async (payload: IClientCreateAccountPayload) => {
   const { email, username, password } = payload
 
-  // Create client database
+  // client database params
   const db_id = randomstring.generate(15)
   const db_key = `mf-schema-client-${db_id}`
 
-  await accountDb.query(q.CreateDatabase({ name: db_key }))
-
-  const role = await accountDb.query<any>(
-    q.CreateKey({
-      database: q.Database(db_key),
-      role: 'server'
-    })
+  /**
+   * Step 1:
+   * Create ClientDB and Get Client Database API_KEY
+   */
+  const api_key: string = await accountDb.query(
+    q.Do(
+      /** Create Client Database */
+      q.CreateDatabase({ name: db_key }),
+      /** Create ClientDB Role */
+      q.Select(
+        'secret',
+        q.CreateKey({
+          database: q.Database(db_key),
+          role: 'server'
+        })
+      )
+    )
   )
 
-  const api_key = role.secret
-
-  // Connect to Client database
+  /** Connect client DB */
   const clientDB = client(api_key)
 
+  /**
+   * Step 2:
+   * Setup Collections and Indexes
+   */
   // Create Access Key Collection
   await clientDB.query(q.CreateCollection({ name: 'access_key' }))
-
   await clientDB.query(
     q.CreateIndex({
       name: 'all_access_keys',
       source: q.Collection('access_key')
     })
   )
-
   await clientDB.query(
     q.CreateIndex({
       name: 'get_access_key_by_key',
@@ -53,14 +63,12 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
 
   // Create Collection Collection
   await clientDB.query(q.CreateCollection({ name: 'collection' }))
-
   await clientDB.query(
     q.CreateIndex({
       name: 'all_collections',
       source: q.Collection('collection')
     })
   )
-
   await clientDB.query(
     q.CreateIndex({
       name: 'get_collection_by_handle',
@@ -76,14 +84,12 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
 
   // Create Schema Collection
   await clientDB.query(q.CreateCollection({ name: 'schema' }))
-
   await clientDB.query(
     q.CreateIndex({
       name: 'all_schemas',
       source: q.Collection('schema')
     })
   )
-
   await clientDB.query(
     q.CreateIndex({
       name: 'get_schema_by_handle',
@@ -99,14 +105,12 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
 
   // Create User Collection
   await clientDB.query(q.CreateCollection({ name: 'user' }))
-
   await clientDB.query(
     q.CreateIndex({
       name: 'all_users',
       source: q.Collection('user')
     })
   )
-
   await clientDB.query(
     q.CreateIndex({
       name: 'get_user_by_email',
@@ -119,7 +123,6 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
       unique: true
     })
   )
-
   await clientDB.query(
     q.CreateIndex({
       name: 'get_user_by_email_and_password',
@@ -168,7 +171,10 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
     })
   )
 
-  // Create Acccount
+  /**
+   * Step 3:
+   * Create account
+   */
   const account = await accountDb.query(
     q.Create(q.Collection('account'), {
       data: {
