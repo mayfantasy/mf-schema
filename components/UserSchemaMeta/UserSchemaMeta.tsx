@@ -69,10 +69,20 @@ const UserSchemaMeta = (props: IProps) => {
       {schemaStatus.loading || objectStatus.loading ? (
         <Loading />
       ) : currentSchema && objectList ? (
-        <ObjectsTable
-          currentSchema={currentSchema}
-          objectList={displayObjectList}
-        />
+        <Descriptions layout="vertical" bordered size="small">
+          <Descriptions.Item
+            label={
+              <div>
+                <FormFieldLabel>{schemaHandle}</FormFieldLabel>
+              </div>
+            }
+          >
+            <ObjectsTable
+              currentSchema={currentSchema}
+              objectList={displayObjectList}
+            />
+          </Descriptions.Item>
+        </Descriptions>
       ) : (
         <Descriptions layout="vertical" bordered size="small">
           <Descriptions.Item
