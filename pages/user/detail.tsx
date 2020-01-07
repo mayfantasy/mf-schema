@@ -2,14 +2,19 @@ import PageHeader from '../../components/PageHeader/PageHeader'
 import { RequestStatus } from '../../helpers/request'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { IUserWithoutPassword } from '../../types/user.type'
+import {
+  IUserWithoutPassword,
+  IUserSchemaMetaItem
+} from '../../types/user.type'
 import { getUserByIdRequest } from '../../requests/user.request'
 import PageLayout from '../../components/PageLayout/PageLayout'
 import { Alert, Button, Descriptions } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import UserSchemaMeta from '../../components/UserSchemaMeta/UserSchemaMeta'
 
 const UserDetailPage = () => {
+  /** User Request */
   const userRequestStatus = new RequestStatus()
   const [userStatus, setUserStatus] = useState(userRequestStatus.status)
   const [user, setUser] = useState<IUserWithoutPassword | null>(null)
@@ -109,24 +114,51 @@ const UserDetailPage = () => {
         {
           <>
             <br />
-            {meta && Object.keys(meta).length && (
-              <Descriptions layout="vertical" bordered size="small">
-                {Object.keys(meta).map((key: string) => {
-                  return (
-                    <Descriptions.Item
-                      label={
-                        <div>
-                          <FormFieldLabel>{key}</FormFieldLabel>
-                        </div>
-                      }
-                      key={key}
-                    >
-                      {JSON.stringify((meta as any)[key], null, ' ')}
-                    </Descriptions.Item>
+            {meta &&
+              Object.keys(meta).length &&
+              Object.keys(meta).map((key: any) => {
+                if (
+                  meta[key].length &&
+                  meta[key].every(
+                    (o: any) => o.schema_handle && o.collection_handle && o.id
                   )
-                })}
-              </Descriptions>
-            )}
+                ) {
+                  const schemaHandle = meta[key][0].schema_handle
+                  const collectionHandle = meta[key][0].collection_handle
+                  const objectIds = meta[key].map(
+                    (item: IUserSchemaMetaItem) => item.id
+                  )
+                  return (
+                    <>
+                      <UserSchemaMeta
+                        key={key}
+                        collectionHandle={collectionHandle}
+                        schemaHandle={schemaHandle}
+                        objectIds={objectIds}
+                      />
+                      <br />
+                    </>
+                  )
+                } else {
+                  return (
+                    <>
+                      <Descriptions layout="vertical" bordered size="small">
+                        <Descriptions.Item
+                          label={
+                            <div>
+                              <FormFieldLabel>{key}</FormFieldLabel>
+                            </div>
+                          }
+                          key={key}
+                        >
+                          {JSON.stringify((meta as any)[key], null, ' ')}
+                        </Descriptions.Item>
+                      </Descriptions>
+                      <br />
+                    </>
+                  )
+                }
+              })}
           </>
         }
       </div>

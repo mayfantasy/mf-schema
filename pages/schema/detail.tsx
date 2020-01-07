@@ -36,6 +36,7 @@ import {
 } from '../../requests/object.request'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import ObjectsTable from '../../components/ObjectsTable/ObjectsTable'
 
 interface IFormStructureItem {
   value: any
@@ -326,18 +327,6 @@ const SchemaListPage = () => {
     }
 
     /**
-     * Retrieve fields that tag as show in list
-     */
-    const getShownFields = () => {
-      if (currentSchema.def) {
-        return currentSchema.def
-          .filter((field) => field.show)
-          .map((field) => field.key)
-      }
-      return []
-    }
-
-    /**
      * Set Page content
      */
     content = (
@@ -586,46 +575,9 @@ const SchemaListPage = () => {
         {!!objectList.length && (
           <>
             <br />
-            <Table
-              dataSource={objectList}
-              columns={[
-                {
-                  title: 'Handle',
-                  dataIndex: '_handle',
-                  key: '_handle',
-                  render: (handle: string, row: any) => (
-                    <Link
-                      href={`/object/update?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
-                    >
-                      {handle}
-                    </Link>
-                  )
-                },
-                ...getShownFields().map((f) => ({
-                  title: f,
-                  dataIndex: f,
-                  key: f,
-                  render: (value: any) => {
-                    return typeof value === 'boolean' ? (
-                      value ? (
-                        <Icon
-                          type="check-circle"
-                          theme="twoTone"
-                          twoToneColor="#52c41a"
-                        />
-                      ) : (
-                        <Icon
-                          type="close-circle"
-                          theme="twoTone"
-                          twoToneColor="#eb2f96"
-                        />
-                      )
-                    ) : (
-                      value
-                    )
-                  }
-                }))
-              ]}
+            <ObjectsTable
+              currentSchema={currentSchema}
+              objectList={objectList}
             />
           </>
         )}

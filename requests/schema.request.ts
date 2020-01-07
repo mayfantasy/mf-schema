@@ -20,3 +20,7 @@ export const getSchemaListRequest = () => {
 export const getSchemaByIdRequest = (id: string) => {
   return api.get(`/schema/get/${id}`)
 }
+
+export const getSchemaByHandleRequest = (handle: string) => {
+  return api.get(`/schema/get/handle/${handle}`)
+}

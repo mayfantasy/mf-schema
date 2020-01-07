@@ -102,3 +102,25 @@ export const getSchemaById = async (api_key: string, id: string) => {
     ...schema.data
   }
 }
+
+export const getSchemaByHandle = async (api_key: string, handle: string) => {
+  const clientDB = client(api_key)
+  const schema: any = await clientDB.query(
+    q.Match(q.Index('get_schema_by_handle'), [handle])
+  )
+
+  const collectionId = schema.data.collection_id
+
+  const collection: any = await clientDB.query(
+    q.Get(q.Ref(q.Collection('collection'), schema.data.collection_id))
+  )
+
+  return {
+    id: schema.ref.id,
+    collection: {
+      id: collectionId,
+      ...collection.data
+    },
+    ...schema.data
+  }
+}

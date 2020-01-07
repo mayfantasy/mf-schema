@@ -19,7 +19,8 @@ import {
   createSchemaRoute,
   getSchemaListRoute,
   getSchemaByIdRoute,
-  updateSchemaRoute
+  updateSchemaRoute,
+  getSchemaByHandleRoute
 } from './routes/schema.route'
 import {
   createObjectRoute,
@@ -84,6 +85,7 @@ app.prepare().then(() => {
   router.get('/api/schema/list', getSchemaListRoute)
   router.put('/api/schema/update', updateSchemaRoute)
   router.get('/api/schema/get/:id', getSchemaByIdRoute)
+  router.get('/api/schema/get/handle/:id', getSchemaByHandleRoute)
 
   // Image Upload
   router.post('/api/upload/image', uploadImageRoute)

@@ -10,6 +10,12 @@ export interface IUser {
   profile_img: string
 }
 
+export interface IUserSchemaMetaItem {
+  schema_handle: string
+  collection_handle: string
+  id: string
+}
+
 export interface IUpdateUserInfoPayload {
   id: string
   first_name?: string

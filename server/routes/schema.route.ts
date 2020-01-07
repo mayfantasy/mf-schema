@@ -11,7 +11,8 @@ import {
   createSchema,
   getSchemaList,
   getSchemaById,
-  updateSchema
+  updateSchema,
+  getSchemaByHandle
 } from '../services/schema.service'
 import { getAuth, testHandle } from './helper'
 
@@ -54,7 +55,6 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
 }
 
 export const getSchemaListRoute = async (ctx: Koa.Context) => {
-  console.log('s1')
   const auth = (await getAuth(ctx)) || ({} as any)
   const schemas = await getSchemaList(auth.api_key)
   ctx.body = {
@@ -63,10 +63,18 @@ export const getSchemaListRoute = async (ctx: Koa.Context) => {
 }
 
 export const getSchemaByIdRoute = async (ctx: Koa.Context) => {
-  console.log('s2')
   const auth = (await getAuth(ctx)) || ({} as any)
   const { id } = ctx.params
   const schema = await getSchemaById(auth.api_key, id)
+  ctx.body = {
+    result: schema
+  }
+}
+
+export const getSchemaByHandleRoute = async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const { handle } = ctx.params
+  const schema = await getSchemaByHandle(auth.api_key, handle)
   ctx.body = {
     result: schema
   }
