@@ -3,12 +3,12 @@ import faunadb, { query as q } from 'faunadb'
 import { IAccount } from '../../types/account.type'
 import { client } from './db/client.db'
 
-interface IObjectServiceMeta {
+export interface IObjectServiceMeta {
   collection_handle: string
   schema_handle: string
 }
 
-interface IObjectServiceMetaWithID {
+export interface IObjectServiceMetaWithID {
   collection_handle: string
   schema_handle: string
   id: string

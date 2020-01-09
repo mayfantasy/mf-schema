@@ -52,6 +52,7 @@ import {
   sendRecoverEmailRoute,
   resetPasswordRoute
 } from './routes/user-auth.route'
+import { sendEmailRoute } from './routes/email.route'
 
 const port = parseInt(process.env.PORT || '3001', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -131,6 +132,9 @@ app.prepare().then(() => {
   router.post('/api/user/reset-email', resetUserEmailRoute)
   router.post('/api/user/send-recover-email', sendRecoverEmailRoute)
   router.post('/api/user/reset-password', resetPasswordRoute)
+
+  // Email
+  router.post('/api/email/send', sendEmailRoute)
 
   // SSR Pages
   router.get('*', async (ctx) => {
