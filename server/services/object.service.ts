@@ -20,8 +20,8 @@ const validateCollectionAndSchemaHandles = async (
   schema_handle: string
 ) => {
   // Check collection handle
-  await client.query(
-    q.Paginate(q.Match(q.Index('get_collection_by_handle'), collection_handle))
+  const collection: any = await client.query(
+    q.Get(q.Match(q.Index('get_collection_by_handle'), collection_handle))
   )
 
   // Check schema handle
@@ -29,7 +29,7 @@ const validateCollectionAndSchemaHandles = async (
     q.Get(q.Match(q.Index('get_schema_by_handle'), schema_handle))
   )
 
-  return schema
+  return { schema, collection }
 }
 
 const validateObjectHandle = async (
@@ -106,7 +106,7 @@ export const getObjectById = async (
   const { collection_handle, schema_handle, id } = meta
   const clientDB = client(api_key)
 
-  const schema = await validateCollectionAndSchemaHandles(
+  const schemaAndCollection = await validateCollectionAndSchemaHandles(
     clientDB,
     collection_handle,
     schema_handle
@@ -120,8 +120,12 @@ export const getObjectById = async (
   return {
     id: object.ref.id,
     schema: {
-      id: schema.ref.id,
-      ...schema.data
+      id: schemaAndCollection.schema.ref.id,
+      ...schemaAndCollection.schema.data,
+      collection: {
+        id: schemaAndCollection.collection.ref.id,
+        ...schemaAndCollection.collection.data
+      }
     },
     ...object.data
   }
@@ -135,7 +139,7 @@ export const updateObjectById = async (
   const clientDB = client(api_key)
   const { collection_handle, schema_handle, id } = meta
 
-  const schema = await validateCollectionAndSchemaHandles(
+  const schemaAndCollection = await validateCollectionAndSchemaHandles(
     clientDB,
     collection_handle,
     schema_handle
@@ -152,8 +156,12 @@ export const updateObjectById = async (
   return {
     id: object.ref.id,
     schema: {
-      id: schema.ref.id,
-      ...schema.data
+      id: schemaAndCollection.schema.ref.id,
+      ...schemaAndCollection.schema.data,
+      collection: {
+        id: schemaAndCollection.collection.ref.id,
+        ...schemaAndCollection.collection.data
+      }
     },
     ...object.data
   }
@@ -166,7 +174,7 @@ export const deleteObjectById = async (
   const clientDB = client(api_key)
   const { collection_handle, schema_handle, id } = meta
 
-  const schema = await validateCollectionAndSchemaHandles(
+  const schemaAndCollection = await validateCollectionAndSchemaHandles(
     clientDB,
     collection_handle,
     schema_handle
@@ -180,8 +188,12 @@ export const deleteObjectById = async (
   return {
     id: object.ref.id,
     schema: {
-      id: schema.ref.id,
-      ...schema.data
+      id: schemaAndCollection.schema.ref.id,
+      ...schemaAndCollection.schema.data,
+      collection: {
+        id: schemaAndCollection.collection.ref.id,
+        ...schemaAndCollection.collection.data
+      }
     },
     ...object.data
   }

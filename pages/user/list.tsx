@@ -10,6 +10,7 @@ import {
 } from '../../requests/user.request'
 import { IUser } from '../../types/user.type'
 import Link from 'next/link'
+import UserTable from '../../components/UserTable/UserTable'
 
 const UserListPage = () => {
   const userRequestStatus = new RequestStatus()
@@ -71,22 +72,6 @@ const UserListPage = () => {
           </div>
         )
       }
-    },
-    {
-      title: 'Actions',
-      dataIndex: 'id',
-      key: 'action',
-      render: (id: string) => (
-        <div>
-          <Button
-            type="danger"
-            disabled={deleteUserStatus.loading || true}
-            onClick={() => deleteUser(id)}
-          >
-            Delete
-          </Button>
-        </div>
-      )
     }
   ]
 
@@ -115,7 +100,27 @@ const UserListPage = () => {
         {userStatus.loading || deleteUserStatus.loading ? (
           <Loading />
         ) : (
-          <Table dataSource={users} columns={columns} />
+          <UserTable
+            users={users}
+            extraColumns={[
+              {
+                title: 'Actions',
+                dataIndex: 'id',
+                key: 'action',
+                render: (id: string) => (
+                  <div>
+                    <Button
+                      type="danger"
+                      disabled={deleteUserStatus.loading || true}
+                      onClick={() => deleteUser(id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )
+              }
+            ]}
+          />
         )}
       </div>
     </PageLayout>

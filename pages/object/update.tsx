@@ -18,7 +18,8 @@ import {
   DatePicker,
   Typography,
   Popconfirm,
-  Icon
+  Icon,
+  Collapse
 } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import {
@@ -32,6 +33,7 @@ import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { RequestStatus } from '../../helpers/request'
 import StringArray from '../../components/StringArray/StringArray'
+import ObjectUsers from '../../components/ObjectUsers/ObjectUsers'
 
 interface IFormStructure {
   [key: string]: any
@@ -40,102 +42,17 @@ interface IFormStructure {
 const ObjectUpdatePage = () => {
   const router = useRouter()
   const [form, setForm] = useState<IFormStructure>({})
+  const [handle, setHandle] = useState('')
 
-  // Current Object
+  /**
+   * Get current object
+   */
+
   const [currentObject, setCurrentObject] = useState<IObject | null>(null)
   const currentObjectRequestStatus = new RequestStatus()
   const [getCurrentObjectStatus, setGetCurrentObjectStatus] = useState(
     currentObjectRequestStatus.status
   )
-
-  // Current Schema
-  const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
-  const currentSchemaRequestStatus = new RequestStatus()
-  const [getCurrentSchemaStatus, setGetCurrentSchemaStatus] = useState(
-    currentSchemaRequestStatus.status
-  )
-
-  // Update
-  const updateCurrentObjectRequestStatus = new RequestStatus()
-  const [updateCurrentObjectStatus, setUpdateCurrentObjectStatus] = useState(
-    updateCurrentObjectRequestStatus.status
-  )
-
-  // Delete
-  const deleteCurrentObjectRequestStatus = new RequestStatus()
-  const [deleteObjectStatus, setDeleteObjectStatus] = useState(
-    deleteCurrentObjectRequestStatus.status
-  )
-  const [handle, setHandle] = useState('')
-
-  /**
-   *
-   * @param collection_handle
-   * @param schema_handle
-   * @param id
-   * Delete object request
-   */
-  const deleteCurrentObject = (
-    collection_handle: string,
-    schema_handle: string,
-    id: string
-  ) => {
-    setDeleteObjectStatus(deleteCurrentObjectRequestStatus.setLoadingStatus())
-    if (currentObject) {
-      let schemaId = currentObject.schema.id
-      deleteObjectByIdRequest(collection_handle, schema_handle, id)
-        .then((res) => {
-          setDeleteObjectStatus(
-            deleteCurrentObjectRequestStatus.setSuccessStatus()
-          )
-          router.push(`/schema/detail?id=${schemaId}`)
-        })
-        .catch((err) => {
-          setDeleteObjectStatus(
-            deleteCurrentObjectRequestStatus.setErrorStatus(err)
-          )
-        })
-    }
-  }
-
-  /**
-   *
-   * @param collection_handle
-   * @param schema_handle
-   * @param id
-   * Delete object request
-   */
-  const updateCurrentObject = (
-    collection_handle: string,
-    schema_handle: string,
-    id: string,
-    payload: any
-  ) => {
-    setUpdateCurrentObjectStatus(
-      updateCurrentObjectRequestStatus.setLoadingStatus()
-    )
-    if (currentObject) {
-      updateObjectByIdRequest(collection_handle, schema_handle, id, payload)
-        .then((res) => {
-          setUpdateCurrentObjectStatus(
-            updateCurrentObjectRequestStatus.setSuccessStatus()
-          )
-        })
-        .catch((err) => {
-          setUpdateCurrentObjectStatus(
-            updateCurrentObjectRequestStatus.setErrorStatus(err)
-          )
-        })
-    }
-  }
-
-  /**
-   *
-   * @param collection_handle
-   * @param schema_handle
-   * @param id
-   * Get current object request
-   */
   const getCurrentObject = (
     collection_handle: string,
     schema_handle: string,
@@ -173,6 +90,68 @@ const ObjectUpdatePage = () => {
           currentObjectRequestStatus.setErrorStatus(err)
         )
       })
+  }
+
+  /**
+   * Update object
+   */
+  const updateCurrentObjectRequestStatus = new RequestStatus()
+  const [updateCurrentObjectStatus, setUpdateCurrentObjectStatus] = useState(
+    updateCurrentObjectRequestStatus.status
+  )
+  const updateCurrentObject = (
+    collection_handle: string,
+    schema_handle: string,
+    id: string,
+    payload: any
+  ) => {
+    setUpdateCurrentObjectStatus(
+      updateCurrentObjectRequestStatus.setLoadingStatus()
+    )
+    if (currentObject) {
+      updateObjectByIdRequest(collection_handle, schema_handle, id, payload)
+        .then((res) => {
+          setUpdateCurrentObjectStatus(
+            updateCurrentObjectRequestStatus.setSuccessStatus()
+          )
+        })
+        .catch((err) => {
+          setUpdateCurrentObjectStatus(
+            updateCurrentObjectRequestStatus.setErrorStatus(err)
+          )
+        })
+    }
+  }
+
+  /**
+   * Delete object
+   */
+  const deleteCurrentObjectRequestStatus = new RequestStatus()
+  const [deleteObjectStatus, setDeleteObjectStatus] = useState(
+    deleteCurrentObjectRequestStatus.status
+  )
+
+  const deleteCurrentObject = (
+    collection_handle: string,
+    schema_handle: string,
+    id: string
+  ) => {
+    setDeleteObjectStatus(deleteCurrentObjectRequestStatus.setLoadingStatus())
+    if (currentObject) {
+      let schemaId = currentObject.schema.id
+      deleteObjectByIdRequest(collection_handle, schema_handle, id)
+        .then((res) => {
+          setDeleteObjectStatus(
+            deleteCurrentObjectRequestStatus.setSuccessStatus()
+          )
+          router.push(`/schema/detail?id=${schemaId}`)
+        })
+        .catch((err) => {
+          setDeleteObjectStatus(
+            deleteCurrentObjectRequestStatus.setErrorStatus(err)
+          )
+        })
+    }
   }
 
   useEffect(() => {
@@ -422,67 +401,77 @@ const ObjectUpdatePage = () => {
         <Alert message="Object updated successfully." type="success" closable />
       )}
       <br />
-      <Card
-        title="Update Object"
-        extra={
-          <Button
-            type="primary"
-            onClick={handleUpdateObject}
-            disabled={!handle}
+      <Collapse bordered={false}>
+        <Collapse.Panel header="Update Object" key="1">
+          <Card
+            title="Update Object"
+            extra={
+              <Button
+                type="primary"
+                onClick={handleUpdateObject}
+                disabled={!handle}
+              >
+                Save Object
+              </Button>
+            }
           >
-            Save Object
-          </Button>
-        }
-      >
-        <Row>
-          <Col span={12}>
-            <FormFieldLabel>Handle</FormFieldLabel>
-            <Input
-              value={handle}
-              onChange={(e: any) => setHandle(e.target.value)}
-            />
+            <Row>
+              <Col span={12}>
+                <FormFieldLabel>Handle</FormFieldLabel>
+                <Input
+                  value={handle}
+                  onChange={(e: any) => setHandle(e.target.value)}
+                />
+                <br />
+                <Typography.Text type="secondary">
+                  <small>Unique Object Handle</small>
+                </Typography.Text>
+              </Col>
+            </Row>
             <br />
-            <Typography.Text type="secondary">
-              <small>Unique Object Handle</small>
-            </Typography.Text>
-          </Col>
-        </Row>
-        <br />
-        <br />
-        {Object.keys(form).map((key: string) => {
-          const foundSchemaDef = currentObject.schema.def.find(
-            (d: ISchemaFieldDef) => {
-              return d.key === key
-            }
-          )
-          const type = foundSchemaDef ? foundSchemaDef.type : null
-          const value = form[key]
-          const helper = foundSchemaDef ? foundSchemaDef.helper : null
-          const grid = foundSchemaDef ? foundSchemaDef.grid : null
-          const name = foundSchemaDef ? foundSchemaDef.name : null
-          return (
-            !!type && findFormFieldByKey(type, key, value, name, grid, helper)
-          )
-        })}
-        <br />
-        <br />
-        <br />
-        <div>
-          <Popconfirm
-            title="Are you sure？"
-            onConfirm={() =>
-              deleteCurrentObject(
-                router.query.collection_handle as string,
-                router.query.schema_handle as string,
-                router.query.id as string
+            <br />
+            {Object.keys(form).map((key: string) => {
+              const foundSchemaDef = currentObject.schema.def.find(
+                (d: ISchemaFieldDef) => {
+                  return d.key === key
+                }
               )
-            }
-            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-          >
-            <Button type="danger">Delete Object</Button>
-          </Popconfirm>
-        </div>
-      </Card>
+              const type = foundSchemaDef ? foundSchemaDef.type : null
+              const value = form[key]
+              const helper = foundSchemaDef ? foundSchemaDef.helper : null
+              const grid = foundSchemaDef ? foundSchemaDef.grid : null
+              const name = foundSchemaDef ? foundSchemaDef.name : null
+              return (
+                !!type &&
+                findFormFieldByKey(type, key, value, name, grid, helper)
+              )
+            })}
+            <br />
+            <br />
+            <br />
+            <div>
+              <Popconfirm
+                title="Are you sure？"
+                onConfirm={() =>
+                  deleteCurrentObject(
+                    router.query.collection_handle as string,
+                    router.query.schema_handle as string,
+                    router.query.id as string
+                  )
+                }
+                icon={
+                  <Icon type="question-circle-o" style={{ color: 'red' }} />
+                }
+              >
+                <Button type="danger">Delete Object</Button>
+              </Popconfirm>
+            </div>
+          </Card>
+        </Collapse.Panel>
+      </Collapse>
+      <div>
+        <ObjectUsers currentObject={currentObject} />
+      </div>
     </div>
   )
 }

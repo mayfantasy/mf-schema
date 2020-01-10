@@ -1,3 +1,8 @@
+export interface IUserMetaItem {
+  schema_handle: string
+  collection_handle: string
+  id: string
+}
 export interface IUser {
   id: string
   first_name: string
@@ -8,6 +13,9 @@ export interface IUser {
   password: string
   phone: string
   profile_img: string
+  meta?: {
+    [key: string]: IUserMetaItem[]
+  }
 }
 
 export interface IUserSchemaMetaItem {
