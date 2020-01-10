@@ -180,6 +180,8 @@ const PageLayout = (props: IProps) => {
     return []
   }
 
+  const $headerHeight = '64px'
+
   return (
     <Layout className="mf-page-layout">
       <Header className="header" style={{ background: '#fff' }}>
@@ -199,7 +201,7 @@ const PageLayout = (props: IProps) => {
           <Menu
             mode="horizontal"
             defaultSelectedKeys={['2']}
-            style={{ lineHeight: '64px' }}
+            style={{ lineHeight: $headerHeight }}
           >
             {headerItems.map((item) => (
               <Menu.Item key={item.key}>
@@ -218,7 +220,7 @@ const PageLayout = (props: IProps) => {
       <Layout>
         <Sider
           width={user ? 200 : 0}
-          style={{ background: '#000', height: '100vh' }}
+          style={{ background: '#000', height: 'auto' }}
           theme="dark"
         >
           <Menu
@@ -272,7 +274,9 @@ const PageLayout = (props: IProps) => {
               background: '#fff',
               padding: 24,
               margin: 0,
-              minHeight: 280
+              minHeight: 280,
+              height: `calc(100vh - ${$headerHeight} - 53px - 24px)`,
+              overflow: 'scroll'
             }}
           >
             {children}
