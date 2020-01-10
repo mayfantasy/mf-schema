@@ -34,6 +34,7 @@ import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { RequestStatus } from '../../helpers/request'
 import StringArray from '../../components/StringArray/StringArray'
 import ObjectUsers from '../../components/ObjectUsers/ObjectUsers'
+import RichTextField from '../../components/RichTextField/RichTextField'
 
 interface IFormStructure {
   [key: string]: any
@@ -260,6 +261,9 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.string_array:
         value = e
         break
+      case ESchemaFieldType.rich_text:
+        value = e
+        break
       default:
         value = e.target.value
     }
@@ -341,7 +345,16 @@ const ObjectUpdatePage = () => {
           <StringArray
             value={value}
             onChange={(v: string[]) => {
-              console.log(v)
+              handleFieldChange(v, type, key)
+            }}
+          />
+        )
+        break
+      case ESchemaFieldType.rich_text:
+        input = (
+          <RichTextField
+            value={value}
+            onChange={(v: string) => {
               handleFieldChange(v, type, key)
             }}
           />

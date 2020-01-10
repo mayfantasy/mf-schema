@@ -37,6 +37,8 @@ import {
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import ObjectsTable from '../../components/ObjectsTable/ObjectsTable'
+import StringArray from '../../components/StringArray/StringArray'
+import RichTextField from '../../components/RichTextField/RichTextField'
 
 interface IFormStructureItem {
   value: any
@@ -206,6 +208,10 @@ const SchemaListPage = () => {
             break
           case ESchemaFieldType.image:
             value = ''
+          case ESchemaFieldType.string_array:
+            value = ''
+          case ESchemaFieldType.rich_text:
+            value = ''
           default:
             value = ''
         }
@@ -244,6 +250,10 @@ const SchemaListPage = () => {
           value = e
           break
         case ESchemaFieldType.image:
+          value = e
+        case ESchemaFieldType.string_array:
+          value = e
+        case ESchemaFieldType.rich_text:
           value = e
           break
         default:
@@ -538,6 +548,27 @@ const SchemaListPage = () => {
                       <ImageUploader
                         value={value}
                         onChange={(e: any) => handleFieldChange(e, type, key)}
+                      />
+                    )
+                    break
+                  case ESchemaFieldType.string_array:
+                    input = (
+                      <StringArray
+                        value={value}
+                        onChange={(v: string[]) => {
+                          console.log(v)
+                          handleFieldChange(v, type, key)
+                        }}
+                      />
+                    )
+                    break
+                  case ESchemaFieldType.rich_text:
+                    input = (
+                      <RichTextField
+                        value={value}
+                        onChange={(v: string) => {
+                          handleFieldChange(v, type, key)
+                        }}
                       />
                     )
                     break

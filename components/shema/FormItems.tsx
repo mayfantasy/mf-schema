@@ -58,7 +58,10 @@ const FormItems = (props: IProps) => {
         <Row key={index} style={{ marginBottom: '10px' }}>
           <Col span={24}>
             <Collapse defaultActiveKey={['1']}>
-              <Collapse.Panel header={`Field Definition [${index}]`} key="1">
+              <Collapse.Panel
+                header={`Field Definition [${index + 1}]`}
+                key="1"
+              >
                 <Card
                   bordered={false}
                   size="small"
