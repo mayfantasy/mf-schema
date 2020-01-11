@@ -16,10 +16,14 @@ import {
   IUserSendRecoverEmailPayload,
   IUserResetPasswordPayload
 } from '../../types/user.type'
+import { userLoginPayloadSchema } from '../validators/user-auth.validator'
 
 export const loginUserRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ILoginPayload
+
+  /** Validation */
+  userLoginPayloadSchema.validate(payload)
   const user = await loginUser(auth.api_key, payload)
 
   ctx.body = {
