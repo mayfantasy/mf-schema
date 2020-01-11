@@ -29,10 +29,27 @@ const UserTable = (props: IProps) => {
       }
     },
     {
+      title: 'Username',
+      key: 'username',
+      dataIndex: 'username'
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (user: IUser) => {
+        return (
+          <div>
+            <a href={`mailto:${user.email}?Subject=Hello`}>{user.email}</a>
+          </div>
+        )
+      }
+    },
+    {
       title: 'Phone',
       key: 'phone',
       dataIndex: 'phone'
     },
+
     ...(extraColumns ? extraColumns : [])
   ]
   return <Table dataSource={users} columns={columns} />
