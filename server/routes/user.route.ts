@@ -15,6 +15,7 @@ import {
   updateUserMeta,
   deleteUserMeta
 } from '../services/user.service'
+import Joi from 'joi'
 import { ILoginPayload } from '../../types/auth.type'
 import {
   createUserPayloadSchema,
@@ -28,7 +29,7 @@ export const createUserRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as ICreateUserPayload
 
   /** Validation */
-  createUserPayloadSchema.validate(payload)
+  Joi.validate(payload, createUserPayloadSchema)
 
   const user = await createUser(auth.api_key, payload)
 
@@ -66,7 +67,7 @@ export const updateUserRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as IUpdateUserInfoPayload
 
   /** Validation */
-  updateUserPayloadSchema.validate(payload)
+  Joi.validate(payload, updateUserPayloadSchema)
 
   const user = await updateUser(auth.api_key, payload)
   ctx.body = {
@@ -96,7 +97,7 @@ export const updateUserMetaRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as IUpdateUserMetaPayload
 
   /** Validation */
-  updateUserMetaPayloadSchema.validate(payload)
+  Joi.validate(payload, updateUserMetaPayloadSchema)
 
   if (id) {
     const user = await updateUserMeta(auth.api_key, id, payload)
@@ -115,7 +116,8 @@ export const deleteUserMetaItemRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as IDeleteUserMetaItemPayload
 
   /** Validation */
-  deleteUserMetaPayloadSchema.validate(payload)
+  Joi.validate(payload, deleteUserMetaPayloadSchema)
+
   if (id) {
     const user = await deleteUserMeta(auth.api_key, id, payload)
 

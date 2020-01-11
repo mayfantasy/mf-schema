@@ -1,6 +1,7 @@
 import Koa from 'koa'
 import { getAuth } from './helper'
 import { ILoginPayload } from '../../types/auth.type'
+import Joi from 'joi'
 import {
   loginUser,
   loginUserWithToken,
@@ -23,7 +24,7 @@ export const loginUserRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as ILoginPayload
 
   /** Validation */
-  userLoginPayloadSchema.validate(payload)
+  Joi.validate(payload, userLoginPayloadSchema)
   const user = await loginUser(auth.api_key, payload)
 
   ctx.body = {

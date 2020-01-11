@@ -207,7 +207,7 @@ const CreateUserPage = (props: IProps) => {
         {userStatus.loading ? (
           <Loading />
         ) : userStatus.success ? (
-          <div style={{ color: 'green' }}>AccessKey created successfully.</div>
+          <div style={{ color: 'green' }}>User created successfully.</div>
         ) : (
           <div style={{ width: '70%' }}>
             <CreateUserForm form={form} handleSubmit={handleSubmit} />
