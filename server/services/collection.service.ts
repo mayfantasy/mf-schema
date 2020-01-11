@@ -39,3 +39,14 @@ export const getCollectionList = async (api_key: string) => {
     ...c.data
   }))
 }
+
+export const getCollectionById = async (api_key: string, id: string) => {
+  const clientDB = client(api_key)
+  const collection: any = await clientDB.query(
+    q.Get(q.Ref(q.Collection('collection'), id))
+  )
+  return {
+    id: collection.ref.id,
+    ...collection.data
+  }
+}

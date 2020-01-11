@@ -13,7 +13,8 @@ import { createAccountRoute } from './routes/account.route'
 import { loginRoute, loginWithTokenRoute } from './routes/auth.route'
 import {
   createCollectionRoute,
-  getCollectionListRoute
+  getCollectionListRoute,
+  getCollectionByIdRoute
 } from './routes/collection.route'
 import {
   createSchemaRoute,
@@ -80,6 +81,7 @@ app.prepare().then(() => {
   // Collection
   router.post('/api/collection/create', createCollectionRoute)
   router.get('/api/collection/list', getCollectionListRoute)
+  router.get('/api/collection/get/:id', getCollectionByIdRoute)
 
   // Schema
   router.post('/api/schema/create', createSchemaRoute)

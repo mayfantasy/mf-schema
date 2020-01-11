@@ -6,7 +6,8 @@ import { IBasicAccountInfo } from '../../types/account.type'
 import { ICreateCollectionPayload } from '../../types/collection.type'
 import {
   createCollection,
-  getCollectionList
+  getCollectionList,
+  getCollectionById
 } from '../services/collection.service'
 import { getAuth, testHandle } from './helper'
 import { handleRxp } from '../../helpers/utils.helper'
@@ -29,5 +30,14 @@ export const getCollectionListRoute = async (ctx: Koa.Context) => {
   const collections = await getCollectionList(auth.api_key)
   ctx.body = {
     result: collections
+  }
+}
+
+export const getCollectionByIdRoute = async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const id = ctx.params.id
+  const collection = await getCollectionById(auth.api_key, id)
+  ctx.body = {
+    result: collection
   }
 }

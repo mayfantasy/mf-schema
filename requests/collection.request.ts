@@ -9,3 +9,7 @@ export const createCollectionRequest = (payload: ICreateCollectionPayload) => {
 export const getCollectionListRequest = () => {
   return api.get('/collection/list')
 }
+
+export const getCollectionByIdRequest = (id: string) => {
+  return api.get(`/collection/get/${id}`)
+}

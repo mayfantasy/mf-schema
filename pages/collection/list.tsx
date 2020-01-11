@@ -4,12 +4,23 @@ import { getCollectionListRequest } from '../../requests/collection.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
 import { Alert, Table } from 'antd'
+import { ColumnProps } from 'antd/lib/table'
+import { ICollection } from '../../types/collection.type'
+import Link from 'next/link'
 
-const columns = [
+const columns: ColumnProps<ICollection>[] = [
   {
     title: 'Handle',
-    dataIndex: 'handle',
-    key: 'handle'
+    key: 'handle',
+    render: (collection: ICollection) => {
+      return (
+        <div>
+          <Link href={`/collection/detail?id=${collection.id}`}>
+            <a>{collection.name}</a>
+          </Link>
+        </div>
+      )
+    }
   },
   {
     title: 'Name',
