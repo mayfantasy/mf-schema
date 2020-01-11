@@ -2,7 +2,8 @@ import { api } from '.'
 import { ILoginPayload } from '../types/auth.type'
 import {
   ICreateSchemaPayload,
-  IUpdateSchemaPayload
+  IUpdateSchemaPayload,
+  ISchemaListQuery
 } from '../types/schema.type'
 
 export const createSchemaRequest = (payload: ICreateSchemaPayload) => {
@@ -13,8 +14,10 @@ export const updateSchemaRequest = (payload: IUpdateSchemaPayload) => {
   return api.put('/schema/update', payload)
 }
 
-export const getSchemaListRequest = () => {
-  return api.get('/schema/list')
+export const getSchemaListRequest = (query: ISchemaListQuery) => {
+  return api.get('/schema/list', {
+    params: query
+  })
 }
 
 export const getSchemaByIdRequest = (id: string) => {

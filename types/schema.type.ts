@@ -65,6 +65,10 @@ export interface IUpdateSchemaPayload {
   def?: ISchemaFieldDef[]
 }
 
+export interface ISchemaListQuery {
+  collection_id?: string
+}
+
 /**
  * payload
  * adjusts special form values structure

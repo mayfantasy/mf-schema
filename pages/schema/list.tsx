@@ -3,10 +3,13 @@ import PageLayout from '../../components/PageLayout/PageLayout'
 import { getSchemaListRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
-import { Alert, Table } from 'antd'
+import { Alert, Table, Select } from 'antd'
 import { ICollection } from '../../types/collection.type'
 import { ISchema } from '../../types/schema.type'
 import Link from 'next/link'
+import { RequestStatus } from '../../helpers/request'
+import { getCollectionListRequest } from '../../requests/collection.request'
+import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 
 const columns = [
   {
@@ -40,35 +43,51 @@ const columns = [
 ]
 
 const SchemaListPage = () => {
-  const [schemaStatus, setSchemaStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  /** Get Schema List*/
+  const schemaListRequest = new RequestStatus()
+  const [schemaStatus, setSchemaStatus] = useState(schemaListRequest.status)
   const [schemas, setSchemas] = useState([])
-  useEffect(() => {
-    setSchemaStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
-    getSchemaListRequest()
+
+  const getSchemaList = (collection_id: string) => {
+    setSchemaStatus(schemaListRequest.setLoadingStatus())
+    getSchemaListRequest({ collection_id })
       .then((res) => {
-        setSchemaStatus({
-          loading: false,
-          success: true,
-          error: ''
-        })
+        setSchemaStatus(schemaListRequest.setSuccessStatus())
         setSchemas(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus({
-          loading: false,
-          success: false,
-          error: err.message || JSON.stringify(err)
-        })
+        setSchemaStatus(schemaListRequest.setErrorStatus(err))
       })
+  }
+
+  /** Get Collection List */
+  const collectionListRequest = new RequestStatus()
+  const [collectionStatus, setCollectionStatus] = useState(
+    schemaListRequest.status
+  )
+  const [collections, setCollections] = useState<ICollection[]>([])
+
+  const getCollectionList = () => {
+    setCollectionStatus(collectionListRequest.setLoadingStatus())
+    getCollectionListRequest()
+      .then((res) => {
+        setCollectionStatus(collectionListRequest.setSuccessStatus())
+        setCollections(res.data.result)
+      })
+      .catch((err: AxiosError) => {
+        setCollectionStatus(collectionListRequest.setErrorStatus(err))
+      })
+  }
+
+  useEffect(() => {
+    getSchemaList('')
+    getCollectionList()
   }, [])
+
+  const handleSelectCollection = (id: string) => {
+    getSchemaList(id)
+  }
+
   return (
     <PageLayout
       breadCrumb={[
@@ -83,6 +102,32 @@ const SchemaListPage = () => {
         }
       ]}
     >
+      <div>
+        {collectionStatus.loading ? (
+          'Loading Collections...'
+        ) : collectionStatus.error ? (
+          <Alert type="error" message={collectionStatus.error} />
+        ) : (
+          <div>
+            <div>
+              <FormFieldLabel>Filter by Collection</FormFieldLabel>
+            </div>
+            <Select
+              defaultValue=""
+              style={{ width: 300 }}
+              onChange={handleSelectCollection}
+            >
+              <Select.Option value="">All</Select.Option>
+              {collections.map((c) => (
+                <Select.Option key={c.id} value={c.id}>
+                  {c.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        )}
+      </div>
+
       {schemaStatus.error && (
         <Alert message={schemaStatus.error} type="error" closable />
       )}

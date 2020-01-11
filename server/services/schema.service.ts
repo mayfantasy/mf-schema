@@ -4,7 +4,8 @@ import { IAccount } from '../../types/account.type'
 import {
   ICreateSchemaPayload,
   ISchema,
-  IUpdateSchemaPayload
+  IUpdateSchemaPayload,
+  ISchemaListQuery
 } from '../../types/schema.type'
 import { client } from './db/client.db'
 
@@ -51,14 +52,20 @@ export const updateSchema = async (
   }
 }
 
-export const getSchemaList = async (api_key: string) => {
+export const getSchemaList = async (
+  api_key: string,
+  query: ISchemaListQuery
+) => {
   const clientDB = client(api_key)
-  const schemas: any = await clientDB.query(
+  const { collection_id } = query
+
+  const allSchemas: any = await clientDB.query(
     q.Map(
       q.Paginate(q.Match(q.Index('all_schemas'))),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )
+
   const collections: any = await clientDB.query(
     q.Map(
       q.Paginate(q.Match(q.Index('all_collections'))),
@@ -66,14 +73,18 @@ export const getSchemaList = async (api_key: string) => {
     )
   )
 
-  const schemaListData = schemas.data.map((c: any) => ({
-    id: c.ref.id,
-    ...c.data
-  }))
+  const schemaListData = allSchemas.data
+    .map((s: any) => ({
+      id: s.ref.id,
+      ...s.data
+    }))
+    .filter((s: ISchema) => !collection_id || s.collection_id === collection_id)
+
   const collectionListData = collections.data.map((c: any) => ({
     id: c.ref.id,
     ...c.data
   }))
+
   return schemaListData.map((s: any) => ({
     collection:
       collectionListData.find((c: any) => c.id === s.collection_id) || null,

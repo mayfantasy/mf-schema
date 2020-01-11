@@ -5,7 +5,8 @@ import { sign, varify } from '../jwt'
 import { IBasicAccountInfo } from '../../types/account.type'
 import {
   ICreateSchemaPayload,
-  IUpdateSchemaPayload
+  IUpdateSchemaPayload,
+  ISchemaListQuery
 } from '../../types/schema.type'
 import {
   createSchema,
@@ -56,7 +57,9 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
 
 export const getSchemaListRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
-  const schemas = await getSchemaList(auth.api_key)
+  const query = ctx.query as ISchemaListQuery
+
+  const schemas = await getSchemaList(auth.api_key, query)
   ctx.body = {
     result: schemas
   }
