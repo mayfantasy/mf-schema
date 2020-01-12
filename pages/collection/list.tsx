@@ -7,6 +7,7 @@ import { Alert, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { ICollection } from '../../types/collection.type'
 import Link from 'next/link'
+import { RequestStatus } from '../../helpers/request'
 
 const columns: ColumnProps<ICollection>[] = [
   {
@@ -35,33 +36,22 @@ const columns: ColumnProps<ICollection>[] = [
 ]
 
 const CollectionListPage = () => {
-  const [collectionStatus, setCollectionStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  /** Get Collection List */
+  const collectionRequestStatus = new RequestStatus()
+  const [collectionStatus, setCollectionStatus] = useState(
+    collectionRequestStatus.setLoadingStatus()
+  )
   const [collections, setCollections] = useState([])
+
   useEffect(() => {
-    setCollectionStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
+    setCollectionStatus(collectionRequestStatus.setLoadingStatus())
     getCollectionListRequest()
       .then((res) => {
-        setCollectionStatus({
-          loading: false,
-          success: true,
-          error: ''
-        })
+        setCollectionStatus(collectionRequestStatus.setSuccessStatus())
         setCollections(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setCollectionStatus({
-          loading: false,
-          success: false,
-          error: err.message || JSON.stringify(err)
-        })
+        setCollectionStatus(collectionRequestStatus.setErrorStatus(err))
       })
   }, [])
   return (

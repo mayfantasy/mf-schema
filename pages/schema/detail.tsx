@@ -39,6 +39,7 @@ import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import ObjectsTable from '../../components/ObjectsTable/ObjectsTable'
 import StringArray from '../../components/StringArray/StringArray'
 import RichTextField from '../../components/RichTextField/RichTextField'
+import { RequestStatus } from '../../helpers/request'
 
 interface IFormStructureItem {
   value: any
@@ -50,21 +51,22 @@ interface IFormStructure {
 }
 
 const SchemaListPage = () => {
-  const [schemaStatus, setSchemaStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
-  const [objectListStatus, setObjectListStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
-  const [objectCreateStatus, setObjectCreateStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  /** Get Schema */
+  const schemaRequestStatus = new RequestStatus()
+  const [schemaStatus, setSchemaStatus] = useState(schemaRequestStatus.status)
+
+  /** Get Object List */
+  const objectListRequestStatus = new RequestStatus()
+  const [objectListStatus, setObjectListStatus] = useState(
+    objectListRequestStatus.status
+  )
+
+  /** Create Object */
+  const createObjectRequestStatus = new RequestStatus()
+  const [objectCreateStatus, setObjectCreateStatus] = useState(
+    createObjectRequestStatus.status
+  )
+
   const [objectList, setObjectList] = useState<any[]>([])
   const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
   const [form, setForm] = useState<IFormStructure | null>(null)
@@ -79,26 +81,14 @@ const SchemaListPage = () => {
    * Get object list by collection handle and schema handle
    */
   const getObjectList = (collection_handle: string, schema_handle: string) => {
-    setObjectListStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
+    setObjectListStatus(objectListRequestStatus.setLoadingStatus())
     getObjectListRequest(collection_handle, schema_handle)
       .then((res) => {
-        setObjectListStatus({
-          loading: false,
-          success: true,
-          error: ''
-        })
+        setObjectListStatus(objectListRequestStatus.setSuccessStatus())
         setObjectList(res.data.result)
       })
       .catch((err) => {
-        setObjectListStatus({
-          loading: false,
-          success: false,
-          error: err.message || JSON.stringify(err)
-        })
+        setObjectListStatus(objectListRequestStatus.setErrorStatus(err))
       })
   }
 
@@ -108,29 +98,17 @@ const SchemaListPage = () => {
    * Load schema by ID
    */
   const getCurrentSchema = (id: string) => {
-    setSchemaStatus({
-      loading: true,
-      success: false,
-      error: ''
-    })
+    setSchemaStatus(schemaRequestStatus.setLoadingStatus())
 
     getSchemaByIdRequest(id)
       .then((res) => {
-        setSchemaStatus({
-          loading: false,
-          success: true,
-          error: ''
-        })
+        setSchemaStatus(schemaRequestStatus.setSuccessStatus())
         const schema = res.data.result as ISchema
         setCurrentSchema(schema)
         getObjectList(schema.collection.handle, schema.handle)
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus({
-          loading: false,
-          success: false,
-          error: err.message || JSON.stringify(err)
-        })
+        setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
       })
   }
 
@@ -281,28 +259,16 @@ const SchemaListPage = () => {
       schema_handle: string,
       values: any
     ) => {
-      setObjectCreateStatus({
-        loading: true,
-        success: false,
-        error: ''
-      })
+      setObjectCreateStatus(createObjectRequestStatus.setLoadingStatus())
       createObjectRequest(collection_handle, schema_handle, values)
         .then((res) => {
-          setObjectCreateStatus({
-            loading: false,
-            success: true,
-            error: ''
-          })
+          setObjectCreateStatus(createObjectRequestStatus.setSuccessStatus())
           getObjectList(collection_handle, schema_handle)
           setForm(null)
           setHandle('')
         })
         .catch((err) => {
-          setObjectCreateStatus({
-            loading: false,
-            success: false,
-            error: err.message || JSON.stringify(err)
-          })
+          setObjectCreateStatus(createObjectRequestStatus.setErrorStatus(err))
         })
     }
 

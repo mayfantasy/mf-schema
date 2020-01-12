@@ -21,6 +21,7 @@ import router from 'next/router'
 import { ICreateCollectionPayload } from '../../types/collection.type'
 import { createCollectionRequest } from '../../requests/collection.request'
 import { AxiosError } from 'axios'
+import { RequestStatus } from '../../helpers/request'
 
 interface ICreateCollectionFormProps<V> {
   handleSubmit: (e: any) => void
@@ -87,42 +88,30 @@ const CreateCollectionForm = (
 interface IProps extends FormComponentProps<ICreateCollectionPayload> {}
 
 const CreateCollectionPage = (props: IProps) => {
-  const [collectionStatus, setCollectionStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  /** Create Collection */
+  const collectionRequestStatus = new RequestStatus()
+  const [collectionStatus, setCollectionStatus] = useState(
+    collectionRequestStatus.status
+  )
   const { form } = props
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setCollectionStatus({
-          loading: true,
-          success: false,
-          error: ''
-        })
+        setCollectionStatus(collectionRequestStatus.setLoadingStatus())
         createCollectionRequest({
           name: values.name,
           handle: values.handle,
           description: values.description
         } as any)
           .then((res) => {
-            setCollectionStatus({
-              loading: false,
-              success: true,
-              error: ''
-            })
+            setCollectionStatus(collectionRequestStatus.setSuccessStatus())
 
             router.push('/collection/list')
           })
           .catch((err: AxiosError) => {
-            setCollectionStatus({
-              loading: false,
-              success: false,
-              error: err.message || JSON.stringify(err, null, '  ')
-            })
+            setCollectionStatus(collectionRequestStatus.setErrorStatus(err))
           })
       }
     })

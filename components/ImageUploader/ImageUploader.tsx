@@ -1,5 +1,6 @@
 import { message, Upload, Icon, Button } from 'antd'
 import { useState } from 'react'
+import { RequestStatus } from '../../helpers/request'
 
 interface IProps {
   value: string
@@ -9,11 +10,10 @@ interface IProps {
 const ImageUploader = (props: IProps) => {
   const { value, onChange } = props
   const [imageUrl, setImageUrl] = useState<string | null>(value || null)
-  const [uploadStatus, setUploadStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+
+  /** Upload image */
+  const uploadRequestStatus = new RequestStatus()
+  const [uploadStatus, setUploadStatus] = useState(uploadRequestStatus.status)
   const beforeUpload = (file: File) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
     if (!isJpgOrPng) {
@@ -28,19 +28,11 @@ const ImageUploader = (props: IProps) => {
 
   const handleChange = (info: any) => {
     if (info.file.status === 'uploading') {
-      setUploadStatus({
-        loading: true,
-        success: false,
-        error: ''
-      })
+      setUploadStatus(uploadRequestStatus.setLoadingStatus())
       return
     }
     if (info.file.status === 'done') {
-      setUploadStatus({
-        loading: false,
-        success: true,
-        error: ''
-      })
+      setUploadStatus(uploadRequestStatus.setSuccessStatus())
       const url = info.file.response.result[1].mediaLink
       setImageUrl(url)
       onChange(url)

@@ -8,6 +8,7 @@ import { IClientCreateAccountPayload } from '../types/account.type'
 import Loading from '../components/Loading/Loading'
 import router from 'next/router'
 import { AxiosError } from 'axios'
+import { RequestStatus } from '../helpers/request'
 
 interface IRegistrationFormProps<V> {
   handleSubmit: (e: any) => void
@@ -159,41 +160,29 @@ const RegistrationForm = (
 interface IProps extends FormComponentProps<IClientCreateAccountPayload> {}
 
 const RegisterPage = (props: IProps) => {
-  const [registerStatus, setRegisterStatus] = useState({
-    loading: false,
-    success: false,
-    error: ''
-  })
+  /** Register */
+  const registerRequestStatus = new RequestStatus()
+  const [registerStatus, setRegisterStatus] = useState(
+    registerRequestStatus.status
+  )
   const { form } = props
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setRegisterStatus({
-          loading: true,
-          success: false,
-          error: ''
-        })
+        setRegisterStatus(registerRequestStatus.setLoadingStatus())
         createAccountRequest({
           email: values.email,
           username: values.username,
           password: values.password
         })
           .then((res) => {
-            setRegisterStatus({
-              loading: false,
-              success: true,
-              error: ''
-            })
+            setRegisterStatus(registerRequestStatus.setSuccessStatus())
             router.push('/login')
           })
           .catch((err: AxiosError) => {
-            setRegisterStatus({
-              loading: false,
-              success: false,
-              error: err.message || JSON.stringify(err)
-            })
+            setRegisterStatus(registerRequestStatus.setErrorStatus(err))
           })
       }
     })
