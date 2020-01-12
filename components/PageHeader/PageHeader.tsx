@@ -30,9 +30,11 @@ const PageHeader = (props: IProps) => {
       </Col>
       {!!buttonLink && (
         <Col span={5}>
-          <Link href={buttonLink}>
-            <Button type="primary">{buttonWord}</Button>
-          </Link>
+          <Row type="flex" justify="end">
+            <Link href={buttonLink}>
+              <Button type="primary">{buttonWord}</Button>
+            </Link>
+          </Row>
         </Col>
       )}
     </Row>

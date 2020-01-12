@@ -1,6 +1,17 @@
 import React, { useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Alert } from 'antd'
+import PageHeader from '../../components/PageHeader/PageHeader'
+import {
+  Form,
+  Input,
+  Tooltip,
+  Icon,
+  Checkbox,
+  Button,
+  Row,
+  Alert,
+  Col
+} from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { createAccountRequest } from '../../requests/account.request'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
@@ -22,66 +33,53 @@ const CreateCollectionForm = (
   const { form, handleSubmit } = props
   const { getFieldDecorator } = form
 
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 }
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 }
-    }
-  }
-
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0
-      },
-      sm: {
-        span: 16,
-        offset: 8
-      }
-    }
-  }
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit}>
-      <Form.Item label="Name">
-        {getFieldDecorator('name', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the collection name'
-            }
-          ]
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Handle">
-        {getFieldDecorator('handle', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the collection handle'
-            }
-          ]
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Description" hasFeedback>
-        {getFieldDecorator('description', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the collection desctiption'
-            }
-          ]
-        })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
-      </Form.Item>
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          Create
-        </Button>
-      </Form.Item>
+    <Form onSubmit={handleSubmit}>
+      <Row gutter={2}>
+        <Col span={12}>
+          <Form.Item label="Name">
+            {getFieldDecorator('name', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input the collection name'
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Handle">
+            {getFieldDecorator('handle', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input the collection handle'
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Form.Item label="Description" hasFeedback>
+          {getFieldDecorator('description', {
+            rules: [
+              {
+                required: true,
+                message: 'Please input the collection desctiption'
+              }
+            ]
+          })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
+        </Form.Item>
+      </Row>
+      <Row>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Create
+          </Button>
+        </Form.Item>
+      </Row>
     </Form>
   )
 }
@@ -144,20 +142,28 @@ const CreateCollectionPage = (props: IProps) => {
         }
       ]}
     >
-      {collectionStatus.error && (
-        <Alert message={collectionStatus.error} type="error" closable />
-      )}
-      <br />
-      <div style={{ height: '70%' }}>
-        {collectionStatus.loading ? (
-          <Loading />
-        ) : collectionStatus.success ? (
-          <div style={{ color: 'green' }}>Collection created successfully.</div>
-        ) : (
-          <div style={{ width: '70%' }}>
-            <CreateCollectionForm form={form} handleSubmit={handleSubmit} />
-          </div>
+      <div style={{ width: '70%' }}>
+        <PageHeader
+          name="Create Collection"
+          buttonLink="/collection/list"
+          buttonWord="Back"
+        />
+        <br />
+        {collectionStatus.error && (
+          <Alert message={collectionStatus.error} type="error" closable />
         )}
+        <br />
+        <div>
+          {collectionStatus.loading ? (
+            <Loading />
+          ) : collectionStatus.success ? (
+            <Alert type="success" message="Collection created successfully." />
+          ) : (
+            <div>
+              <CreateCollectionForm form={form} handleSubmit={handleSubmit} />
+            </div>
+          )}
+        </div>
       </div>
     </PageLayout>
   )
