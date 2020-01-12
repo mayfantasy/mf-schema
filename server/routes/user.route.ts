@@ -15,23 +15,24 @@ import {
   updateUserMeta,
   deleteUserMeta
 } from '../services/user.service'
-import Joi from 'joi'
-import { ILoginPayload } from '../../types/auth.type'
+
 import {
   createUserPayloadSchema,
   updateUserPayloadSchema,
   updateUserMetaPayloadSchema,
   deleteUserMetaPayloadSchema
 } from '../validators/user.validator'
+import { validatePayload } from '../validators'
 
 export const createUserRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ICreateUserPayload
 
   /** Validation */
-  Joi.validate(payload, createUserPayloadSchema)
+  validatePayload(createUserPayloadSchema, payload)
 
   const user = await createUser(auth.api_key, payload)
+  console.log(user)
 
   ctx.body = {
     result: user
@@ -51,7 +52,6 @@ export const getUserByIdRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const id = ctx.params.id
 
-  /** Validation */
   if (id) {
     const user = await getUserById(auth.api_key, id)
     ctx.body = {
@@ -67,7 +67,7 @@ export const updateUserRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as IUpdateUserInfoPayload
 
   /** Validation */
-  Joi.validate(payload, updateUserPayloadSchema)
+  validatePayload(updateUserPayloadSchema, payload)
 
   const user = await updateUser(auth.api_key, payload)
   ctx.body = {
@@ -97,7 +97,7 @@ export const updateUserMetaRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as IUpdateUserMetaPayload
 
   /** Validation */
-  Joi.validate(payload, updateUserMetaPayloadSchema)
+  validatePayload(updateUserMetaPayloadSchema, payload)
 
   if (id) {
     const user = await updateUserMeta(auth.api_key, id, payload)
@@ -116,7 +116,7 @@ export const deleteUserMetaItemRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as IDeleteUserMetaItemPayload
 
   /** Validation */
-  Joi.validate(payload, deleteUserMetaPayloadSchema)
+  validatePayload(deleteUserMetaPayloadSchema, payload)
 
   if (id) {
     const user = await deleteUserMeta(auth.api_key, id, payload)

@@ -6,10 +6,15 @@ import {
   getAccessKeyList,
   deleteAccessKeyById
 } from '../services/access-key.service'
+import { createAccessKeyPayloadSchema } from '../validators/access-key.validator'
+import { validatePayload } from '../validators'
 
 export const createAccessKeyRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ICreateAccessKeyPayload
+
+  /** Validation */
+  validatePayload(createAccessKeyPayloadSchema, payload)
 
   const accessKey = await createAccessKey(
     auth.api_key,

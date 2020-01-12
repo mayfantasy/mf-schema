@@ -104,6 +104,7 @@ const LoginPage = (props: IProps) => {
             router.push('/')
           })
           .catch((err: AxiosError) => {
+            console.log(err)
             setLoginStatus(loginRequestStatus.setErrorStatus(err))
           })
       }

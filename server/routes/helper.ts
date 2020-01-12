@@ -38,13 +38,3 @@ export const getAuth = async (ctx: Koa.Context) => {
     }
   }
 }
-
-export const testHandle = async (ctx: Koa.Context, value: string) => {
-  if (!handleRxp.test(value)) {
-    ctx.status = 400
-    ctx.body = {
-      message: `Invalid handle or key [${value}]`
-    }
-    throw new Error(`Invalid handle or key [${value}]`)
-  }
-}

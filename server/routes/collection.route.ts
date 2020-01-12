@@ -9,14 +9,17 @@ import {
   getCollectionList,
   getCollectionById
 } from '../services/collection.service'
-import { getAuth, testHandle } from './helper'
+import { getAuth } from './helper'
 import { handleRxp } from '../../helpers/utils.helper'
+import { createCollectionPayloadSchema } from '../validators/collection.validator'
+import { validatePayload } from '../validators'
 
 export const createCollectionRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ICreateCollectionPayload
 
-  await testHandle(ctx, payload.handle)
+  /** Validation */
+  validatePayload(createCollectionPayloadSchema, payload)
 
   const collection = await createCollection(auth.api_key, payload)
 
@@ -36,8 +39,14 @@ export const getCollectionListRoute = async (ctx: Koa.Context) => {
 export const getCollectionByIdRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const id = ctx.params.id
-  const collection = await getCollectionById(auth.api_key, id)
-  ctx.body = {
-    result: collection
+
+  /** Validation */
+  if (id) {
+    const collection = await getCollectionById(auth.api_key, id)
+    ctx.body = {
+      result: collection
+    }
+  } else {
+    throw new Error('Invalid Collection ID.')
   }
 }

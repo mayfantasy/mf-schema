@@ -6,9 +6,17 @@ import {
 } from '../services/auth.service'
 import { sign, varify } from '../jwt'
 import { IBasicAccountInfo } from '../../types/account.type'
+import {
+  loginPayloadSchema,
+  loginWithTokenSchema
+} from '../validators/auth.validator'
+import { validatePayload } from '../validators'
 
 export const loginRoute = async (ctx: Koa.Context) => {
   const payload = ctx.request.body as ILoginPayload
+
+  /** Validator */
+  validatePayload(loginPayloadSchema, payload)
 
   const { email, password } = payload
   const account = await getAccountByEmailAndPassword(email, password)
@@ -27,7 +35,11 @@ export const loginRoute = async (ctx: Koa.Context) => {
 }
 
 export const loginWithTokenRoute = async (ctx: Koa.Context) => {
-  const payload = ctx.request.body as { token: string }
+  const payload = ctx.request.body as {
+    token: string
+  }
+  /** Validation */
+  validatePayload(loginWithTokenSchema, payload)
 
   const token = payload.token
   const user = varify(token)

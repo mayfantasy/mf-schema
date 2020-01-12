@@ -15,17 +15,20 @@ import {
   updateSchema,
   getSchemaByHandle
 } from '../services/schema.service'
-import { getAuth, testHandle } from './helper'
+import { getAuth } from './helper'
+import { validatePayload } from '../validators'
+import {
+  createSchemaPayloadSchema,
+  updateSchemaPayloadSchema,
+  getSchemaListQuerySchema
+} from '../validators/schema.validatior'
 
 export const createSchemaRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as ICreateSchemaPayload
 
-  await testHandle(ctx, payload.handle)
-
-  for (let i = 0; i < payload.def.length; i++) {
-    await testHandle(ctx, payload.def[i].key)
-  }
+  /** Validation */
+  validatePayload(createSchemaPayloadSchema, payload)
 
   const schema = await createSchema(auth.api_key, payload)
 
@@ -38,15 +41,8 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const payload = ctx.request.body as IUpdateSchemaPayload
 
-  if (payload.handle) {
-    await testHandle(ctx, payload.handle)
-  }
-
-  if (payload.def) {
-    for (let i = 0; i < payload.def.length; i++) {
-      await testHandle(ctx, payload.def[i].key)
-    }
-  }
+  /** Validation */
+  validatePayload(updateSchemaPayloadSchema, payload)
 
   const schema = await updateSchema(auth.api_key, payload)
 
@@ -59,6 +55,9 @@ export const getSchemaListRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const query = ctx.query as ISchemaListQuery
 
+  /** Validation */
+  validatePayload(getSchemaListQuerySchema, query)
+
   const schemas = await getSchemaList(auth.api_key, query)
   ctx.body = {
     result: schemas
@@ -68,17 +67,27 @@ export const getSchemaListRoute = async (ctx: Koa.Context) => {
 export const getSchemaByIdRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const { id } = ctx.params
-  const schema = await getSchemaById(auth.api_key, id)
-  ctx.body = {
-    result: schema
+
+  if (id) {
+    const schema = await getSchemaById(auth.api_key, id)
+    ctx.body = {
+      result: schema
+    }
+  } else {
+    throw new Error('Invalid Schema ID.')
   }
 }
 
 export const getSchemaByHandleRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const { handle } = ctx.params
-  const schema = await getSchemaByHandle(auth.api_key, handle)
-  ctx.body = {
-    result: schema
+
+  if (handle) {
+    const schema = await getSchemaByHandle(auth.api_key, handle)
+    ctx.body = {
+      result: schema
+    }
+  } else {
+    throw new Error('Invalid Schema ID.')
   }
 }

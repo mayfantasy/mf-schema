@@ -2,6 +2,8 @@ import { getAuth } from './helper'
 import Koa from 'koa'
 import { IObjectServiceMetaWithID } from '../services/object.service'
 import { sendEmail } from '../services/send-email.service'
+import { sendEmailPayloadSchema } from '../validators/email.validator'
+import { validatePayload } from '../validators'
 
 export const sendEmailRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
@@ -10,6 +12,10 @@ export const sendEmailRoute = async (ctx: Koa.Context) => {
     to_email: string
     data: { [key: string]: string }
   }
+
+  /** Validation */
+  validatePayload(sendEmailPayloadSchema, payload)
+
   const user = await sendEmail(
     auth.api_key,
     payload.meta,

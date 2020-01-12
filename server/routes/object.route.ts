@@ -6,14 +6,25 @@ import {
   updateObjectById,
   deleteObjectById
 } from '../services/object.service'
-import { getAuth, testHandle } from './helper'
+import { getAuth } from './helper'
+import { validatePayload } from '../validators'
+import {
+  createObjectParamsSchema,
+  updateObjectParamsSchema,
+  getObjectListParamsSchema,
+  getObjectByIdParamsSchema,
+  deleteObjectByIdParamsSchema
+} from '../validators/object.validator'
 
 export const createObjectRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
-  const { collection_handle, schema_handle } = ctx.params
+  const params = ctx.params
   const payload = ctx.request.body as any
 
-  await testHandle(ctx, payload._handle)
+  /** Validation */
+  validatePayload(createObjectParamsSchema, params)
+
+  const { collection_handle, schema_handle } = params
 
   const object = await createObject(auth.api_key, payload, {
     collection_handle,
@@ -27,9 +38,14 @@ export const createObjectRoute = async (ctx: Koa.Context) => {
 
 export const updateObjectByIdRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
-  const { collection_handle, schema_handle, id } = ctx.params
+  const params = ctx.params
   const payload = ctx.request.body
-  await testHandle(ctx, payload._handle)
+
+  /** Validation */
+  validatePayload(updateObjectParamsSchema, params)
+
+  const { collection_handle, schema_handle, id } = params
+
   const object = await updateObjectById(auth.api_key, payload, {
     collection_handle,
     schema_handle,
@@ -42,7 +58,12 @@ export const updateObjectByIdRoute = async (ctx: Koa.Context) => {
 
 export const getObjectListRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
-  const { collection_handle, schema_handle } = ctx.params
+  const params = ctx.params
+
+  /** Validation */
+  validatePayload(getObjectListParamsSchema, params)
+
+  const { collection_handle, schema_handle } = params
   const objects = await getObjectList(auth.api_key, {
     collection_handle,
     schema_handle
@@ -54,7 +75,13 @@ export const getObjectListRoute = async (ctx: Koa.Context) => {
 
 export const getObjectByIdRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
-  const { collection_handle, schema_handle, id } = ctx.params
+
+  const params = ctx.params
+
+  /** Validation */
+  validatePayload(getObjectByIdParamsSchema, params)
+
+  const { collection_handle, schema_handle, id } = params
   const object = await getObjectById(auth.api_key, {
     collection_handle,
     schema_handle,
@@ -67,7 +94,12 @@ export const getObjectByIdRoute = async (ctx: Koa.Context) => {
 
 export const deleteObjectByIdRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
-  const { collection_handle, schema_handle, id } = ctx.params
+  const params = ctx.params
+
+  /** Validation */
+  validatePayload(deleteObjectByIdParamsSchema, params)
+
+  const { collection_handle, schema_handle, id } = params
   const object = await deleteObjectById(auth.api_key, {
     collection_handle,
     schema_handle,
