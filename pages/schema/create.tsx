@@ -14,6 +14,7 @@ import { createSchemaRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { RequestStatus } from '../../helpers/request'
 import SchemaForm from '../../components/shema/Form'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface ICreateSchemaFormProps<V> {
   handleSubmit: (e: any) => void
@@ -57,7 +58,7 @@ const CreateSchemaPage = (props: IProps) => {
       .then((res) => {
         setSchemaStatus(schemaRequestStatus.setSuccessStatus())
 
-        router.push('/schema/list')
+        router.push(pageRoutes.listSchemas)
       })
       .catch((err: AxiosError) => {
         setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
@@ -89,12 +90,12 @@ const CreateSchemaPage = (props: IProps) => {
       breadCrumb={[
         {
           key: 'schema',
-          url: '/schema/list',
+          url: pageRoutes.listSchemas,
           name: 'Schema'
         },
         {
           key: 'create',
-          url: '/schema/create',
+          url: pageRoutes.createSchema,
           name: 'Create'
         }
       ]}

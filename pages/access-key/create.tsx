@@ -11,6 +11,7 @@ import { createAccessKeyRequest } from '../../requests/access-key.request'
 import { AxiosError } from 'axios'
 import { ICreateAccessKeyPayload } from '../../types/access-key.type'
 import { RequestStatus } from '../../helpers/request'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface ICreateAccessKeyFormProps<V> {
   handleSubmit: (e: any) => void
@@ -75,7 +76,7 @@ const CreateAccessKeyPage = (props: IProps) => {
           .then((res) => {
             setAccessKeyStatus(accessKeyRequestStatus.setSuccessStatus())
 
-            router.push('/access-key/list')
+            router.push(pageRoutes.listAccessKeys)
           })
           .catch((err: AxiosError) => {
             setAccessKeyStatus(accessKeyRequestStatus.setErrorStatus(err))
@@ -93,7 +94,7 @@ const CreateAccessKeyPage = (props: IProps) => {
         },
         {
           key: 'create',
-          url: '/access-key/create',
+          url: pageRoutes.createAccessKey,
           name: 'Create'
         }
       ]}

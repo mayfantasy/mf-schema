@@ -12,6 +12,7 @@ import { Alert, Button, Descriptions } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import UserSchemaMeta from '../../components/UserSchemaMeta/UserSchemaMeta'
+import { pageRoutes } from '../../navigation/page-routes'
 
 const UserDetailPage = () => {
   /** User Request */
@@ -48,7 +49,7 @@ const UserDetailPage = () => {
       breadCrumb={[
         {
           key: 'user',
-          url: '/user/list',
+          url: pageRoutes.listUsers,
           name: 'User'
         },
         {
@@ -88,7 +89,7 @@ const UserDetailPage = () => {
         <PageHeader
           name={`${user.last_name} ${user.first_name}`}
           sub={`${user.email}, ${user.phone}`}
-          buttonLink={`/user/update?id=${user.id}`}
+          buttonLink={`${pageRoutes.updateUser}?id=${user.id}`}
           buttonWord="Update User"
         />
         <br />

@@ -11,6 +11,7 @@ import {
 import { IUser } from '../../types/user.type'
 import Link from 'next/link'
 import UserTable from '../../components/UserTable/UserTable'
+import { pageRoutes } from '../../navigation/page-routes'
 
 const UserListPage = () => {
   const userRequestStatus = new RequestStatus()
@@ -64,7 +65,7 @@ const UserListPage = () => {
       render: (user: IUser) => {
         return (
           <div>
-            <Link href={`/user/detail?id=${user.id}`}>
+            <Link href={`${pageRoutes.userDetail}?id=${user.id}`}>
               <a>
                 {user.first_name} {user.last_name}
               </a>
@@ -84,7 +85,7 @@ const UserListPage = () => {
         },
         {
           key: 'list',
-          url: '/user/list',
+          url: pageRoutes.listUsers,
           name: 'List'
         }
       ]}

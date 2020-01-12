@@ -21,6 +21,7 @@ import { AxiosError } from 'axios'
 import { RequestStatus } from '../../helpers/request'
 import { ICreateUserPayload } from '../../types/user.type'
 import { createUserRequest } from '../../requests/user.request'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface ICreateUserFormProps<V> {
   handleSubmit: (e: any) => void
@@ -176,7 +177,7 @@ const CreateUserPage = (props: IProps) => {
         } as any)
           .then((res) => {
             setUserStatus(userRequestStatus.setSuccessStatus())
-            router.push('/user/list')
+            router.push(pageRoutes.listUsers)
           })
           .catch((err: AxiosError) => {
             setUserStatus(userRequestStatus.setErrorStatus(err))
@@ -194,7 +195,7 @@ const CreateUserPage = (props: IProps) => {
         },
         {
           key: 'create',
-          url: '/user/create',
+          url: pageRoutes.createUser,
           name: 'Create'
         }
       ]}

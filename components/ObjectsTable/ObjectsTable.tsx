@@ -4,6 +4,7 @@ import { ISchema } from '../../types/schema.type'
 import { useState } from 'react'
 import { getObjectListRequest } from '../../requests/object.request'
 import { IObject } from '../../types/object.type'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface IProps {
   currentSchema: ISchema
@@ -34,7 +35,7 @@ const ObjectsTable = (props: IProps) => {
           key: '_handle',
           render: (handle: string, row: any) => (
             <Link
-              href={`/object/update?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
+              href={`${pageRoutes.updateObject}?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
             >
               {handle}
             </Link>

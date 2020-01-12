@@ -16,6 +16,7 @@ import { AxiosError } from 'axios'
 import { RequestStatus } from '../../helpers/request'
 import { ICollection } from '../../types/collection.type'
 import Loading from '../Loading/Loading'
+import { pageRoutes } from '../../navigation/page-routes'
 
 /**
  * Ensure key uniqueness of each field
@@ -118,8 +119,8 @@ const SchemaForm = (props: IProps) => {
         sub={currentSchema ? currentSchema.handle : ''}
         buttonLink={
           currentSchema
-            ? `/schema/detail?id=${currentSchema.id}`
-            : '/schema/list'
+            ? `${pageRoutes.schemaDetail}?id=${currentSchema.id}`
+            : pageRoutes.listSchemas
         }
         buttonWord={currentSchema ? 'View Schema' : 'Back'}
         description={currentSchema ? currentSchema.description : ''}
@@ -131,7 +132,9 @@ const SchemaForm = (props: IProps) => {
       {!!currentSchema && (
         <Row>
           <Col span={12}>
-            <Link href={`/collection/detail?id=${currentSchema.collection.id}`}>
+            <Link
+              href={`${pageRoutes.collectionDetail}?id=${currentSchema.collection.id}`}
+            >
               <a>{currentSchema.collection.name}</a>
             </Link>
           </Col>
@@ -207,11 +210,11 @@ const SchemaForm = (props: IProps) => {
           </Button>
         </Form.Item>
         {currentSchema ? (
-          <Button href={`/schema/detail?id=${currentSchema.id}`}>
+          <Button href={`${pageRoutes.schemaDetail}?id=${currentSchema.id}`}>
             Back to Detail
           </Button>
         ) : (
-          <Button href={'/schema/list'}>Back to List</Button>
+          <Button href={pageRoutes.listSchemas}>Back to List</Button>
         )}
       </Row>
     </Form>

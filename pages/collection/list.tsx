@@ -8,6 +8,7 @@ import { ColumnProps } from 'antd/lib/table'
 import { ICollection } from '../../types/collection.type'
 import Link from 'next/link'
 import { RequestStatus } from '../../helpers/request'
+import { pageRoutes } from '../../navigation/page-routes'
 
 const columns: ColumnProps<ICollection>[] = [
   {
@@ -16,7 +17,7 @@ const columns: ColumnProps<ICollection>[] = [
     render: (collection: ICollection) => {
       return (
         <div>
-          <Link href={`/collection/detail?id=${collection.id}`}>
+          <Link href={`${pageRoutes.collectionDetail}?id=${collection.id}`}>
             <a>{collection.name}</a>
           </Link>
         </div>
@@ -62,8 +63,8 @@ const CollectionListPage = () => {
           name: 'Collection'
         },
         {
-          key: 'create',
-          url: '/collection/list',
+          key: 'list',
+          url: pageRoutes.listCollections,
           name: 'List'
         }
       ]}

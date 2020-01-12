@@ -5,6 +5,7 @@ import { getUser } from '../helpers/auth.helper'
 import { useRouter } from 'next/router'
 import { IBasicAccountInfo } from '../types/account.type'
 import Loading from '../components/Loading/Loading'
+import { pageRoutes } from '../navigation/page-routes'
 
 const HomePage = () => {
   const [user, setUser] = useState<IBasicAccountInfo | null>(null)
@@ -14,7 +15,7 @@ const HomePage = () => {
     if (user) {
       setUser(user)
     } else {
-      router.push('/login')
+      router.push(pageRoutes.login)
     }
   }, [])
   return (
@@ -22,7 +23,7 @@ const HomePage = () => {
       breadCrumb={[
         {
           key: 'home-page',
-          url: '/',
+          url: pageRoutes.home,
           name: 'Home'
         }
       ]}

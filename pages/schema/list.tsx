@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { RequestStatus } from '../../helpers/request'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import { pageRoutes } from '../../navigation/page-routes'
 
 const columns = [
   {
@@ -18,7 +19,7 @@ const columns = [
     key: 'name',
     render: (name: string, schema: ISchema) => (
       <div>
-        <Link href={`/schema/detail?id=${schema.id}`}>{name}</Link>
+        <Link href={`${pageRoutes.schemaDetail}?id=${schema.id}`}>{name}</Link>
         <br />
         <small>{schema.handle}</small>
       </div>
@@ -29,7 +30,7 @@ const columns = [
     dataIndex: 'collection',
     render: (collection: ICollection) => (
       <div>
-        <Link href={`/collection/detail?id=${collection.id}`}>
+        <Link href={`${pageRoutes.collectionDetail}?id=${collection.id}`}>
           {collection.name}
         </Link>
       </div>
@@ -97,7 +98,7 @@ const SchemaListPage = () => {
         },
         {
           key: 'create',
-          url: '/schema/list',
+          url: pageRoutes.listSchemas,
           name: 'List'
         }
       ]}

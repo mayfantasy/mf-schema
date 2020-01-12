@@ -8,6 +8,7 @@ import {
   getAccessKeyListRequest,
   deleteAccessKeyRequest
 } from '../../requests/access-key.request'
+import { pageRoutes } from '../../navigation/page-routes'
 
 const AccessKeyListPage = () => {
   const accessKeyRequestStatus = new RequestStatus()
@@ -103,7 +104,7 @@ const AccessKeyListPage = () => {
         },
         {
           key: 'list',
-          url: '/access-key/list',
+          url: pageRoutes.listAccessKeys,
           name: 'List'
         }
       ]}

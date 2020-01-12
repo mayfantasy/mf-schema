@@ -22,6 +22,7 @@ import { ICreateCollectionPayload } from '../../types/collection.type'
 import { createCollectionRequest } from '../../requests/collection.request'
 import { AxiosError } from 'axios'
 import { RequestStatus } from '../../helpers/request'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface ICreateCollectionFormProps<V> {
   handleSubmit: (e: any) => void
@@ -108,7 +109,7 @@ const CreateCollectionPage = (props: IProps) => {
           .then((res) => {
             setCollectionStatus(collectionRequestStatus.setSuccessStatus())
 
-            router.push('/collection/list')
+            router.push(pageRoutes.listCollections)
           })
           .catch((err: AxiosError) => {
             setCollectionStatus(collectionRequestStatus.setErrorStatus(err))
@@ -126,7 +127,7 @@ const CreateCollectionPage = (props: IProps) => {
         },
         {
           key: 'create',
-          url: '/collection/create',
+          url: pageRoutes.createCollection,
           name: 'Create'
         }
       ]}

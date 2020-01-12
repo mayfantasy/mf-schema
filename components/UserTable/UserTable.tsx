@@ -3,6 +3,7 @@ import { IUser } from '../../types/user.type'
 import Link from 'next/link'
 import Column from 'antd/lib/table/Column'
 import { ColumnProps } from 'antd/lib/table'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface IProps {
   users: IUser[]
@@ -19,7 +20,7 @@ const UserTable = (props: IProps) => {
       render: (user: IUser) => {
         return (
           <div>
-            <Link href={`/user/detail?id=${user.id}`}>
+            <Link href={`${pageRoutes.userDetail}?id=${user.id}`}>
               <a>
                 {user.first_name} {user.last_name}
               </a>

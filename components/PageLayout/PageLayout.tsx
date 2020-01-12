@@ -7,14 +7,10 @@ import { getToken, removeToken, removeUser } from '../../helpers/auth.helper'
 import { loginWithTokenRequest } from '../../requests/auth.request'
 import { useRouter } from 'next/router'
 import { IBasicAccountInfo } from '../../types/account.type'
-
-interface INavItem {
-  key: string
-  url?: string
-  name: string | React.ReactNode
-  children?: INavItem[]
-  open?: boolean
-}
+import { INavItem } from '../../types/navigation.type'
+import { sideNavItems } from '../../navigation/side.navigation'
+import { headerItems } from '../../navigation/header.navigation'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface IProps {
   children: React.ReactNode
@@ -23,110 +19,6 @@ interface IProps {
 
 const { SubMenu } = Menu
 const { Header, Content, Sider } = Layout
-
-const headerItems: INavItem[] = [
-  {
-    key: 'register',
-    url: '/register',
-    name: 'Register'
-  },
-  {
-    key: 'login',
-    url: '/login',
-    name: 'Login'
-  }
-]
-
-const sideNavItems: INavItem[] = [
-  {
-    key: 'collection',
-    open: true,
-    name: (
-      <span>
-        <Icon type="user" />
-        Collection
-      </span>
-    ),
-    children: [
-      {
-        key: 'collection-create',
-        url: '/collection/create',
-        name: 'Create'
-      },
-      {
-        key: 'collection-list',
-        url: '/collection/list',
-        name: 'List'
-      }
-    ]
-  },
-  {
-    key: 'schema',
-    open: true,
-    name: (
-      <span>
-        <Icon type="build" />
-        Schema
-      </span>
-    ),
-    children: [
-      {
-        key: 'schema-create',
-        url: '/schema/create',
-        name: 'Create'
-      },
-      {
-        key: 'schema-list',
-        url: '/schema/list',
-        name: 'List'
-      }
-    ]
-  },
-  {
-    key: 'user',
-    open: true,
-    name: (
-      <span>
-        <Icon type="user" />
-        User
-      </span>
-    ),
-    children: [
-      {
-        key: 'user-create',
-        url: '/user/create',
-        name: 'Create'
-      },
-      {
-        key: 'user-list',
-        url: '/user/list',
-        name: 'List'
-      }
-    ]
-  },
-  {
-    key: 'access-key',
-    open: true,
-    name: (
-      <span>
-        <Icon type="key" />
-        Access Key
-      </span>
-    ),
-    children: [
-      {
-        key: 'access-key-create',
-        url: '/access-key/create',
-        name: 'Create'
-      },
-      {
-        key: 'access-key-list',
-        url: '/access-key/list',
-        name: 'List'
-      }
-    ]
-  }
-]
 
 const PageLayout = (props: IProps) => {
   const { children, breadCrumb } = props
@@ -144,8 +36,8 @@ const PageLayout = (props: IProps) => {
           .catch((e) => {
             removeToken()
             removeUser()
-            if (router.pathname !== '/register') {
-              router.push('/login')
+            if (router.pathname !== pageRoutes.register) {
+              router.push(pageRoutes.login)
             }
           })
       }
@@ -156,7 +48,7 @@ const PageLayout = (props: IProps) => {
   const logOut = () => {
     removeToken()
     removeUser()
-    window.location.href = '/login'
+    window.location.href = pageRoutes.login
   }
   const getDefaultSelectedKeys = () => {
     if (router) {

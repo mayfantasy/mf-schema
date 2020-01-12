@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import { setInitialFormValues } from '../../helpers/schema/form'
 import { RequestStatus } from '../../helpers/request'
 import SchemaForm from '../../components/shema/Form'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface IUpdateSchemaFormProps<V> {
   handleSubmit: (e: any) => void
@@ -117,8 +118,6 @@ const UpdateSchemaPage = (props: IProps) => {
     updateSchemaRequest(payload)
       .then((res) => {
         setSchemaStatus(schemaRequestStatus.setSuccessStatus())
-
-        // router.push(`/schema/detail?id=${payload.id}`)
       })
       .catch((err: AxiosError) => {
         setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
@@ -163,12 +162,12 @@ const UpdateSchemaPage = (props: IProps) => {
       breadCrumb={[
         {
           key: 'schema',
-          url: '/schema/list',
+          url: pageRoutes.listSchemas,
           name: 'Schema'
         },
         {
           key: 'update',
-          url: '/schema/update',
+          url: pageRoutes.updateSchema,
           name: 'Update'
         }
       ]}

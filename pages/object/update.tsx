@@ -35,6 +35,7 @@ import { RequestStatus } from '../../helpers/request'
 import StringArray from '../../components/StringArray/StringArray'
 import ObjectUsers from '../../components/ObjectUsers/ObjectUsers'
 import RichTextField from '../../components/RichTextField/RichTextField'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface IFormStructure {
   [key: string]: any
@@ -145,7 +146,7 @@ const ObjectUpdatePage = () => {
           setDeleteObjectStatus(
             deleteCurrentObjectRequestStatus.setSuccessStatus()
           )
-          router.push(`/schema/detail?id=${schemaId}`)
+          router.push(`${pageRoutes.schemaDetail}?id=${schemaId}`)
         })
         .catch((err) => {
           setDeleteObjectStatus(
@@ -171,12 +172,12 @@ const ObjectUpdatePage = () => {
       breadCrumb={[
         {
           key: 'schema',
-          url: '/schema/list',
+          url: pageRoutes.listSchemas,
           name: 'Schema'
         },
         {
           key: 'objects',
-          url: `/schema/detail?id=${
+          url: `${pageRoutes.schemaDetail}?id=${
             currentObject ? currentObject.schema.id : ''
           }`,
           name: 'Objects'

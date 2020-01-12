@@ -8,6 +8,7 @@ import { Alert, Button, Descriptions } from 'antd'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import { getCollectionByIdRequest } from '../../requests/collection.request'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import { pageRoutes } from '../../navigation/page-routes'
 
 const CollectionDetailPage = () => {
   /** Router */
@@ -48,12 +49,12 @@ const CollectionDetailPage = () => {
         },
         {
           key: 'create',
-          url: '/collection/list',
+          url: pageRoutes.createCollection,
           name: 'List'
         },
         {
           key: 'detail',
-          url: `/collection/detail?id=${router.query.id}`,
+          url: `${pageRoutes.collectionDetail}?id=${router.query.id}`,
           name: 'Detail'
         }
       ]}
@@ -67,7 +68,7 @@ const CollectionDetailPage = () => {
           <PageHeader
             name={collection.name}
             sub={collection.handle}
-            buttonLink={`/collection/update?id=${collection.id}`}
+            buttonLink={`${pageRoutes.updateCollection}?id=${collection.id}`}
             buttonWord="Update Collection"
           />
           <br />

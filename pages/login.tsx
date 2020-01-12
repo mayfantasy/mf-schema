@@ -22,6 +22,7 @@ import router from 'next/router'
 import { AxiosError } from 'axios'
 import { RequestStatus } from '../helpers/request'
 import Link from 'next/link'
+import { pageRoutes } from '../navigation/page-routes'
 
 interface ILoginFormProps<V> {
   handleSubmit: (e: any) => void
@@ -101,7 +102,7 @@ const LoginPage = (props: IProps) => {
             setToken(token)
             setUser(user)
 
-            router.push('/')
+            router.push(pageRoutes.home)
           })
           .catch((err: AxiosError) => {
             console.log(err)
@@ -116,7 +117,7 @@ const LoginPage = (props: IProps) => {
       breadCrumb={[
         {
           key: 'login-page',
-          url: '/login',
+          url: pageRoutes.login,
           name: 'Login'
         }
       ]}

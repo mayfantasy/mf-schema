@@ -40,6 +40,7 @@ import ObjectsTable from '../../components/ObjectsTable/ObjectsTable'
 import StringArray from '../../components/StringArray/StringArray'
 import RichTextField from '../../components/RichTextField/RichTextField'
 import { RequestStatus } from '../../helpers/request'
+import { pageRoutes } from '../../navigation/page-routes'
 
 interface IFormStructureItem {
   value: any
@@ -128,7 +129,7 @@ const SchemaListPage = () => {
       breadCrumb={[
         {
           key: 'schema',
-          url: '/schema/list',
+          url: pageRoutes.listSchemas,
           name: 'Schema'
         },
         {
@@ -311,7 +312,7 @@ const SchemaListPage = () => {
           <PageHeader
             name={currentSchema.name}
             sub={currentSchema.handle}
-            buttonLink={`/schema/update?id=${currentSchema.id}`}
+            buttonLink={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
             buttonWord="Edit Schema"
             description={currentSchema.description}
           />

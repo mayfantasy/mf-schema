@@ -9,6 +9,7 @@ import Loading from '../components/Loading/Loading'
 import router from 'next/router'
 import { AxiosError } from 'axios'
 import { RequestStatus } from '../helpers/request'
+import { pageRoutes } from '../navigation/page-routes'
 
 interface IRegistrationFormProps<V> {
   handleSubmit: (e: any) => void
@@ -179,7 +180,7 @@ const RegisterPage = (props: IProps) => {
         })
           .then((res) => {
             setRegisterStatus(registerRequestStatus.setSuccessStatus())
-            router.push('/login')
+            router.push(pageRoutes.login)
           })
           .catch((err: AxiosError) => {
             setRegisterStatus(registerRequestStatus.setErrorStatus(err))
@@ -193,7 +194,7 @@ const RegisterPage = (props: IProps) => {
       breadCrumb={[
         {
           key: 'register-page',
-          url: '/register',
+          url: pageRoutes.register,
           name: 'register'
         }
       ]}
