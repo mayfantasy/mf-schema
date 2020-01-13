@@ -7,7 +7,7 @@ const schemaDef = Joi.array()
       type: J.j_handle.required(),
       key: J.j_handle.required(),
       name: J.j_str.required(),
-      child_type: J.j_str,
+      options: Joi.array().items(J.j_any),
       helper: J.j_str,
       order: J.j_num,
       grid: J.j_num,

@@ -36,6 +36,8 @@ import StringArray from '../../components/StringArray/StringArray'
 import ObjectUsers from '../../components/ObjectUsers/ObjectUsers'
 import RichTextField from '../../components/RichTextField/RichTextField'
 import { pageRoutes } from '../../navigation/page-routes'
+import StringSingleSelect from '../../components/StringSingleSelect/StringSingleSelect'
+import StringMultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
 
 interface IFormStructure {
   [key: string]: any
@@ -265,6 +267,12 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.rich_text:
         value = e
         break
+      case ESchemaFieldType.string_single_select:
+        value = e
+        break
+      case ESchemaFieldType.string_multi_select:
+        value = e
+        break
       default:
         value = e.target.value
     }
@@ -279,6 +287,7 @@ const ObjectUpdatePage = () => {
     type: ESchemaFieldType,
     key: string,
     value: any,
+    options: any[],
     name: string | null,
     grid: number | null,
     helper: string | null
@@ -358,6 +367,24 @@ const ObjectUpdatePage = () => {
             onChange={(v: string) => {
               handleFieldChange(v, type, key)
             }}
+          />
+        )
+        break
+      case ESchemaFieldType.string_single_select:
+        input = (
+          <StringSingleSelect
+            value={value}
+            options={options}
+            onChange={(v: string) => handleFieldChange(v, type, key)}
+          />
+        )
+        break
+      case ESchemaFieldType.string_multi_select:
+        input = (
+          <StringMultiSelect
+            value={value}
+            options={options}
+            onChange={(v: string[]) => handleFieldChange(v, type, key)}
           />
         )
         break
@@ -452,12 +479,21 @@ const ObjectUpdatePage = () => {
               )
               const type = foundSchemaDef ? foundSchemaDef.type : null
               const value = form[key]
+              const options = foundSchemaDef ? foundSchemaDef.options : null
               const helper = foundSchemaDef ? foundSchemaDef.helper : null
               const grid = foundSchemaDef ? foundSchemaDef.grid : null
               const name = foundSchemaDef ? foundSchemaDef.name : null
               return (
                 !!type &&
-                findFormFieldByKey(type, key, value, name, grid, helper)
+                findFormFieldByKey(
+                  type,
+                  key,
+                  value,
+                  options || [],
+                  name,
+                  grid,
+                  helper
+                )
               )
             })}
             <br />

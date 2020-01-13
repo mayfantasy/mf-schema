@@ -1,5 +1,9 @@
 import { ICollection } from './collection.type'
 
+interface IKeyValue {
+  key: string
+  value: any
+}
 export enum ESchemaFieldType {
   string = 'string',
   number = 'number',
@@ -10,11 +14,13 @@ export enum ESchemaFieldType {
   textarea = 'textarea',
   datepicker = 'datepicker',
   string_array = 'string_array',
-  rich_text = 'rich_text'
+  rich_text = 'rich_text',
+  string_single_select = 'string_single_select',
+  string_multi_select = 'string_multi_select'
 }
 export interface ISchemaFieldDef {
   type: ESchemaFieldType
-  child_type?: ESchemaFieldType
+  options?: string[]
   key: string
   name: string
   helper: string
@@ -29,7 +35,7 @@ export interface ISchemaFieldDef {
  */
 export interface ISchemaFieldDefKeys {
   type: string
-  child_type?: string
+  options: string
   key: string
   name: string
   helper: string

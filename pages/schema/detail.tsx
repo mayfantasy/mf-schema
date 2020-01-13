@@ -41,6 +41,8 @@ import StringArray from '../../components/StringArray/StringArray'
 import RichTextField from '../../components/RichTextField/RichTextField'
 import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
+import SingleSelect from '../../components/StringSingleSelect/StringSingleSelect'
+import MultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
 
 interface IFormStructureItem {
   value: any
@@ -188,9 +190,13 @@ const SchemaListPage = () => {
           case ESchemaFieldType.image:
             value = ''
           case ESchemaFieldType.string_array:
-            value = ''
+            value = []
           case ESchemaFieldType.rich_text:
             value = ''
+          case ESchemaFieldType.string_single_select:
+            value = ''
+          case ESchemaFieldType.string_multi_select:
+            value = []
           default:
             value = ''
         }
@@ -233,6 +239,10 @@ const SchemaListPage = () => {
         case ESchemaFieldType.string_array:
           value = e
         case ESchemaFieldType.rich_text:
+          value = e
+        case ESchemaFieldType.string_single_select:
+          value = e
+        case ESchemaFieldType.string_multi_select:
           value = e
           break
         default:
@@ -457,6 +467,7 @@ const SchemaListPage = () => {
                 const type = form[field].meta.type
                 const key = form[field].meta.key
                 const name = form[field].meta.name
+                const options = form[field].meta.options || []
                 const grid = form[field].meta.grid
                 const newLine = form[field].meta.new_line
                 const show = form[field].meta.show
@@ -536,6 +547,28 @@ const SchemaListPage = () => {
                         onChange={(v: string) => {
                           handleFieldChange(v, type, key)
                         }}
+                      />
+                    )
+                    break
+                  case ESchemaFieldType.string_single_select:
+                    input = (
+                      <SingleSelect
+                        value={value}
+                        options={options}
+                        onChange={(v: string) =>
+                          handleFieldChange(v, type, key)
+                        }
+                      />
+                    )
+                    break
+                  case ESchemaFieldType.string_multi_select:
+                    input = (
+                      <MultiSelect
+                        value={value || []}
+                        options={options}
+                        onChange={(v: string[]) =>
+                          handleFieldChange(v, type, key)
+                        }
                       />
                     )
                     break

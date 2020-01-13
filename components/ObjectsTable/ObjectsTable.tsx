@@ -60,6 +60,14 @@ const ObjectsTable = (props: IProps) => {
                   twoToneColor="#eb2f96"
                 />
               )
+            ) : typeof value === 'object' && value.length ? (
+              <div>
+                {(value as string[]).map((v, i) => (
+                  <div key={v}>
+                    [{i + 1}] {v}
+                  </div>
+                ))}
+              </div>
             ) : (
               value
             )

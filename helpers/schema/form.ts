@@ -16,6 +16,7 @@ export const addField = (
   const newDefs = _defKeys.concat({
     key: `key-${fieldIndex}`,
     type: `type-${fieldIndex}`,
+    options: `options-${fieldIndex}`,
     name: `name-${fieldIndex}`,
     helper: `helper-${fieldIndex}`,
     order: `order-${fieldIndex}`,
@@ -59,6 +60,7 @@ export const setInitialFormValues = (
   const map = (i: number): ISchemaFieldDefKeys => ({
     key: `key-${i}`,
     type: `type-${i}`,
+    options: `options-${i}`,
     name: `name-${i}`,
     helper: `helper-${i}`,
     order: `order-${i}`,
@@ -77,6 +79,7 @@ export const setInitialFormValues = (
       ...a,
       [map(i)['key']]: c.key,
       [map(i)['type']]: c.type,
+      [map(i)['options']]: c.options,
       [map(i)['name']]: c.name,
       [map(i)['helper']]: c.helper,
       [map(i)['order']]: c.order,
