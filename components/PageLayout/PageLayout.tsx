@@ -79,7 +79,7 @@ const PageLayout = (props: IProps) => {
       <Header className="header" style={{ background: '#fff' }}>
         <div className="logo">
           <Link href="/">
-            <img src="/logo.color.500.png" />
+            <img src="/mayfantasy.cms.1000.png" />
           </Link>
         </div>
         {user ? (

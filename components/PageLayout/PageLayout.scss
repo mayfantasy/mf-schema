@@ -10,8 +10,10 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-left: 20px;
     .logo {
-      width: 75px;
+      width: 170px;
+      cursor: pointer;
       img {
         width: 100%;
       }
