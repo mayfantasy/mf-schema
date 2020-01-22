@@ -28,11 +28,11 @@ const ImageUploader = (props: IProps) => {
 
   const handleChange = (info: any) => {
     if (info.file.status === 'uploading') {
-      setUploadStatus(uploadRequestStatus.setLoadingStatus())
+      setUploadStatus(uploadRequestStatus.loading())
       return
     }
     if (info.file.status === 'done') {
-      setUploadStatus(uploadRequestStatus.setSuccessStatus())
+      setUploadStatus(uploadRequestStatus.success())
       const url = info.file.response.result[1].mediaLink
       setImageUrl(url)
       onChange(url)

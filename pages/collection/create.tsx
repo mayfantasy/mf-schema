@@ -100,19 +100,19 @@ const CreateCollectionPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setCollectionStatus(collectionRequestStatus.setLoadingStatus())
+        setCollectionStatus(collectionRequestStatus.loading())
         createCollectionRequest({
           name: values.name,
           handle: values.handle,
           description: values.description
         } as any)
           .then((res) => {
-            setCollectionStatus(collectionRequestStatus.setSuccessStatus())
+            setCollectionStatus(collectionRequestStatus.success())
 
             router.push(pageRoutes.listCollections)
           })
           .catch((err: AxiosError) => {
-            setCollectionStatus(collectionRequestStatus.setErrorStatus(err))
+            setCollectionStatus(collectionRequestStatus.error(err))
           })
       }
     })

@@ -62,10 +62,10 @@ const ObjectUpdatePage = () => {
     schema_handle: string,
     id: string
   ) => {
-    setGetCurrentObjectStatus(currentObjectRequestStatus.setLoadingStatus())
+    setGetCurrentObjectStatus(currentObjectRequestStatus.loading())
     getObjectByIdRequest(collection_handle, schema_handle, id)
       .then((res) => {
-        setGetCurrentObjectStatus(currentObjectRequestStatus.setSuccessStatus())
+        setGetCurrentObjectStatus(currentObjectRequestStatus.success())
         const data = res.data.result as IObject
         setCurrentObject(data)
         const formData = data.schema.def.reduce((a, c) => {
@@ -91,7 +91,7 @@ const ObjectUpdatePage = () => {
       })
       .catch((err) => {
         setGetCurrentObjectStatus(
-          currentObjectRequestStatus.setErrorStatus(err)
+          currentObjectRequestStatus.error(err)
         )
       })
   }
@@ -110,18 +110,18 @@ const ObjectUpdatePage = () => {
     payload: any
   ) => {
     setUpdateCurrentObjectStatus(
-      updateCurrentObjectRequestStatus.setLoadingStatus()
+      updateCurrentObjectRequestStatus.loading()
     )
     if (currentObject) {
       updateObjectByIdRequest(collection_handle, schema_handle, id, payload)
         .then((res) => {
           setUpdateCurrentObjectStatus(
-            updateCurrentObjectRequestStatus.setSuccessStatus()
+            updateCurrentObjectRequestStatus.success()
           )
         })
         .catch((err) => {
           setUpdateCurrentObjectStatus(
-            updateCurrentObjectRequestStatus.setErrorStatus(err)
+            updateCurrentObjectRequestStatus.error(err)
           )
         })
     }
@@ -140,19 +140,19 @@ const ObjectUpdatePage = () => {
     schema_handle: string,
     id: string
   ) => {
-    setDeleteObjectStatus(deleteCurrentObjectRequestStatus.setLoadingStatus())
+    setDeleteObjectStatus(deleteCurrentObjectRequestStatus.loading())
     if (currentObject) {
       let schemaId = currentObject.schema.id
       deleteObjectByIdRequest(collection_handle, schema_handle, id)
         .then((res) => {
           setDeleteObjectStatus(
-            deleteCurrentObjectRequestStatus.setSuccessStatus()
+            deleteCurrentObjectRequestStatus.success()
           )
           router.push(`${pageRoutes.schemaDetail}?id=${schemaId}`)
         })
         .catch((err) => {
           setDeleteObjectStatus(
-            deleteCurrentObjectRequestStatus.setErrorStatus(err)
+            deleteCurrentObjectRequestStatus.error(err)
           )
         })
     }

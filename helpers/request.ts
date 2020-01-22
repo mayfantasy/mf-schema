@@ -7,7 +7,7 @@ export class RequestStatus {
     error: ''
   }
 
-  setLoadingStatus = () => {
+  loading = () => {
     this.status = {
       loading: true,
       success: false,
@@ -16,7 +16,7 @@ export class RequestStatus {
     return this.status
   }
 
-  setSuccessStatus = () => {
+  success = () => {
     this.status = {
       loading: false,
       success: true,
@@ -25,7 +25,7 @@ export class RequestStatus {
     return this.status
   }
 
-  setErrorStatus = (err: AxiosError) => {
+  error = (err: AxiosError) => {
     this.status = {
       loading: false,
       success: false,

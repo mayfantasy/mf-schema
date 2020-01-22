@@ -172,18 +172,18 @@ const RegisterPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setRegisterStatus(registerRequestStatus.setLoadingStatus())
+        setRegisterStatus(registerRequestStatus.loading())
         createAccountRequest({
           email: values.email,
           username: values.username,
           password: values.password
         })
           .then((res) => {
-            setRegisterStatus(registerRequestStatus.setSuccessStatus())
+            setRegisterStatus(registerRequestStatus.success())
             router.push(pageRoutes.login)
           })
           .catch((err: AxiosError) => {
-            setRegisterStatus(registerRequestStatus.setErrorStatus(err))
+            setRegisterStatus(registerRequestStatus.error(err))
           })
       }
     })

@@ -24,7 +24,7 @@ const ObjectUsers = (props: IProps) => {
   const [userList, setUserList] = useState<IUser[]>([])
 
   const getUserList = () => {
-    setUserListStatus(getUserListRequestStatus.setLoadingStatus())
+    setUserListStatus(getUserListRequestStatus.loading())
     if (currentObject) {
       getUserListRequest()
         .then((res) => {
@@ -32,7 +32,7 @@ const ObjectUsers = (props: IProps) => {
           const collectionHandle = currentObject.schema.collection.handle
           const objectId = currentObject.id
 
-          setUserListStatus(getUserListRequestStatus.setSuccessStatus())
+          setUserListStatus(getUserListRequestStatus.success())
           const userListRes = res.data.result as IUser[]
           const filteredUserList = userListRes.filter(
             (user) =>
@@ -51,7 +51,7 @@ const ObjectUsers = (props: IProps) => {
           setUserList(filteredUserList)
         })
         .catch((err) => {
-          setUserListStatus(getUserListRequestStatus.setErrorStatus(err))
+          setUserListStatus(getUserListRequestStatus.error(err))
         })
     }
   }

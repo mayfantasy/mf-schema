@@ -25,16 +25,16 @@ const UserSchemaMeta = (props: IProps) => {
   const [objectStatus, setObjectStatus] = useState(objectRequestStatus.status)
 
   const getObjectList = () => {
-    setObjectStatus(objectRequestStatus.setLoadingStatus())
+    setObjectStatus(objectRequestStatus.loading())
     console.log(collectionHandle, schemaHandle)
     getObjectListRequest(collectionHandle, schemaHandle)
       .then((res) => {
-        setObjectStatus(objectRequestStatus.setSuccessStatus())
+        setObjectStatus(objectRequestStatus.success())
         const objectList = res.data.result
         setObjectList(objectList)
       })
       .catch((err) => {
-        setObjectStatus(objectRequestStatus.setErrorStatus(err))
+        setObjectStatus(objectRequestStatus.error(err))
       })
   }
 
@@ -43,16 +43,16 @@ const UserSchemaMeta = (props: IProps) => {
   const [schemaStatus, setSchemaStatus] = useState(schemaRequestStatus.status)
 
   const getCurrentSchema = () => {
-    setSchemaStatus(schemaRequestStatus.setLoadingStatus())
+    setSchemaStatus(schemaRequestStatus.loading())
     getSchemaByHandleRequest(schemaHandle)
       .then((res) => {
-        setSchemaStatus(schemaRequestStatus.setSuccessStatus())
+        setSchemaStatus(schemaRequestStatus.success())
         const currentSchema = res.data.result
         setCurrentSchema(currentSchema)
         getObjectList()
       })
       .catch((err) => {
-        setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
+        setSchemaStatus(schemaRequestStatus.error(err))
       })
   }
 

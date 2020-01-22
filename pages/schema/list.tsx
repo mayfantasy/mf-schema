@@ -50,14 +50,14 @@ const SchemaListPage = () => {
   const [schemas, setSchemas] = useState([])
 
   const getSchemaList = (collection_id: string) => {
-    setSchemaStatus(schemaListRequest.setLoadingStatus())
+    setSchemaStatus(schemaListRequest.loading())
     getSchemaListRequest({ collection_id })
       .then((res) => {
-        setSchemaStatus(schemaListRequest.setSuccessStatus())
+        setSchemaStatus(schemaListRequest.success())
         setSchemas(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus(schemaListRequest.setErrorStatus(err))
+        setSchemaStatus(schemaListRequest.error(err))
       })
   }
 
@@ -69,14 +69,14 @@ const SchemaListPage = () => {
   const [collections, setCollections] = useState<ICollection[]>([])
 
   const getCollectionList = () => {
-    setCollectionStatus(collectionListRequest.setLoadingStatus())
+    setCollectionStatus(collectionListRequest.loading())
     getCollectionListRequest()
       .then((res) => {
-        setCollectionStatus(collectionListRequest.setSuccessStatus())
+        setCollectionStatus(collectionListRequest.success())
         setCollections(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setCollectionStatus(collectionListRequest.setErrorStatus(err))
+        setCollectionStatus(collectionListRequest.error(err))
       })
   }
 

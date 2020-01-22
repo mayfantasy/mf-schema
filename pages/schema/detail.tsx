@@ -84,14 +84,14 @@ const SchemaListPage = () => {
    * Get object list by collection handle and schema handle
    */
   const getObjectList = (collection_handle: string, schema_handle: string) => {
-    setObjectListStatus(objectListRequestStatus.setLoadingStatus())
+    setObjectListStatus(objectListRequestStatus.loading())
     getObjectListRequest(collection_handle, schema_handle)
       .then((res) => {
-        setObjectListStatus(objectListRequestStatus.setSuccessStatus())
+        setObjectListStatus(objectListRequestStatus.success())
         setObjectList(res.data.result)
       })
       .catch((err) => {
-        setObjectListStatus(objectListRequestStatus.setErrorStatus(err))
+        setObjectListStatus(objectListRequestStatus.error(err))
       })
   }
 
@@ -101,17 +101,17 @@ const SchemaListPage = () => {
    * Load schema by ID
    */
   const getCurrentSchema = (id: string) => {
-    setSchemaStatus(schemaRequestStatus.setLoadingStatus())
+    setSchemaStatus(schemaRequestStatus.loading())
 
     getSchemaByIdRequest(id)
       .then((res) => {
-        setSchemaStatus(schemaRequestStatus.setSuccessStatus())
+        setSchemaStatus(schemaRequestStatus.success())
         const schema = res.data.result as ISchema
         setCurrentSchema(schema)
         getObjectList(schema.collection.handle, schema.handle)
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
+        setSchemaStatus(schemaRequestStatus.error(err))
       })
   }
 
@@ -270,16 +270,16 @@ const SchemaListPage = () => {
       schema_handle: string,
       values: any
     ) => {
-      setObjectCreateStatus(createObjectRequestStatus.setLoadingStatus())
+      setObjectCreateStatus(createObjectRequestStatus.loading())
       createObjectRequest(collection_handle, schema_handle, values)
         .then((res) => {
-          setObjectCreateStatus(createObjectRequestStatus.setSuccessStatus())
+          setObjectCreateStatus(createObjectRequestStatus.success())
           getObjectList(collection_handle, schema_handle)
           setForm(null)
           setHandle('')
         })
         .catch((err) => {
-          setObjectCreateStatus(createObjectRequestStatus.setErrorStatus(err))
+          setObjectCreateStatus(createObjectRequestStatus.error(err))
         })
     }
 

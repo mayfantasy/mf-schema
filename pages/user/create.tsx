@@ -165,7 +165,7 @@ const CreateUserPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setUserStatus(userRequestStatus.setLoadingStatus())
+        setUserStatus(userRequestStatus.loading())
         createUserRequest({
           first_name: values.first_name,
           last_name: values.last_name,
@@ -176,11 +176,11 @@ const CreateUserPage = (props: IProps) => {
           phone: values.phone || ''
         } as any)
           .then((res) => {
-            setUserStatus(userRequestStatus.setSuccessStatus())
+            setUserStatus(userRequestStatus.success())
             router.push(pageRoutes.listUsers)
           })
           .catch((err: AxiosError) => {
-            setUserStatus(userRequestStatus.setErrorStatus(err))
+            setUserStatus(userRequestStatus.error(err))
           })
       }
     })

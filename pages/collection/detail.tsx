@@ -22,14 +22,14 @@ const CollectionDetailPage = () => {
   const [collection, setCollection] = useState<ICollection | null>(null)
 
   const getCollectionDetail = (id: string) => {
-    setCollectionStatus(collectionRequestStatus.setLoadingStatus())
+    setCollectionStatus(collectionRequestStatus.loading())
     getCollectionByIdRequest(id)
       .then((res) => {
-        setCollectionStatus(collectionRequestStatus.setSuccessStatus())
+        setCollectionStatus(collectionRequestStatus.success())
         setCollection(res.data.result)
       })
       .catch((err) => {
-        setCollectionStatus(collectionRequestStatus.setErrorStatus(err))
+        setCollectionStatus(collectionRequestStatus.error(err))
       })
   }
 

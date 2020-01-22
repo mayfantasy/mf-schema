@@ -47,7 +47,7 @@ const CreateSchemaPage = (props: IProps) => {
     defs: ISchemaFieldDef[]
   ) => {
     // Create schema
-    setSchemaStatus(schemaRequestStatus.setLoadingStatus())
+    setSchemaStatus(schemaRequestStatus.loading())
     createSchemaRequest({
       name: values.name,
       handle: values.handle,
@@ -56,12 +56,12 @@ const CreateSchemaPage = (props: IProps) => {
       collection_id: values.collection_id
     })
       .then((res) => {
-        setSchemaStatus(schemaRequestStatus.setSuccessStatus())
+        setSchemaStatus(schemaRequestStatus.success())
 
         router.push(pageRoutes.listSchemas)
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
+        setSchemaStatus(schemaRequestStatus.error(err))
       })
   }
 

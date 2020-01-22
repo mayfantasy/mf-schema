@@ -68,18 +68,18 @@ const CreateAccessKeyPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setAccessKeyStatus(accessKeyRequestStatus.setLoadingStatus())
+        setAccessKeyStatus(accessKeyRequestStatus.loading())
         createAccessKeyRequest({
           name: values.name,
           description: values.description
         } as any)
           .then((res) => {
-            setAccessKeyStatus(accessKeyRequestStatus.setSuccessStatus())
+            setAccessKeyStatus(accessKeyRequestStatus.success())
 
             router.push(pageRoutes.listAccessKeys)
           })
           .catch((err: AxiosError) => {
-            setAccessKeyStatus(accessKeyRequestStatus.setErrorStatus(err))
+            setAccessKeyStatus(accessKeyRequestStatus.error(err))
           })
       }
     })

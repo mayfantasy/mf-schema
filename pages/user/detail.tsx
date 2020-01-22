@@ -22,14 +22,14 @@ const UserDetailPage = () => {
   const router = useRouter()
 
   const getUser = (id: string) => {
-    setUserStatus(userRequestStatus.setLoadingStatus())
+    setUserStatus(userRequestStatus.loading())
     getUserByIdRequest(id)
       .then((res) => {
-        setUserStatus(userRequestStatus.setSuccessStatus())
+        setUserStatus(userRequestStatus.success())
         setUser(res.data.result)
       })
       .catch((err) => {
-        setUserStatus(userRequestStatus.setErrorStatus(err))
+        setUserStatus(userRequestStatus.error(err))
       })
   }
 

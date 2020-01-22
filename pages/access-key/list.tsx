@@ -25,14 +25,14 @@ const AccessKeyListPage = () => {
    * Get Access Key List
    */
   const getAccessKeyList = () => {
-    setAccessKeyStatus(accessKeyRequestStatus.setLoadingStatus())
+    setAccessKeyStatus(accessKeyRequestStatus.loading())
     getAccessKeyListRequest()
       .then((res) => {
-        setAccessKeyStatus(accessKeyRequestStatus.setSuccessStatus())
+        setAccessKeyStatus(accessKeyRequestStatus.success())
         setAccessKeys(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setAccessKeyStatus(accessKeyRequestStatus.setErrorStatus(err))
+        setAccessKeyStatus(accessKeyRequestStatus.error(err))
       })
   }
 
@@ -42,17 +42,17 @@ const AccessKeyListPage = () => {
    * Delete Access Key
    */
   const deleteAccessKey = (id: string) => {
-    setDeleteAccessKeyStatus(deleteAccessKeyRequestStatus.setLoadingStatus())
+    setDeleteAccessKeyStatus(deleteAccessKeyRequestStatus.loading())
     deleteAccessKeyRequest(id)
       .then((res) => {
         setDeleteAccessKeyStatus(
-          deleteAccessKeyRequestStatus.setSuccessStatus()
+          deleteAccessKeyRequestStatus.success()
         )
         getAccessKeyList()
       })
       .catch((err: AxiosError) => {
         setDeleteAccessKeyStatus(
-          deleteAccessKeyRequestStatus.setErrorStatus(err)
+          deleteAccessKeyRequestStatus.error(err)
         )
       })
   }

@@ -88,13 +88,13 @@ const LoginPage = (props: IProps) => {
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setLoginStatus(loginRequestStatus.setLoadingStatus())
+        setLoginStatus(loginRequestStatus.loading())
         loginRequest({
           email: values.email,
           password: values.password
         })
           .then((res) => {
-            setLoginStatus(loginRequestStatus.setSuccessStatus())
+            setLoginStatus(loginRequestStatus.success())
 
             const user = res.data.result.account
             const token = res.data.result.token
@@ -106,7 +106,7 @@ const LoginPage = (props: IProps) => {
           })
           .catch((err: AxiosError) => {
             console.log(err)
-            setLoginStatus(loginRequestStatus.setErrorStatus(err))
+            setLoginStatus(loginRequestStatus.error(err))
           })
       }
     })

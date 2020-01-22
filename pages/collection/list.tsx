@@ -40,19 +40,19 @@ const CollectionListPage = () => {
   /** Get Collection List */
   const collectionRequestStatus = new RequestStatus()
   const [collectionStatus, setCollectionStatus] = useState(
-    collectionRequestStatus.setLoadingStatus()
+    collectionRequestStatus.loading()
   )
   const [collections, setCollections] = useState([])
 
   useEffect(() => {
-    setCollectionStatus(collectionRequestStatus.setLoadingStatus())
+    setCollectionStatus(collectionRequestStatus.loading())
     getCollectionListRequest()
       .then((res) => {
-        setCollectionStatus(collectionRequestStatus.setSuccessStatus())
+        setCollectionStatus(collectionRequestStatus.success())
         setCollections(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setCollectionStatus(collectionRequestStatus.setErrorStatus(err))
+        setCollectionStatus(collectionRequestStatus.error(err))
       })
   }, [])
   return (

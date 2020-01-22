@@ -26,14 +26,14 @@ const UserListPage = () => {
    * Get Access Key List
    */
   const getUserList = () => {
-    setUserStatus(userRequestStatus.setLoadingStatus())
+    setUserStatus(userRequestStatus.loading())
     getUserListRequest()
       .then((res) => {
-        setUserStatus(userRequestStatus.setSuccessStatus())
+        setUserStatus(userRequestStatus.success())
         setUsers(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setUserStatus(userRequestStatus.setErrorStatus(err))
+        setUserStatus(userRequestStatus.error(err))
       })
   }
 
@@ -43,14 +43,14 @@ const UserListPage = () => {
    * Delete Access Key
    */
   const deleteUser = (id: string) => {
-    setDeleteUserStatus(deleteUserRequestStatus.setLoadingStatus())
+    setDeleteUserStatus(deleteUserRequestStatus.loading())
     deleteUserRequest(id)
       .then((res) => {
-        setDeleteUserStatus(deleteUserRequestStatus.setSuccessStatus())
+        setDeleteUserStatus(deleteUserRequestStatus.success())
         getUserList()
       })
       .catch((err: AxiosError) => {
-        setDeleteUserStatus(deleteUserRequestStatus.setErrorStatus(err))
+        setDeleteUserStatus(deleteUserRequestStatus.error(err))
       })
   }
 

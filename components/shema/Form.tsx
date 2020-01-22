@@ -47,14 +47,14 @@ const SchemaForm = (props: IProps) => {
    * Get Collection list
    */
   const getCollections = () => {
-    setCollectionStatus(collectionListRequestStatus.setLoadingStatus())
+    setCollectionStatus(collectionListRequestStatus.loading())
     getCollectionListRequest()
       .then((res) => {
-        setCollectionStatus(collectionListRequestStatus.setSuccessStatus())
+        setCollectionStatus(collectionListRequestStatus.success())
         setCollectionList(res.data.result)
       })
       .catch((err: AxiosError) => {
-        setCollectionStatus(collectionListRequestStatus.setErrorStatus(err))
+        setCollectionStatus(collectionListRequestStatus.error(err))
       })
   }
 

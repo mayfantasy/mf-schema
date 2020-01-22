@@ -45,16 +45,16 @@ const UpdateSchemaForm = (
    * Get current schema by ID
    */
   const getCurrentSchema = (id: string) => {
-    setCurrentSchemaStatus(schemaRequestStatus.setLoadingStatus())
+    setCurrentSchemaStatus(schemaRequestStatus.loading())
     getSchemaByIdRequest(id as string)
       .then((res) => {
-        setCurrentSchemaStatus(schemaRequestStatus.setSuccessStatus())
+        setCurrentSchemaStatus(schemaRequestStatus.success())
         const data = res.data.result
         setCurrentSchema(data)
         setInitialFormValues(form, data)
       })
       .catch((err) => {
-        setCurrentSchemaStatus(schemaRequestStatus.setErrorStatus(err))
+        setCurrentSchemaStatus(schemaRequestStatus.error(err))
       })
   }
 
@@ -114,13 +114,13 @@ const UpdateSchemaPage = (props: IProps) => {
 
   const updateSchema = (payload: IUpdateSchemaPayload) => {
     // Update schema
-    setSchemaStatus(schemaRequestStatus.setLoadingStatus())
+    setSchemaStatus(schemaRequestStatus.loading())
     updateSchemaRequest(payload)
       .then((res) => {
-        setSchemaStatus(schemaRequestStatus.setSuccessStatus())
+        setSchemaStatus(schemaRequestStatus.success())
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus(schemaRequestStatus.setErrorStatus(err))
+        setSchemaStatus(schemaRequestStatus.error(err))
       })
   }
 
