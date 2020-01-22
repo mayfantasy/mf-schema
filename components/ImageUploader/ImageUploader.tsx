@@ -2,6 +2,7 @@ import { message, Upload, Icon, Button } from 'antd'
 import { useState } from 'react'
 import { RequestStatus } from '../../helpers/request'
 import { getToken } from '../../helpers/auth.helper'
+import StorageImagesSelector from '../StorageImagesSelector/StorageImagesSelector'
 
 interface IProps {
   value: string
@@ -11,6 +12,8 @@ interface IProps {
 const ImageUploader = (props: IProps) => {
   const { value, onChange } = props
   const [imageUrl, setImageUrl] = useState<string | null>(value || null)
+
+  const [imageSelectorOpen, setImageSelectorOpen] = useState(false)
 
   /** Upload image */
   const uploadRequestStatus = new RequestStatus()
@@ -61,8 +64,20 @@ const ImageUploader = (props: IProps) => {
           onChange={handleChange}
         >
           {uploadButton}
-        </Upload>
+        </Upload>{' '}
+        <Button onClick={() => setImageSelectorOpen(true)}>
+          <Icon type="cloud" theme="twoTone" /> Select From Library
+        </Button>
       </div>
+
+      <StorageImagesSelector
+        open={imageSelectorOpen}
+        onToggle={setImageSelectorOpen}
+        onSelect={(v: string) => {
+          setImageUrl(v)
+          onChange(v)
+        }}
+      />
 
       {!!imageUrl && (
         <>

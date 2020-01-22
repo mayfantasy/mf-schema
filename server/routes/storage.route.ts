@@ -1,8 +1,8 @@
 import Koa from 'koa'
-import { uploadImage } from '../services/upload.service'
+import { uploadImage, getAccountImages } from '../services/storage.service'
 import { format } from 'date-fns'
 import { getAuth } from './helper'
-import { uploadSchema } from '../validators/upload.validator'
+import { uploadSchema } from '../validators/storage.validator'
 import { validateUpload } from '../validators'
 
 export const uploadImageRoute = async (ctx: Koa.Context) => {
@@ -29,5 +29,15 @@ export const uploadImageRoute = async (ctx: Koa.Context) => {
     }
   } else {
     return new Error('File not found.')
+  }
+}
+export const getImageListRoute = async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const accountId = auth.account_id
+
+  const images = await getAccountImages(`images/_account_${accountId}`)
+
+  ctx.body = {
+    result: images
   }
 }

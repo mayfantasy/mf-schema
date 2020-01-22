@@ -30,7 +30,7 @@ import {
   getObjectByIdRoute,
   deleteObjectByIdRoute
 } from './routes/object.route'
-import { uploadImageRoute } from './routes/storage.route'
+import { uploadImageRoute, getImageListRoute } from './routes/storage.route'
 import {
   getAccessKeyListRoute,
   deleteAccessKeyRoute,
@@ -90,8 +90,9 @@ app.prepare().then(() => {
   router.get('/api/schema/get/:id', getSchemaByIdRoute)
   router.get('/api/schema/get/handle/:handle', getSchemaByHandleRoute)
 
-  // Image Upload
+  // Storage
   router.post('/api/upload/image', uploadImageRoute)
+  router.get('/api/list/image', getImageListRoute)
 
   // Object
   router.post(

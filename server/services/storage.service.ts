@@ -26,3 +26,13 @@ export const uploadImage = async (
   }
   return new Error('Missing params. [bucketName or folder1 or folder2]')
 }
+
+export const getAccountImages = async (path: string) => {
+  if (bucketName && path) {
+    const [objects] = await storage.bucket(bucketName).getFiles({
+      prefix: path
+    })
+    return objects.map((o: any) => o.metadata.mediaLink)
+  }
+  return new Error('Missing params. [bucketName or path]')
+}

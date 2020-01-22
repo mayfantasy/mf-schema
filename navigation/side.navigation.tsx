@@ -8,7 +8,7 @@ export const sideNavItems: INavItem[] = [
     open: true,
     name: (
       <span>
-        <Icon type="user" />
+        <Icon type="folder" />
         Collection
       </span>
     ),
