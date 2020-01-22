@@ -30,7 +30,7 @@ import {
   getObjectByIdRoute,
   deleteObjectByIdRoute
 } from './routes/object.route'
-import { uploadImageRoute } from './routes/upload.route'
+import { uploadImageRoute } from './routes/storage.route'
 import {
   getAccessKeyListRoute,
   deleteAccessKeyRoute,

@@ -1,6 +1,7 @@
 import { message, Upload, Icon, Button } from 'antd'
 import { useState } from 'react'
 import { RequestStatus } from '../../helpers/request'
+import { getToken } from '../../helpers/auth.helper'
 
 interface IProps {
   value: string
@@ -45,13 +46,15 @@ const ImageUploader = (props: IProps) => {
     </Button>
   )
 
+  const apiToken = getToken()
+
   return (
     <>
       <div>
         <Upload
           accept="image/*"
-          name="avatar"
-          className="avatar-uploader"
+          headers={{ Authentication: apiToken || '' }}
+          name="mf_image_uploader"
           showUploadList={false}
           action="/api/upload/image"
           beforeUpload={beforeUpload}
@@ -65,11 +68,16 @@ const ImageUploader = (props: IProps) => {
         <>
           <br />
           <div style={{ maxWidth: '500px' }}>
-            <img style={{ width: '100%' }} src={imageUrl || ''} />
+            <img
+              style={{ width: '100%', maxWidth: '500px' }}
+              src={imageUrl || ''}
+            />
           </div>
           <br />
           <div>
-            <a href={imageUrl || ''}>{imageUrl}</a>
+            <small>
+              <a href={imageUrl || ''}>{imageUrl}</a>
+            </small>
           </div>
           <br />
           <div>

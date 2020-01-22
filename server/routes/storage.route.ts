@@ -6,19 +6,22 @@ import { uploadSchema } from '../validators/upload.validator'
 import { validateUpload } from '../validators'
 
 export const uploadImageRoute = async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx)) || ({} as any)
+  const accountId = auth.account_id
+
   const files = ctx.request.files
 
   /** Validation */
   validateUpload(uploadSchema, files)
 
-  const file = (files as any).avatar
+  const file = (files as any).mf_image_uploader
 
   if (file) {
     const { path, name } = file
     const result = await uploadImage(
       `${path}`,
       name,
-      'images',
+      `images/_account_${accountId}`,
       format(new Date(), 'yyyy-MM-dd')
     )
     ctx.body = {
