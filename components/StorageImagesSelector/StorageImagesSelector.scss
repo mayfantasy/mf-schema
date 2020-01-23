@@ -1,5 +1,7 @@
 .storage-images-selector {
   width: 100%;
+  height: 60vh;
+  overflow: scroll;
   .image-item__container {
     height: 100%;
     border: 2px solid #ccc;
@@ -16,7 +18,9 @@
       width: 100%;
       height: 100%;
       position: relative;
-
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
       .selected-icon {
         font-size: 20px;
         position: absolute;

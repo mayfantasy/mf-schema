@@ -1,5 +1,5 @@
 import { RequestStatus } from '../../helpers/request'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getAccountImagesRequest } from '../../requests/storage.request'
 import './StorageImagesSelector.scss'
 import { Row, Col, Icon, Button, Modal, Alert } from 'antd'
@@ -14,6 +14,10 @@ interface IProps {
 
 const StorageImagesSelector = (props: IProps) => {
   const { onSelect, open, onToggle } = props
+
+  //  Refs
+  const imageWrapperRef = useRef(null)
+  const imageRef = useRef(null)
 
   // OnSelect
   const [activeImage, setActiveImage] = useState('')
@@ -57,6 +61,7 @@ const StorageImagesSelector = (props: IProps) => {
         title="Select Image"
         visible={open}
         onOk={onOk}
+        width={800}
         footer={[
           <Button key="back" onClick={onCancel}>
             Cancel
@@ -82,7 +87,14 @@ const StorageImagesSelector = (props: IProps) => {
               {images.map((img) => {
                 const isActive = activeImage === img
                 return (
-                  <Col span={4}>
+                  <Col
+                    key={img}
+                    style={{
+                      marginBottom: '2px',
+                      width: '188px',
+                      height: '188px'
+                    }}
+                  >
                     <Row
                       className={`image-item__container ${
                         isActive ? 'active' : ''
@@ -98,8 +110,12 @@ const StorageImagesSelector = (props: IProps) => {
                         }
                       }}
                     >
-                      <div className="image-item__wrapper">
-                        <img className="image-item" src={img} />
+                      <div
+                        className="image-item__wrapper"
+                        ref={imageWrapperRef}
+                        style={{ backgroundImage: `url(${img})` }}
+                      >
+                        {/* <img className="image-item" src={img}  /> */}
                         {isActive && (
                           <Icon
                             className="selected-icon"
