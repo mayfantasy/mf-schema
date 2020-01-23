@@ -1,4 +1,7 @@
-import { IUploadImagePayload } from '../types/storage.type'
+import {
+  IUploadImagePayload,
+  IDeleteAccountImagePayload
+} from '../types/storage.type'
 import { api } from '.'
 
 export const uploadImageRequest = (payload: IUploadImagePayload) => {
@@ -10,4 +13,10 @@ export const uploadImageRequest = (payload: IUploadImagePayload) => {
 
 export const getAccountImagesRequest = () => {
   return api.get(`/list/image`)
+}
+
+export const deleteAccountImageRequest = (filename: string) => {
+  return api.post('/delete/image', {
+    filename
+  } as IDeleteAccountImagePayload)
 }

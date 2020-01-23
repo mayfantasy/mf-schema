@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { RequestStatus } from '../../helpers/request'
 import { getToken } from '../../helpers/auth.helper'
 import StorageImagesSelector from '../StorageImagesSelector/StorageImagesSelector'
+import { IImageListEntry } from '../../types/storage.type'
 
 interface IProps {
   value: string
@@ -73,9 +74,9 @@ const ImageUploader = (props: IProps) => {
       <StorageImagesSelector
         open={imageSelectorOpen}
         onToggle={setImageSelectorOpen}
-        onSelect={(v: string) => {
-          setImageUrl(v)
-          onChange(v)
+        onSelect={(v: IImageListEntry) => {
+          setImageUrl(v.link)
+          onChange(v.link)
         }}
       />
 
