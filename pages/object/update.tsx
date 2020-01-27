@@ -90,9 +90,7 @@ const ObjectUpdatePage = () => {
         setForm(formData)
       })
       .catch((err) => {
-        setGetCurrentObjectStatus(
-          currentObjectRequestStatus.error(err)
-        )
+        setGetCurrentObjectStatus(currentObjectRequestStatus.error(err))
       })
   }
 
@@ -109,9 +107,7 @@ const ObjectUpdatePage = () => {
     id: string,
     payload: any
   ) => {
-    setUpdateCurrentObjectStatus(
-      updateCurrentObjectRequestStatus.loading()
-    )
+    setUpdateCurrentObjectStatus(updateCurrentObjectRequestStatus.loading())
     if (currentObject) {
       updateObjectByIdRequest(collection_handle, schema_handle, id, payload)
         .then((res) => {
@@ -145,15 +141,11 @@ const ObjectUpdatePage = () => {
       let schemaId = currentObject.schema.id
       deleteObjectByIdRequest(collection_handle, schema_handle, id)
         .then((res) => {
-          setDeleteObjectStatus(
-            deleteCurrentObjectRequestStatus.success()
-          )
+          setDeleteObjectStatus(deleteCurrentObjectRequestStatus.success())
           router.push(`${pageRoutes.schemaDetail}?id=${schemaId}`)
         })
         .catch((err) => {
-          setDeleteObjectStatus(
-            deleteCurrentObjectRequestStatus.error(err)
-          )
+          setDeleteObjectStatus(deleteCurrentObjectRequestStatus.error(err))
         })
     }
   }
@@ -290,7 +282,8 @@ const ObjectUpdatePage = () => {
     options: any[],
     name: string | null,
     grid: number | null,
-    helper: string | null
+    helper: string | null,
+    helper_image: string | null
   ) => {
     let input
     switch (type) {
@@ -419,11 +412,61 @@ const ObjectUpdatePage = () => {
           </FormFieldLabel>
           {input}
           <br />
-          {!!helper && (
-            <Typography.Text type="secondary">
-              <small>{helper}</small>
-            </Typography.Text>
-          )}
+          <div>
+            {!!helper && (
+              <Typography.Text type="secondary">
+                <small>{helper}</small>
+              </Typography.Text>
+            )}
+          </div>
+
+          <div>
+            {!!helper_image && (
+              <>
+                <style jsx global>{`
+                  .helper-image__collapse {
+                    .ant-collapse-header {
+                      padding: 0 !important;
+                      margin-bottom: 10px;
+                    }
+                    .ant-collapse-content-box {
+                      padding: 0 !important;
+                    }
+                  }
+                `}</style>
+                <Collapse
+                  bordered={false}
+                  className="helper-image__collapse"
+                  expandIcon={({ isActive }) => (
+                    <Icon
+                      style={{ marginLeft: '60px' }}
+                      type="caret-right"
+                      rotate={isActive ? 90 : 0}
+                    />
+                  )}
+                >
+                  <Collapse.Panel
+                    style={{
+                      backgroundColor: '#f6f7f8',
+                      borderRadius: 4,
+                      border: 0,
+                      overflow: 'hidden'
+                    }}
+                    header={
+                      <Typography.Text>
+                        <small>Helper Image</small>
+                      </Typography.Text>
+                    }
+                    key="1"
+                  >
+                    <Typography.Text type="secondary">
+                      <img style={{ width: '100%' }} src={helper_image} />
+                    </Typography.Text>
+                  </Collapse.Panel>
+                </Collapse>
+              </>
+            )}
+          </div>
         </Col>
       </Row>
     )
@@ -481,6 +524,9 @@ const ObjectUpdatePage = () => {
               const value = form[key]
               const options = foundSchemaDef ? foundSchemaDef.options : null
               const helper = foundSchemaDef ? foundSchemaDef.helper : null
+              const helper_image = foundSchemaDef
+                ? foundSchemaDef.helper_image
+                : null
               const grid = foundSchemaDef ? foundSchemaDef.grid : null
               const name = foundSchemaDef ? foundSchemaDef.name : null
               return (
@@ -492,7 +538,8 @@ const ObjectUpdatePage = () => {
                   options || [],
                   name,
                   grid,
-                  helper
+                  helper,
+                  helper_image
                 )
               )
             })}

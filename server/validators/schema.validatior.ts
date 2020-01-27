@@ -12,7 +12,8 @@ const schemaDef = Joi.array()
       order: J.j_num,
       grid: J.j_num,
       new_line: J.j_boo,
-      show: J.j_boo
+      show: J.j_boo,
+      helper_image: J.j_str
     })
   )
   .unique('key')

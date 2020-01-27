@@ -21,6 +21,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { enumToKeyArray } from '../../helpers/utils.helper'
 import { removeField } from '../../helpers/schema/form'
 import StringArray from '../StringArray/StringArray'
+import ImageUploader from '../ImageUploader/ImageUploader'
 
 interface IProps {
   form: WrappedFormUtils<ICreateSchemaFormValues | IUpdateSchemaFormValues>
@@ -66,6 +67,9 @@ const FormItems = (props: IProps) => {
           : null
         const currentOptionsKey = getFieldValue('_defKeys')
           ? getFieldValue('_defKeys')[index]['options']
+          : null
+        const currentHelperImage = getFieldValue('_defKeys')
+          ? getFieldValue('_defKeys')[index]['helperImage']
           : null
         const defValuesObject = getFieldsValue()['_defValues']
 
@@ -292,6 +296,29 @@ const FormItems = (props: IProps) => {
                         >
                           {getFieldDecorator(`_defValues[${def.helper}]`)(
                             <Input.TextArea autoSize={{ minRows: 8 }} />
+                          )}
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row>
+                      {/* Helper Image */}
+                      <Col span={22}>
+                        <Form.Item
+                          label={<FormFieldLabel>Helper Image</FormFieldLabel>}
+                          key="helper"
+                        >
+                          {getFieldDecorator(`_defValues[${def.helper_image}]`)(
+                            <ImageUploader
+                              value={defValuesObject[currentHelperImage]}
+                              onChange={(image: string) => {
+                                setFieldsValue({
+                                  _defValues: {
+                                    ...defValuesObject,
+                                    [currentHelperImage]: image
+                                  }
+                                })
+                              }}
+                            />
                           )}
                         </Form.Item>
                       </Col>

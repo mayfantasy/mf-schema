@@ -22,7 +22,8 @@ export const addField = (
     order: `order-${fieldIndex}`,
     grid: `grid-${fieldIndex}`,
     new_line: `new_line-${fieldIndex}`,
-    show: `show-${fieldIndex}`
+    show: `show-${fieldIndex}`,
+    helper_image: `helper_image-${fieldIndex}`
   })
 
   form.setFieldsValue({
@@ -66,7 +67,8 @@ export const setInitialFormValues = (
     order: `order-${i}`,
     grid: `grid-${i}`,
     new_line: `new_line-${i}`,
-    show: `show-${i}`
+    show: `show-${i}`,
+    helper_image: `helper_image-${i}`
   })
   getFieldDecorator('name', { initialValue: schema.name })
   getFieldDecorator('handle', { initialValue: schema.handle })
@@ -85,7 +87,8 @@ export const setInitialFormValues = (
       [map(i)['order']]: c.order,
       [map(i)['grid']]: c.grid,
       [map(i)['new_line']]: c.new_line,
-      [map(i)['show']]: c.show
+      [map(i)['show']]: c.show,
+      [map(i)['helper_image']]: c.helper_image
     }
   }, {} as { [key: string]: any })
 

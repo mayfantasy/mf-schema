@@ -28,6 +28,7 @@ export interface ISchemaFieldDef {
   grid: number
   new_line: boolean
   show: boolean
+  helper_image: string
 }
 
 /**
@@ -43,6 +44,7 @@ export interface ISchemaFieldDefKeys {
   grid: string
   new_line: string
   show: string
+  helper_image: string
 }
 
 export interface ICreateSchemaPayload {
