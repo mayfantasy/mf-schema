@@ -45,6 +45,7 @@ import SingleSelect from '../../components/StringSingleSelect/StringSingleSelect
 import MultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
 import ApiLine from '../../components/ApiLine/ApiLine'
 import { IApiItem } from '../../types/api.type'
+import ImageViewer from '../../components/ImageViewer/ImageViewer'
 
 interface IFormStructureItem {
   value: any
@@ -389,10 +390,7 @@ const SchemaListPage = () => {
                         <>
                           <br />
                           <div>
-                            <img
-                              style={{ width: '100%' }}
-                              src={d.helper_image}
-                            />
+                            <ImageViewer src={d.helper_image} />
                           </div>
                         </>
                       )}

@@ -72,6 +72,7 @@ const StorageImagesSelector = (props: IProps) => {
 
   const onCancel = () => {
     onToggle(false)
+    Modal.destroyAll()
   }
 
   const onDelete = () => {

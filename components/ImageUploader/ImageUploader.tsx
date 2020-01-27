@@ -4,6 +4,7 @@ import { RequestStatus } from '../../helpers/request'
 import { getToken } from '../../helpers/auth.helper'
 import StorageImagesSelector from '../StorageImagesSelector/StorageImagesSelector'
 import { IImageListEntry } from '../../types/storage.type'
+import ImageViewer from '../ImageViewer/ImageViewer'
 
 interface IProps {
   value: string
@@ -84,10 +85,7 @@ const ImageUploader = (props: IProps) => {
         <>
           <br />
           <div style={{ maxWidth: '500px' }}>
-            <img
-              style={{ width: '100%', maxWidth: '500px' }}
-              src={imageUrl || ''}
-            />
+            <ImageViewer src={imageUrl || ''} />
           </div>
           <br />
           <div>

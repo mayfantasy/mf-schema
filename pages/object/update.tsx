@@ -38,6 +38,7 @@ import RichTextField from '../../components/RichTextField/RichTextField'
 import { pageRoutes } from '../../navigation/page-routes'
 import StringSingleSelect from '../../components/StringSingleSelect/StringSingleSelect'
 import StringMultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
+import ImageViewer from '../../components/ImageViewer/ImageViewer'
 
 interface IFormStructure {
   [key: string]: any
@@ -460,7 +461,7 @@ const ObjectUpdatePage = () => {
                     key="1"
                   >
                     <Typography.Text type="secondary">
-                      <img style={{ width: '100%' }} src={helper_image} />
+                      <ImageViewer src={helper_image} width="300px" />
                     </Typography.Text>
                   </Collapse.Panel>
                 </Collapse>
