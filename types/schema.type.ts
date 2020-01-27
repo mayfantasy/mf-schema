@@ -60,6 +60,7 @@ export interface ISchema {
   name: string
   handle: string
   description: string
+  description_image: string
   def: ISchemaFieldDef[]
   collection_id: string
   collection: ICollection
@@ -70,6 +71,7 @@ export interface IUpdateSchemaPayload {
   name?: string
   handle?: string
   description?: string
+  description_image?: string
   def?: ISchemaFieldDef[]
 }
 

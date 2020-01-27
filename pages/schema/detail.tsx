@@ -142,7 +142,7 @@ const SchemaListPage = () => {
         }
       ]}
     >
-      <div style={{ width: '70%' }}>{c}</div>
+      <div style={{ width: '100%', maxWidth: '800px' }}>{c}</div>
     </PageLayout>
   )
 

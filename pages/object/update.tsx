@@ -473,7 +473,7 @@ const ObjectUpdatePage = () => {
   }
 
   return layout(
-    <div style={{ width: '70%' }}>
+    <div style={{ width: '100%', maxWidth: '800px' }}>
       {!!updateCurrentObjectStatus.error && (
         <Alert
           message={updateCurrentObjectStatus.error}

@@ -183,7 +183,7 @@ const UpdateSchemaPage = (props: IProps) => {
         {schemaStatus.loading ? (
           <Loading />
         ) : (
-          <div style={{ width: '70%' }}>
+          <div style={{ width: '100%', maxWidth: '800px' }}>
             {schemaStatus.success && (
               <Alert
                 message="Schema updated successfully."

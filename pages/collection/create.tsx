@@ -132,7 +132,7 @@ const CreateCollectionPage = (props: IProps) => {
         }
       ]}
     >
-      <div style={{ width: '70%' }}>
+      <div style={{ width: '100%', maxWidth: '800px' }}>
         <PageHeader
           name="Create Collection"
           buttonLink="/collection/list"

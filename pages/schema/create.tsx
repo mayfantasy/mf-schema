@@ -110,7 +110,7 @@ const CreateSchemaPage = (props: IProps) => {
         ) : schemaStatus.success ? (
           <div style={{ color: 'green' }}>Schema created successfully.</div>
         ) : (
-          <div style={{ width: '70%' }}>
+          <div style={{ width: '100%', maxWidth: '800px' }}>
             <CreateSchemaForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}

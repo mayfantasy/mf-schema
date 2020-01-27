@@ -210,7 +210,7 @@ const CreateUserPage = (props: IProps) => {
         ) : userStatus.success ? (
           <div style={{ color: 'green' }}>User created successfully.</div>
         ) : (
-          <div style={{ width: '70%' }}>
+          <div style={{ width: '100%', maxWidth: '800px' }}>
             <CreateUserForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}

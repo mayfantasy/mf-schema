@@ -109,7 +109,7 @@ const CreateAccessKeyPage = (props: IProps) => {
         ) : accessKeyStatus.success ? (
           <div style={{ color: 'green' }}>AccessKey created successfully.</div>
         ) : (
-          <div style={{ width: '70%' }}>
+          <div style={{ width: '100%', maxWidth: '800px' }}>
             <CreateAccessKeyForm form={form} handleSubmit={handleSubmit} />
           </div>
         )}
