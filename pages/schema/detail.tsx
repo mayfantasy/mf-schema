@@ -383,7 +383,20 @@ const SchemaListPage = () => {
                       }
                       key={d.key}
                     >
-                      {d.helper}
+                      <div>{d.helper}</div>
+
+                      {d.helper_image && (
+                        <>
+                          <br />
+                          <div>
+                            <img
+                              style={{ width: '100%' }}
+                              src={d.helper_image}
+                            />
+                          </div>
+                        </>
+                      )}
+                      <div></div>
                     </Descriptions.Item>
                   )
                 })}
