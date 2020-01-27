@@ -43,6 +43,8 @@ import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
 import SingleSelect from '../../components/StringSingleSelect/StringSingleSelect'
 import MultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
+import ApiLine from '../../components/ApiLine/ApiLine'
+import { IApiItem } from '../../types/api.type'
 
 interface IFormStructureItem {
   value: any
@@ -313,6 +315,34 @@ const SchemaListPage = () => {
       }
     }
 
+    const apiLines: IApiItem[] = [
+      {
+        method: 'GET',
+        route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`,
+        description: 'Get the object list.'
+      },
+      {
+        method: 'POST',
+        route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`,
+        description: 'Create an object.'
+      },
+      {
+        method: 'GET',
+        route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/get/:id`,
+        description: 'Get the object by its ID.'
+      },
+      {
+        method: 'PUT',
+        route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`,
+        description: 'Update the object by its ID.'
+      },
+      {
+        method: 'DELETE',
+        route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`,
+        description: 'Delete the object by its ID.'
+      }
+    ]
+
     /**
      * Set Page content
      */
@@ -365,40 +395,23 @@ const SchemaListPage = () => {
 
         <Collapse bordered={false}>
           <Collapse.Panel header="API" key="1">
-            <Descriptions
+            {apiLines.map((api) => (
+              <ApiLine
+                key={api.route}
+                method={api.method}
+                route={api.route}
+                description={api.description}
+              />
+            ))}
+
+            {/* <Descriptions
               layout="vertical"
               bordered
               size="small"
               column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
               style={{ overflowX: 'scroll' }}
             >
-              {[
-                {
-                  head: 'List - GET',
-                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`,
-                  helper: 'Get the object list.'
-                },
-                {
-                  head: 'Create - POST',
-                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`,
-                  helper: 'Create an object.'
-                },
-                {
-                  head: 'Read - GET',
-                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/get/:id`,
-                  helper: 'Get the object by its ID.'
-                },
-                {
-                  head: 'Update - PUT',
-                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`,
-                  helper: 'Update the object by its ID.'
-                },
-                {
-                  head: 'Delete - DELETE',
-                  content: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`,
-                  helper: 'Delete the object by its ID.'
-                }
-              ].map((item, index) => {
+              {.map((item, index) => {
                 return (
                   <Descriptions.Item
                     label={
@@ -415,7 +428,7 @@ const SchemaListPage = () => {
                   </Descriptions.Item>
                 )
               })}
-            </Descriptions>
+            </Descriptions> */}
           </Collapse.Panel>
         </Collapse>
 
