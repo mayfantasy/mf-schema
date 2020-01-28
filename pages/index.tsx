@@ -33,12 +33,7 @@ const HomePage = () => {
           <div>
             Welcome,
             <br />
-            <Typography.Text
-              strong
-              style={{ color: '#1890ff', fontSize: '20px' }}
-            >
-              {user.username}
-            </Typography.Text>
+            <Typography.Title level={3}>{user.username}</Typography.Title>
           </div>
         </div>
       ) : (

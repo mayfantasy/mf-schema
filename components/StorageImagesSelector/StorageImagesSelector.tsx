@@ -4,7 +4,7 @@ import {
   getAccountImagesRequest,
   deleteAccountImageRequest
 } from '../../requests/storage.request'
-import './StorageImagesSelector.scss'
+import './StorageImagesSelector.less'
 import { Row, Col, Icon, Button, Modal, Alert, Popconfirm } from 'antd'
 import Link from 'next/link'
 import Loading from '../Loading/Loading'

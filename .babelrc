@@ -4,10 +4,19 @@
       "next/babel",
       {
         "styled-jsx": {
-          "plugins": ["styled-jsx-plugin-sass"]
+          "plugins": ["styled-jsx-plugin-less"]
         }
       }
     ],
     ["@zeit/next-typescript/babel"]
+  ],
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ]
   ]
 }
