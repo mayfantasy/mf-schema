@@ -4,7 +4,6 @@ import {
   getAccountImagesRequest,
   deleteAccountImageRequest
 } from '../../requests/storage.request'
-import './StorageImagesSelector.less'
 import { Row, Col, Icon, Button, Modal, Alert, Popconfirm } from 'antd'
 import Link from 'next/link'
 import Loading from '../Loading/Loading'
@@ -84,6 +83,43 @@ const StorageImagesSelector = (props: IProps) => {
 
   return (
     <>
+      <style jsx>{`
+        .storage-images-selector {
+          width: 100%;
+          height: 60vh;
+          overflow: scroll;
+          .image-item__container {
+            height: 100%;
+            border: 2px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 10px;
+            &:hover {
+              border: 2px solid rgb(24, 144, 255);
+            }
+            &.active {
+              border: 2px solid rgb(24, 144, 255);
+            }
+            .image-item__wrapper {
+              width: 100%;
+              height: 100%;
+              position: relative;
+              background-size: contain;
+              background-position: center center;
+              background-repeat: no-repeat;
+              .selected-icon {
+                font-size: 20px;
+                position: absolute;
+                top: 0;
+                right: 0;
+              }
+              img.image-item {
+                width: 100%;
+              }
+            }
+          }
+        }
+      `}</style>
       <Modal
         title="Select Image"
         visible={open}

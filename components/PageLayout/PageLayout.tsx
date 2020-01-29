@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import 'antd/dist/antd.less'
-import './PageLayout.less'
 import Link from 'next/link'
 import { getToken, removeToken, removeUser } from '../../helpers/auth.helper'
 import { loginWithTokenRequest } from '../../requests/auth.request'
@@ -75,107 +74,131 @@ const PageLayout = (props: IProps) => {
   const $headerHeight = '64px'
 
   return (
-    <Layout className="mf-page-layout">
-      <Header className="header" style={{ background: '#fff' }}>
-        <div className="logo">
-          <Link href="/">
-            <img src="/mayfantasy.cms.1000.png" />
-          </Link>
-        </div>
-        {user ? (
-          <div>
-            @{user.username}{' '}
-            <small>
-              <a onClick={logOut}>Logout</a>
-            </small>
+    <>
+      <style jsx global>{`
+        body {
+          // font-family: 'Rajdhani', sans-serif;
+          font-family: 'Roboto', sans-serif;
+        }
+
+        .mf-page-layout {
+          .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding-left: 20px;
+            .logo {
+              width: 170px;
+              cursor: pointer;
+              img {
+                width: 100%;
+              }
+            }
+          }
+        }
+      `}</style>
+      <Layout className="mf-page-layout">
+        <Header className="header" style={{ background: '#fff' }}>
+          <div className="logo">
+            <Link href="/">
+              <img src="/mayfantasy.cms.1000.png" />
+            </Link>
           </div>
-        ) : (
-          <Menu
-            mode="horizontal"
-            defaultSelectedKeys={['2']}
-            style={{ lineHeight: $headerHeight }}
-          >
-            {headerItems.map((item) => (
-              <Menu.Item key={item.key}>
-                {item.url ? (
-                  <Link href={item.url}>
-                    <a>{item.name}</a>
-                  </Link>
-                ) : (
-                  <span>{item.name}</span>
-                )}
-              </Menu.Item>
-            ))}
-          </Menu>
-        )}
-      </Header>
-      <Layout>
-        <Sider
-          width={user ? 200 : 0}
-          style={{ background: '#000', height: 'auto' }}
-          theme="dark"
-        >
-          <Menu
-            mode="inline"
-            theme="dark"
-            style={{ height: '100%', borderRight: 0 }}
-            defaultSelectedKeys={getDefaultSelectedKeys()}
-            defaultOpenKeys={sideNavItems
-              .filter((s) => s.open)
-              .map((s) => s.key)}
-          >
-            {user
-              ? sideNavItems.map((s) => (
-                  <SubMenu key={s.key} title={<b>{s.name}</b>}>
-                    {!!s.children &&
-                      s.children.map((c) => (
-                        <Menu.Item key={c.key}>
-                          {c.url ? (
-                            <Link href={c.url}>
-                              <a>{c.name}</a>
-                            </Link>
-                          ) : (
-                            <span>{c.name}</span>
-                          )}
-                        </Menu.Item>
-                      ))}
-                  </SubMenu>
-                ))
-              : []}
-          </Menu>
-        </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
-          {!!breadCrumb && (
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              {breadCrumb.map((b) => (
-                <Breadcrumb.Item key={b.key}>
-                  {b.url ? (
-                    <Link href={b.url}>
-                      <a>{b.name}</a>
+          {user ? (
+            <div>
+              @{user.username}{' '}
+              <small>
+                <a onClick={logOut}>Logout</a>
+              </small>
+            </div>
+          ) : (
+            <Menu
+              mode="horizontal"
+              defaultSelectedKeys={['2']}
+              style={{ lineHeight: $headerHeight }}
+            >
+              {headerItems.map((item) => (
+                <Menu.Item key={item.key}>
+                  {item.url ? (
+                    <Link href={item.url}>
+                      <a>{item.name}</a>
                     </Link>
                   ) : (
-                    <span>{b.name}</span>
+                    <span>{item.name}</span>
                   )}
-                </Breadcrumb.Item>
+                </Menu.Item>
               ))}
-            </Breadcrumb>
+            </Menu>
           )}
-
-          <Content
-            style={{
-              background: '#fff',
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              height: `calc(100vh - ${$headerHeight} - 53px - 24px)`,
-              overflow: 'scroll'
-            }}
+        </Header>
+        <Layout>
+          <Sider
+            width={user ? 200 : 0}
+            style={{ background: '#000', height: 'auto' }}
+            theme="dark"
           >
-            {children}
-          </Content>
+            <Menu
+              mode="inline"
+              theme="dark"
+              style={{ height: '100%', borderRight: 0 }}
+              defaultSelectedKeys={getDefaultSelectedKeys()}
+              defaultOpenKeys={sideNavItems
+                .filter((s) => s.open)
+                .map((s) => s.key)}
+            >
+              {user
+                ? sideNavItems.map((s) => (
+                    <SubMenu key={s.key} title={<b>{s.name}</b>}>
+                      {!!s.children &&
+                        s.children.map((c) => (
+                          <Menu.Item key={c.key}>
+                            {c.url ? (
+                              <Link href={c.url}>
+                                <a>{c.name}</a>
+                              </Link>
+                            ) : (
+                              <span>{c.name}</span>
+                            )}
+                          </Menu.Item>
+                        ))}
+                    </SubMenu>
+                  ))
+                : []}
+            </Menu>
+          </Sider>
+          <Layout style={{ padding: '0 24px 24px' }}>
+            {!!breadCrumb && (
+              <Breadcrumb style={{ margin: '16px 0' }}>
+                {breadCrumb.map((b) => (
+                  <Breadcrumb.Item key={b.key}>
+                    {b.url ? (
+                      <Link href={b.url}>
+                        <a>{b.name}</a>
+                      </Link>
+                    ) : (
+                      <span>{b.name}</span>
+                    )}
+                  </Breadcrumb.Item>
+                ))}
+              </Breadcrumb>
+            )}
+
+            <Content
+              style={{
+                background: '#fff',
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+                height: `calc(100vh - ${$headerHeight} - 53px - 24px)`,
+                overflow: 'scroll'
+              }}
+            >
+              {children}
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
+    </>
   )
 }
 
