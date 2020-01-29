@@ -9,6 +9,7 @@ import { INavItem } from '../../types/navigation.type'
 import { sideNavItems } from '../../navigation/side.navigation'
 import { headerItems } from '../../navigation/header.navigation'
 import { pageRoutes } from '../../navigation/page-routes'
+import 'antd/dist/antd.less'
 
 interface IProps {
   children: React.ReactNode
@@ -100,7 +101,8 @@ const PageLayout = (props: IProps) => {
         <Header className="header" style={{ background: '#fff' }}>
           <div className="logo">
             <Link href="/">
-              <img src="/mayfantasy.cms.1000.png" />
+              {/* <img src="/mayfantasy.cms.1000.png" /> */}
+              <img src="/logo_mf-content_green.png" />
             </Link>
           </div>
           {user ? (

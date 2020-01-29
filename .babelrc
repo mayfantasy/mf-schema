@@ -1,5 +1,6 @@
 {
   "presets": [
+    ["@zeit/next-typescript/babel"],
     [
       "next/babel",
       {
@@ -7,16 +8,15 @@
           "plugins": ["styled-jsx-plugin-less"]
         }
       }
-    ],
-    ["@zeit/next-typescript/babel"]
-  ],
-  "plugins": [
-    [
-      "import",
-      {
-        "libraryName": "antd",
-        "style": true
-      }
     ]
   ]
+  // "plugins": [
+  //   [
+  //     "import",
+  //     {
+  //       "libraryName": "antd",
+  //       "style": true
+  //     }
+  //   ]
+  // ]
 }
