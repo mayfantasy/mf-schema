@@ -9,43 +9,25 @@ interface IProps {
 
 const ApiLine = (props: IProps) => {
   const { method, description, route } = props
-  const getColor = () => {
-    let c: { fg: string; bg: string } = { fg: '', bg: '' }
-    switch (method) {
-      case 'GET':
-        c = { fg: '#72aff8', bg: '#edf3fa' }
-        break
-      case 'POST':
-        c = { fg: '#70c995', bg: '#ecf6f1' }
-        break
-      case 'PUT':
-        c = { fg: '#f0a44b', bg: '#faf2e8' }
-        break
-      case 'DELETE':
-        c = { fg: '#e74f48', bg: '#f8e9e9' }
-        break
-      default:
-        const _c: never = method
-        break
-    }
-    return c
-  }
+
+  const GET_COLOR = { fg: '#72aff8', bg: '#edf3fa' }
+  const POST_COLOR = { fg: '#70c995', bg: '#ecf6f1' }
+  const PUT_COLOR = { fg: '#f0a44b', bg: '#faf2e8' }
+  const DELETE_COLOR = { fg: '#e74f48', bg: '#f8e9e9' }
+
   return (
-    <>
+    <div>
       <style jsx>{`
         .api-line {
           padding: 5px 5px;
-          border: 1px solid ${getColor().fg};
           border-radius: 3px;
           margin-bottom: 10px;
-          background-color: ${getColor().bg};
           .api-method {
             width: 80px;
             font-weight: bold;
             color: white;
             text-align: center;
             border-radius: 3px;
-            background-color: ${getColor().fg};
             padding: 5px 5px;
             margin-right: 10px;
           }
@@ -55,9 +37,37 @@ const ApiLine = (props: IProps) => {
           .api-description {
             color: grey;
           }
+          &.GET {
+            border: 1px solid #72aff8;
+            background-color: #edf3fa;
+            .api-method {
+              background-color: #72aff8;
+            }
+          }
+          &.POST {
+            border: 1px solid #70c995;
+            background-color: #ecf6f1;
+            .api-method {
+              background-color: #70c995;
+            }
+          }
+          &.PUT {
+            border: 1px solid #f0a44b;
+            background-color: #faf2e8;
+            .api-method {
+              background-color: #f0a44b;
+            }
+          }
+          &.DELETE {
+            border: 1px solid #e74f48;
+            background-color: #f8e9e9;
+            .api-method {
+              background-color: #e74f48;
+            }
+          }
         }
       `}</style>
-      <div className="api-line">
+      <div className={`api-line ${method}`}>
         <Row type="flex" align="middle">
           <div className="api-method">{method}</div>
           <code className="api-route">
@@ -68,7 +78,7 @@ const ApiLine = (props: IProps) => {
           </div>
         </Row>
       </div>
-    </>
+    </div>
   )
 }
 

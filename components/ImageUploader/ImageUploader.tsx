@@ -1,4 +1,4 @@
-import { message, Upload, Icon, Button } from 'antd'
+import { message, Upload, Icon, Button, Row } from 'antd'
 import { useState } from 'react'
 import { RequestStatus } from '../../helpers/request'
 import { getToken } from '../../helpers/auth.helper'
@@ -68,7 +68,8 @@ const ImageUploader = (props: IProps) => {
           {uploadButton}
         </Upload>{' '}
         <Button onClick={() => setImageSelectorOpen(true)}>
-          <Icon type="cloud" theme="twoTone" /> Select From Library
+          <Icon type="cloud" theme="twoTone" twoToneColor="#00a854" /> Select
+          From Library
         </Button>
       </div>
 
@@ -88,17 +89,15 @@ const ImageUploader = (props: IProps) => {
             <ImageViewer src={imageUrl || ''} />
           </div>
           <br />
-          <div>
-            <small>
-              <a href={imageUrl || ''}>{imageUrl}</a>
-            </small>
-          </div>
-          <br />
-          <div>
+          <Row type="flex">
+            <Button type="default" style={{ marginRight: '5px' }}>
+              <Icon type="cloud-download" />
+              Download
+            </Button>
             <Button type="danger" onClick={() => setImageUrl(null)}>
               Remove Image
             </Button>
-          </div>
+          </Row>
         </>
       )}
     </>
