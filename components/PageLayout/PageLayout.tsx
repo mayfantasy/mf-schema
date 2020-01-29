@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
-import 'antd/dist/antd.less'
 import Link from 'next/link'
 import { getToken, removeToken, removeUser } from '../../helpers/auth.helper'
 import { loginWithTokenRequest } from '../../requests/auth.request'
