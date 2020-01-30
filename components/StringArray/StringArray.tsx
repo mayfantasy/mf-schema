@@ -30,7 +30,6 @@ const StringArray = (props: IProps) => {
   }
 
   const onRemoveItem = (i: number) => {
-    console.log(i, array)
     const newArray = [...array.slice(0, i), ...array.slice(i + 1, array.length)]
     obmitValue(newArray)
   }

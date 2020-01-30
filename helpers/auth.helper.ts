@@ -7,7 +7,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { IBasicAccountInfo } from '../types/account.type'
 
 export const getAuth = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(req.url)
   const token = req.headers['authentication'] as string
   const accessKey = req.headers['x-acc-k'] as string
 

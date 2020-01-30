@@ -12,7 +12,6 @@ const deleteImageRoute = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (filename) {
       const result = await deleteAccountImage(filename)
-      console.log(result)
       const response = {
         result
       }

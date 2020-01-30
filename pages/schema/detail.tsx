@@ -558,7 +558,6 @@ const SchemaListPage = () => {
                       <StringArray
                         value={value}
                         onChange={(v: string[]) => {
-                          console.log(v)
                           handleFieldChange(v, type, key)
                         }}
                       />

@@ -47,7 +47,6 @@ const StorageImagesSelector = (props: IProps) => {
     setDelStatus(delReq.loading())
     deleteAccountImageRequest(filename)
       .then((res) => {
-        console.log(res)
         setDelStatus(delReq.success())
         getAccountImagegs()
       })

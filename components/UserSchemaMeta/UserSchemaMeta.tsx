@@ -26,7 +26,6 @@ const UserSchemaMeta = (props: IProps) => {
 
   const getObjectList = () => {
     setObjectStatus(objectRequestStatus.loading())
-    console.log(collectionHandle, schemaHandle)
     getObjectListRequest(collectionHandle, schemaHandle)
       .then((res) => {
         setObjectStatus(objectRequestStatus.success())

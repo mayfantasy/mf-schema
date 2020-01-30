@@ -28,6 +28,7 @@ const HomePage = () => {
         }
       ]}
     >
+      {JSON.stringify(process.env.GOOGLE_APPLICATION_CREDENTIALS)}
       {user ? (
         <div>
           <div>
