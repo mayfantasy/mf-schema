@@ -83,7 +83,7 @@ const StorageImagesSelector = (props: IProps) => {
 
   return (
     <>
-      <style jsx>{`
+      <style jsx global>{`
         .storage-images-selector {
           width: 100%;
           height: 60vh;

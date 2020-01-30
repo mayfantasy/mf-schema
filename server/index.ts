@@ -9,20 +9,6 @@ import koaBody from 'koa-body'
 import { HttpError } from '../types/error.type'
 import next from 'next'
 import 'reflect-metadata'
-import { createAccountRoute } from './routes/account.route'
-import { loginRoute, loginWithTokenRoute } from './routes/auth.route'
-import {
-  createCollectionRoute,
-  getCollectionListRoute,
-  getCollectionByIdRoute
-} from './routes/collection.route'
-import {
-  createSchemaRoute,
-  getSchemaListRoute,
-  getSchemaByIdRoute,
-  updateSchemaRoute,
-  getSchemaByHandleRoute
-} from './routes/schema.route'
 import {
   createObjectRoute,
   getObjectListRoute,
@@ -30,16 +16,6 @@ import {
   getObjectByIdRoute,
   deleteObjectByIdRoute
 } from './routes/object.route'
-import {
-  uploadImageRoute,
-  getImageListRoute,
-  deleteImageRoute
-} from './routes/storage.route'
-import {
-  getAccessKeyListRoute,
-  deleteAccessKeyRoute,
-  createAccessKeyRoute
-} from './routes/access-key.route'
 import {
   createUserRoute,
   getUserListRoute,
@@ -57,7 +33,6 @@ import {
   sendRecoverEmailRoute,
   resetPasswordRoute
 } from './routes/user-auth.route'
-import { sendEmailRoute } from './routes/email.route'
 
 const port = parseInt(process.env.PORT || '3001', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -71,33 +46,33 @@ app.prepare().then(() => {
   server.use(cors())
 
   // Auth
-  router.post('/api/auth/login', loginRoute)
-  router.post('/api/auth/token', loginWithTokenRoute)
+  // router.post('/api/auth/login', loginRoute)
+  // router.post('/api/auth/token', loginWithTokenRoute)
 
   // Access Key
-  router.post('/api/access-key/create', createAccessKeyRoute)
-  router.get('/api/access-key/list', getAccessKeyListRoute)
-  router.delete('/api/access-key/delete/:id', deleteAccessKeyRoute)
+  // router.post('/api/access-key/create', createAccessKeyRoute)
+  // router.get('/api/access-key/list', getAccessKeyListRoute)
+  // router.delete('/api/access-key/delete/:id', deleteAccessKeyRoute)
 
   // Create account
-  router.post('/api/account/create', createAccountRoute)
+  // router.post('/api/account/create', createAccountRoute)
 
   // Collection
-  router.post('/api/collection/create', createCollectionRoute)
-  router.get('/api/collection/list', getCollectionListRoute)
-  router.get('/api/collection/get/:id', getCollectionByIdRoute)
+  // router.post('/api/collection/create', createCollectionRoute)
+  // router.get('/api/collection/list', getCollectionListRoute)
+  // router.get('/api/collection/get/:id', getCollectionByIdRoute)
 
   // Schema
-  router.post('/api/schema/create', createSchemaRoute)
-  router.get('/api/schema/list', getSchemaListRoute)
-  router.put('/api/schema/update', updateSchemaRoute)
-  router.get('/api/schema/get/:id', getSchemaByIdRoute)
-  router.get('/api/schema/get/handle/:handle', getSchemaByHandleRoute)
+  // router.post('/api/schema/create', createSchemaRoute)
+  // router.get('/api/schema/list', getSchemaListRoute)
+  // router.put('/api/schema/update', updateSchemaRoute)
+  // router.get('/api/schema/get/:id', getSchemaByIdRoute)
+  // router.get('/api/schema/get/handle/:handle', getSchemaByHandleRoute)
 
   // Storage
-  router.post('/api/upload/image', uploadImageRoute)
-  router.get('/api/list/image', getImageListRoute)
-  router.post('/api/delete/image', deleteImageRoute)
+  // router.post('/api/storage/upload-image', uploadImageRoute)
+  // router.get('/api/storage/list-image', getImageListRoute)
+  // router.post('/api/storage/delete-image', deleteImageRoute)
 
   // Object
   router.post(
@@ -126,7 +101,7 @@ app.prepare().then(() => {
   router.get('/api/user/list', getUserListRoute)
   router.get('/api/user/get/:id', getUserByIdRoute)
   router.put('/api/user/update', updateUserRoute)
-  router.delete('/api/user/:id', deleteUserRoute)
+  router.delete('/api/user/delete/:id', deleteUserRoute)
   // User Meta
   router.post('/api/user/meta/update/:id', updateUserMetaRoute)
   router.post('/api/user/meta/delete/:id', deleteUserMetaItemRoute)
@@ -142,7 +117,7 @@ app.prepare().then(() => {
   router.post('/api/user/reset-password', resetPasswordRoute)
 
   // Email
-  router.post('/api/email/send', sendEmailRoute)
+  // router.post('/api/email/send', sendEmailRoute)
 
   // SSR Pages
   router.get('*', async (ctx) => {

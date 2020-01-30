@@ -1,5 +1,6 @@
 import { accountDb } from './db/admin.db'
 import { query as q } from 'faunadb'
+import { env } from '../../config/env.config'
 
 export const getAccountByEmail = async (email: string) => {
   const account = await accountDb.query<any>(
@@ -21,6 +22,7 @@ export const getAccountByEmailAndPassword = async (
       q.Match(q.Index('get_account_by_email_and_password'), [email, password])
     )
   )
+
   const accountData = { ...account.data }
   delete accountData.password
 

@@ -44,7 +44,7 @@ import { pageRoutes } from '../../navigation/page-routes'
 import SingleSelect from '../../components/StringSingleSelect/StringSingleSelect'
 import MultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
 import ApiLine from '../../components/ApiLine/ApiLine'
-import { IApiItem } from '../../types/api.type'
+import { IApiItem, EApiMethod } from '../../types/api.type'
 import ImageViewer from '../../components/ImageViewer/ImageViewer'
 
 interface IFormStructureItem {
@@ -318,27 +318,27 @@ const SchemaListPage = () => {
 
     const apiLines: IApiItem[] = [
       {
-        method: 'GET',
+        method: EApiMethod.GET,
         route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/list`,
         description: 'Get the object list.'
       },
       {
-        method: 'POST',
+        method: EApiMethod.POST,
         route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/create`,
         description: 'Create an object.'
       },
       {
-        method: 'GET',
+        method: EApiMethod.GET,
         route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/get/:id`,
         description: 'Get the object by its ID.'
       },
       {
-        method: 'PUT',
+        method: EApiMethod.PUT,
         route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/update/:id`,
         description: 'Update the object by its ID.'
       },
       {
-        method: 'DELETE',
+        method: EApiMethod.DELETE,
         route: `/api/object/${currentSchema.collection.handle}/${currentSchema.handle}/delete/:id`,
         description: 'Delete the object by its ID.'
       }

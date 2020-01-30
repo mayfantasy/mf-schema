@@ -5,11 +5,12 @@ import { getAccountByEmail } from '../services/auth.service'
 import { handleRxp } from '../../helpers/utils.helper'
 import { getAccountList } from '../services/account.service'
 import { IAccount } from '../../types/account.type'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-export const getAuth = async (ctx: Koa.Context) => {
-  console.log(ctx.url)
-  const token = ctx.headers['authentication']
-  const accessKey = ctx.headers['x-acc-k']
+export const getAuth = async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log(req.url)
+  const token = req.headers['authentication'] as string
+  const accessKey = req.headers['x-acc-k'] as string
 
   try {
     if (token) {
@@ -32,9 +33,8 @@ export const getAuth = async (ctx: Koa.Context) => {
       throw new Error('Unauthenticated.')
     }
   } catch (e) {
-    ctx.status = 401
-    ctx.body = {
+    res.status(401).json({
       message: 'Unauthenticated.'
-    }
+    })
   }
 }

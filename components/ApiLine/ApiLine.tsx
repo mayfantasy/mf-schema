@@ -1,8 +1,8 @@
-import { IApiMethod } from '../../types/api.type'
+import { EApiMethod } from '../../types/api.type'
 import { Row } from 'antd'
 
 interface IProps {
-  method: IApiMethod
+  method: EApiMethod
   description: string
   route: string
 }

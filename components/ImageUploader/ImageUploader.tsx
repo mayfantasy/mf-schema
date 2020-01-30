@@ -61,7 +61,7 @@ const ImageUploader = (props: IProps) => {
           headers={{ Authentication: apiToken || '' }}
           name="mf_image_uploader"
           showUploadList={false}
-          action="/api/upload/image"
+          action="/api/storage/upload-image"
           beforeUpload={beforeUpload}
           onChange={handleChange}
         >
