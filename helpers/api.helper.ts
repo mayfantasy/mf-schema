@@ -1,4 +1,3 @@
-require('dotenv').config()
 import Cors from 'micro-cors'
 import { EApiMethod } from '../types/api.type'
 

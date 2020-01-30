@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { cors } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
-import { getAuth } from '../../../server/routes/helper'
+import { getAuth } from '../../../helpers/auth.helper'
 import {
   ISchemaListQuery,
   IUpdateSchemaPayload

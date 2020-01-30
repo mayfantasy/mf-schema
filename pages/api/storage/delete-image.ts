@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { cors } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
-import { getAuth } from '../../../server/routes/helper'
+import { getAuth } from '../../../helpers/auth.helper'
 import { deleteAccountImage } from '../../../server/services/storage.service'
 import { IDeleteAccountImagePayload } from '../../../types/storage.type'
 

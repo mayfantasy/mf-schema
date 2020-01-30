@@ -5,15 +5,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "next",
-    "gcp-build": "next build && tsc --project tsconfig.server.json",
-    "start": "node dist/server/index.js",
-    "deploy": "gcloud app deploy"
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@google-cloud/storage": "^4.1.3",
     "@koa/cors": "2",
     "@types/axios": "^0.14.0",
-    "@types/express-fileupload": "^1.1.0",
     "@types/formidable": "^1.0.31",
     "@types/joi": "^14.3.4",
     "@types/jsonwebtoken": "^8.3.5",
@@ -38,7 +36,6 @@
     "base64-arraybuffer": "^0.2.0",
     "date-fns": "^2.8.1",
     "dotenv": "^8.2.0",
-    "express-fileupload": "^1.1.6",
     "faunadb": "^2.10.0",
     "formidable": "^1.2.1",
     "joi": "^14.3.1",

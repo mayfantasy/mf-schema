@@ -1,12 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { cors } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
-import { getAuth } from '../../../server/routes/helper'
+import { getAuth } from '../../../helpers/auth.helper'
 import { uploadImage } from '../../../server/services/storage.service'
 import { validateUpload } from '../../../server/validators'
 import { uploadSchema } from '../../../server/validators/storage.validator'
 import { format } from 'date-fns'
-import fileUpload from 'express-fileupload'
 import formidable from 'formidable'
 
 const uploadImageRoute = async (req: any, res: NextApiResponse) => {

@@ -4,7 +4,7 @@ import { EApiMethod } from '../../../types/api.type'
 import { ICreateAccessKeyPayload } from '../../../types/access-key.type'
 import { validatePayload } from '../../../server/validators'
 import { createAccessKeyPayloadSchema } from '../../../server/validators/access-key.validator'
-import { getAuth } from '../../../server/routes/helper'
+import { getAuth } from '../../../helpers/auth.helper'
 import { createAccessKey } from '../../../server/services/access-key.service'
 
 const createAccessKeyRoute = async (
