@@ -67,10 +67,14 @@ export const getUserList = async (api_key: string) => {
     )
   )
 
-  const userListData = users.data.map((c: any) => ({
-    id: c.ref.id,
-    ...c.data
-  }))
+  const userListData = users.data.map((c: any) => {
+    const userData = { ...c.data }
+    delete userData.password
+    return {
+      id: c.ref.id,
+      ...userData
+    }
+  })
 
   return userListData
 }

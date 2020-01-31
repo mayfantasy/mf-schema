@@ -15,7 +15,6 @@ export const pageRoutes = {
   schemaDetail: '/schema/detail',
   createUser: '/user/create',
   listUsers: '/user/list',
-  userDetail: '/user/detail',
   updateUser: '/user/update',
   collectionDoc: '/docs/collection',
   schemaDoc: '/docs/schema',

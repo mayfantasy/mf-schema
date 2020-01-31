@@ -13,7 +13,7 @@ export const getUserByIdRequest = (id: string) => {
   return api.get(`/user/get/${id}`)
 }
 
-export const updateUserRequest = (payload: IUpdateUserInfoPayload) => {
+export const updateUserByIdRequest = (payload: IUpdateUserInfoPayload) => {
   return api.put(`/user/update`, payload)
 }
 

@@ -65,7 +65,7 @@ const UserListPage = () => {
       render: (user: IUser) => {
         return (
           <div>
-            <Link href={`${pageRoutes.userDetail}?id=${user.id}`}>
+            <Link href={`${pageRoutes.updateUser}?id=${user.id}`}>
               <a>
                 {user.first_name} {user.last_name}
               </a>

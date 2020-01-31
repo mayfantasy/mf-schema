@@ -2,16 +2,11 @@ import { accountDb } from './db/admin.db'
 import faunadb, { query as q } from 'faunadb'
 import { IAccount } from '../../types/account.type'
 import { client } from './db/client.db'
+import { IObjectServiceMetaWithID } from '../../types/object.type'
 
 export interface IObjectServiceMeta {
   collection_handle: string
   schema_handle: string
-}
-
-export interface IObjectServiceMetaWithID {
-  collection_handle: string
-  schema_handle: string
-  id: string
 }
 
 const validateCollectionAndSchemaHandles = async (

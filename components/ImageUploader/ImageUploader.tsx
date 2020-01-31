@@ -81,7 +81,6 @@ const ImageUploader = (props: IProps) => {
           onChange(v.link)
         }}
       />
-
       {!!imageUrl && (
         <>
           <br />

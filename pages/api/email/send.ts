@@ -3,18 +3,14 @@ import { cors } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { getAuth } from '../../../helpers/auth.helper'
-import { IObjectServiceMetaWithID } from '../../../server/services/object.service'
 import { sendEmailPayloadSchema } from '../../../server/validators/email.validator'
 import { sendEmail } from '../../../server/services/send-email.service'
+import { IEmailTemplatePayload } from '../../../types/email.type'
 
 const updateSchemaRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const auth = (await getAuth(req, res)) || ({} as any)
-    const payload = req.body as {
-      meta: IObjectServiceMetaWithID
-      to_email: string
-      data: { [key: string]: string }
-    }
+    const payload = req.body as IEmailTemplatePayload
 
     /** Validation */
     validatePayload(sendEmailPayloadSchema, payload)

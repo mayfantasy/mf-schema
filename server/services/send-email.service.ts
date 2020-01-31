@@ -1,14 +1,8 @@
 import { mailService } from './mail.service'
-import { getObjectById, IObjectServiceMetaWithID } from './object.service'
+import { getObjectById } from './object.service'
 import { parseMustache } from '../../helpers/utils.helper'
-
-interface IEmailObject {
-  'email-service': string
-  'email-service-address': string
-  'email-service-password': string
-  'email-title': string
-  'email-content': string
-}
+import { IObjectServiceMetaWithID } from '../../types/object.type'
+import { IEmailObject } from '../../types/email.type'
 
 export const sendEmail = async (
   api_key: string,
@@ -16,7 +10,7 @@ export const sendEmail = async (
   to_email: string,
   data: { [key: string]: string }
 ) => {
-  const emailObj = await getObjectById(api_key, meta)
+  const emailObj: IEmailObject = await getObjectById(api_key, meta)
 
   if (
     !(

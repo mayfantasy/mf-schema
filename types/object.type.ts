@@ -10,3 +10,9 @@ export interface IObject {
   schema: ISchema
   [key: string]: any
 }
+
+export interface IObjectServiceMetaWithID {
+  collection_handle: string
+  schema_handle: string
+  id: string
+}

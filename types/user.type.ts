@@ -108,7 +108,7 @@ export interface IUserResetPasswordPayload {
 
 export interface IUpdateUserMetaPayload {
   key: string
-  value: any
+  value: any // IUserMetaItem
 }
 
 export interface IDeleteUserMetaItemPayload {

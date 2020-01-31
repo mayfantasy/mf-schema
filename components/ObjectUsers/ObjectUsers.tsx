@@ -40,6 +40,8 @@ const ObjectUsers = (props: IProps) => {
               Object.keys(user.meta).some(
                 (metaKey) =>
                   user.meta &&
+                  typeof user.meta[metaKey] === 'object' &&
+                  user.meta[metaKey].length &&
                   user.meta[metaKey].some(
                     (item) =>
                       item.schema_handle === schemaHandle &&
@@ -59,15 +61,15 @@ const ObjectUsers = (props: IProps) => {
     getUserList()
   }, [])
 
-  return (
+  return userListStatus.loading ? (
+    <Loading />
+  ) : userListStatus.error ? (
+    <Alert type="error" message={userListStatus.error} />
+  ) : (
     <div>
       <Collapse bordered={false}>
         <Collapse.Panel header="Registered Users" key="1">
-          {userListStatus.loading ? (
-            <Loading />
-          ) : userListStatus.error ? (
-            <Alert type="error" message={userListStatus.error} />
-          ) : userList.length ? (
+          {userList.length ? (
             <UserTable users={userList} />
           ) : (
             <Typography.Text type="secondary">

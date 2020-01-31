@@ -1,15 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { cors } from '../../../../../helpers/api.helper'
 import { EApiMethod } from '../../../../../types/api.type'
-import { validatePayload } from '../../../../../server/validators'
 import { getAuth } from '../../../../../helpers/auth.helper'
-import { ISchemaListQuery } from '../../../../../types/schema.type'
-import { getSchemaListQuerySchema } from '../../../../../server/validators/schema.validatior'
-import {
-  getSchemaList,
-  getSchemaById,
-  getSchemaByHandle
-} from '../../../../../server/services/schema.service'
+import { getSchemaByHandle } from '../../../../../server/services/schema.service'
 
 const getSchemaByHandleRoute = async (
   req: NextApiRequest,
@@ -24,6 +17,7 @@ const getSchemaByHandleRoute = async (
       const response = {
         result: schema
       }
+      res.status(200).json(response)
     } else {
       throw new Error('Invalid Schema ID.')
     }

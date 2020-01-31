@@ -4,12 +4,13 @@ import Link from 'next/link'
 interface IProps {
   name: string
   sub?: string
+  button?: React.ReactNode
   buttonLink?: string
   buttonWord?: string
   description?: string
 }
 const PageHeader = (props: IProps) => {
-  const { name, sub, buttonLink, buttonWord, description } = props
+  const { name, sub, buttonLink, buttonWord, description, button } = props
   return (
     <Row type="flex" justify="space-between">
       <Col span={18}>
@@ -37,6 +38,7 @@ const PageHeader = (props: IProps) => {
           </Row>
         </Col>
       )}
+      {button || null}
     </Row>
   )
 }

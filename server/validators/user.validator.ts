@@ -4,7 +4,7 @@ import * as J from './utils'
 export const createUserPayloadSchema = Joi.object({
   first_name: J.j_handle.required(),
   last_name: J.j_handle.required(),
-  email: J.j_uri.required(),
+  email: J.j_email.required(),
   username: J.j_handle.required(),
   date_of_birth: J.j_date_str.required(),
   password: J.j_pwd.required(),
@@ -16,7 +16,7 @@ export const updateUserPayloadSchema = Joi.object({
   id: J.j_str.required(),
   first_name: J.j_handle,
   last_name: J.j_handle,
-  email: J.j_uri,
+  email: J.j_email,
   username: J.j_handle,
   date_of_birth: J.j_date_str,
   password: J.j_pwd,
