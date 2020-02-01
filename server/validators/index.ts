@@ -1,5 +1,4 @@
 import Joi from 'joi'
-import Koa from 'koa'
 
 /**
  *
