@@ -9,7 +9,8 @@ import {
   Button,
   Row,
   Alert,
-  DatePicker
+  DatePicker,
+  Col
 } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { createAccountRequest } from '../../requests/account.request'
@@ -54,26 +55,6 @@ const CreateUserForm = (props: ICreateUserFormProps<ICreateUserPayload>) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Item label="First Name">
-        {getFieldDecorator('first_name', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the First Name'
-            }
-          ]
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Last Name">
-        {getFieldDecorator('last_name', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the Last Name'
-            }
-          ]
-        })(<Input />)}
-      </Form.Item>
       <Form.Item label="E-mail">
         {getFieldDecorator('email', {
           rules: [
@@ -98,52 +79,91 @@ const CreateUserForm = (props: ICreateUserFormProps<ICreateUserPayload>) => {
           ]
         })(<Input />)}
       </Form.Item>
-      <Form.Item label="Date of Birth">
-        {getFieldDecorator('date_of_birth', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the Date of Birth'
-            }
-          ]
-        })(<DatePicker />)}
-      </Form.Item>
-      <Form.Item label="Phone">
-        {getFieldDecorator('phone', {
-          // rules: [
-          //   {
-          //     required: true,
-          //     message: 'Please input the access-key name'
-          //   }
-          // ]
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Password" hasFeedback>
-        {getFieldDecorator('password', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input your password'
-            },
-            {
-              validator: validateToNextPassword
-            }
-          ]
-        })(<Input.Password />)}
-      </Form.Item>
-      <Form.Item label="Confirm Password" hasFeedback>
-        {getFieldDecorator('confirm', {
-          rules: [
-            {
-              required: true,
-              message: 'Please confirm your password'
-            },
-            {
-              validator: compareToFirstPassword
-            }
-          ]
-        })(<Input.Password onBlur={handleConfirmBlur} />)}
-      </Form.Item>
+      <Row gutter={2}>
+        <Col span={12}>
+          <Form.Item label="First Name">
+            {getFieldDecorator('first_name', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input the First Name'
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Last Name">
+            {getFieldDecorator('last_name', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input the Last Name'
+                }
+              ]
+            })(<Input />)}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={2}>
+        <Col span={12}>
+          <Form.Item label="Date of Birth">
+            {getFieldDecorator('date_of_birth', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input the Date of Birth'
+                }
+              ]
+            })(<DatePicker style={{ width: '100%' }} />)}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Phone">
+            {getFieldDecorator('phone', {
+              // rules: [
+              //   {
+              //     required: true,
+              //     message: 'Please input the access-key name'
+              //   }
+              // ]
+            })(<Input />)}
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={2}>
+        <Col span={12}>
+          <Form.Item label="Password" hasFeedback>
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input your password'
+                },
+                {
+                  validator: validateToNextPassword
+                }
+              ]
+            })(<Input.Password />)}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Confirm Password" hasFeedback>
+            {getFieldDecorator('confirm', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please confirm your password'
+                },
+                {
+                  validator: compareToFirstPassword
+                }
+              ]
+            })(<Input.Password onBlur={handleConfirmBlur} />)}
+          </Form.Item>
+        </Col>
+      </Row>
 
       <Form.Item>
         <Button type="primary" htmlType="submit">

@@ -1,6 +1,7 @@
 import { RequestStatus } from '../../helpers/request'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Moment from 'moment'
 import {
   IUserWithoutPassword,
   IUpdateUserInfoPayload,
@@ -12,7 +13,7 @@ import {
 } from '../../requests/user.request'
 import PageLayout from '../../components/PageLayout/PageLayout'
 import { pageRoutes } from '../../navigation/page-routes'
-import { Alert, Button, Descriptions, Row, Col, Input } from 'antd'
+import { Alert, Button, Descriptions, Row, Col, Input, DatePicker } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
@@ -244,7 +245,19 @@ const UserUpdatePage = () => {
             <Row type="flex" gutter={2}>
               <Col span={12}>
                 <FormFieldLabel>Date of Birth</FormFieldLabel>
-                <Input
+                <DatePicker
+                  style={{ width: '100%' }}
+                  value={Moment(form.date_of_birth)}
+                  onChange={(d: Moment.Moment | null) => {
+                    if (d && d.format) {
+                      setForm({
+                        ...form,
+                        date_of_birth: d.format()
+                      })
+                    }
+                  }}
+                />
+                {/* <Input
                   value={form.date_of_birth}
                   onChange={(e: any) =>
                     setForm({
@@ -252,7 +265,7 @@ const UserUpdatePage = () => {
                       date_of_birth: e.target.value
                     })
                   }
-                />
+                /> */}
               </Col>
               <Col span={12}>
                 <FormFieldLabel>Phone</FormFieldLabel>
