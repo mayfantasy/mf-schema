@@ -3,5 +3,5 @@ import { EApiMethod } from '../types/api.type'
 
 export const cors = (methods: EApiMethod[]) =>
   Cors({
-    allowMethods: methods
+    allowMethods: methods.concat(EApiMethod.OPTIONS)
   })
