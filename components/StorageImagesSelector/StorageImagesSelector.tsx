@@ -8,6 +8,7 @@ import { Row, Col, Icon, Button, Modal, Alert, Popconfirm } from 'antd'
 import Link from 'next/link'
 import Loading from '../Loading/Loading'
 import { IImageListEntry } from '../../types/storage.type'
+import { color } from '../../helpers/color.helper'
 
 interface IProps {
   onSelect: (img: IImageListEntry) => void
@@ -94,10 +95,10 @@ const StorageImagesSelector = (props: IProps) => {
             cursor: pointer;
             padding: 10px;
             &:hover {
-              border: 2px solid rgb(24, 144, 255);
+              border: 2px solid #00a854;
             }
             &.active {
-              border: 2px solid rgb(24, 144, 255);
+              border: 2px solid #00a854;
             }
             .image-item__wrapper {
               width: 100%;
@@ -194,6 +195,7 @@ const StorageImagesSelector = (props: IProps) => {
                         {/* <img className="image-item" src={img}  /> */}
                         {isActive && (
                           <Icon
+                            twoToneColor={color.primary}
                             className="selected-icon"
                             type="check-circle"
                             theme="twoTone"
