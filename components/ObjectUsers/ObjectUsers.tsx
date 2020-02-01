@@ -62,10 +62,13 @@ const ObjectUsers = (props: IProps) => {
   }, [])
 
   return userListStatus.loading ? (
-    <Loading />
+    <>
+      <br />
+      <Loading />
+    </>
   ) : userListStatus.error ? (
     <Alert type="error" message={userListStatus.error} />
-  ) : (
+  ) : userList.length ? (
     <div>
       <Collapse bordered={false}>
         <Collapse.Panel header="Registered Users" key="1">
@@ -81,6 +84,6 @@ const ObjectUsers = (props: IProps) => {
         </Collapse.Panel>
       </Collapse>
     </div>
-  )
+  ) : null
 }
 export default ObjectUsers

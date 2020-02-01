@@ -164,24 +164,22 @@ const UserUpdatePage = () => {
         <br />
         <div>
           <div>
-            {form.profile_img && (
-              <Row type="flex">
-                <Col span={24}>
-                  <FormFieldLabel>Profile Image</FormFieldLabel>
-                  <div>
-                    <ImageUploader
-                      value={form.profile_img}
-                      onChange={(image: string) => {
-                        setForm({
-                          ...form,
-                          profile_img: image
-                        })
-                      }}
-                    />
-                  </div>
-                </Col>
-              </Row>
-            )}
+            <Row type="flex">
+              <Col span={24}>
+                <FormFieldLabel>Profile Image</FormFieldLabel>
+                <div>
+                  <ImageUploader
+                    value={form.profile_img}
+                    onChange={(image: string) => {
+                      setForm({
+                        ...form,
+                        profile_img: image
+                      })
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
             <br />
             <Row type="flex">
               <Col span={24}>

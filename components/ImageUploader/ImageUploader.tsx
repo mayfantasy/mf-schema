@@ -1,5 +1,5 @@
 import { message, Upload, Icon, Button, Row } from 'antd'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { RequestStatus } from '../../helpers/request'
 import { getToken } from '../../helpers/auth.helper'
 import StorageImagesSelector from '../StorageImagesSelector/StorageImagesSelector'
@@ -14,6 +14,10 @@ interface IProps {
 const ImageUploader = (props: IProps) => {
   const { value, onChange } = props
   const [imageUrl, setImageUrl] = useState<string | null>(value || null)
+
+  useEffect(() => {
+    setImageUrl(value)
+  }, [value])
 
   const [imageSelectorOpen, setImageSelectorOpen] = useState(false)
 
