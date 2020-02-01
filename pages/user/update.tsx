@@ -323,7 +323,13 @@ const UserUpdatePage = () => {
                           }
                           key={key}
                         >
-                          {JSON.stringify((meta as any)[key], null, ' ')}
+                          <code>
+                            <pre>
+                              <small>
+                                {JSON.stringify((meta as any)[key], null, ' ')}
+                              </small>
+                            </pre>
+                          </code>
                         </Descriptions.Item>
                       </Descriptions>
                       <br />
