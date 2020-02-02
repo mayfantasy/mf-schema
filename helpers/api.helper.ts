@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export const cors = (methods: EApiMethod[]) =>
   Cors({
     allowMethods: methods.concat(EApiMethod.OPTIONS),
+    origin: '*',
     allowHeaders: [
       'X-Requested-With',
       'Access-Control-Allow-Origin',
