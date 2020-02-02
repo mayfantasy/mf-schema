@@ -5,7 +5,6 @@ import { getAuth } from '../../../../../helpers/auth.helper'
 import { getObjectListParamsSchema } from '../../../../../server/validators/object.validator'
 import { getObjectList } from '../../../../../server/services/object.service'
 import { NextApiRequest, NextApiResponse } from 'next'
-import Cors from 'micro-cors'
 
 const getObjectListRoute = async (req: NextApiRequest, res: NextApiResponse) =>
   await passOptions(req, res, async () => {
@@ -34,4 +33,5 @@ const getObjectListRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default Cors(getObjectListRoute as any)
+// export default cors([EApiMethod.GET])(getObjectListRoute as any)
+export default getObjectListRoute as any
