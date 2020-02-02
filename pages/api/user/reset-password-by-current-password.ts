@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../helpers/auth.helper'
-import { cors } from '../../../helpers/api.helper'
+import { cors, passOptions } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { resetUserPasswordByCurrentPasswordPayloadSchema } from '../../../server/validators/user-auth.validator'
@@ -10,26 +10,30 @@ import { IResetUserPasswordByCurrentPasswordPayload } from '../../../types/user.
 const resetUserPasswordByCurrentPasswordRoute = async (
   req: NextApiRequest,
   res: NextApiResponse
-) => {
-  try {
-    const auth = (await getAuth(req, res)) || ({} as any)
-    const payload = req.body as IResetUserPasswordByCurrentPasswordPayload
+) =>
+  await passOptions(req, res, async () => {
+    try {
+      const auth = (await getAuth(req, res)) || ({} as any)
+      const payload = req.body as IResetUserPasswordByCurrentPasswordPayload
 
-    /** Validation */
-    validatePayload(resetUserPasswordByCurrentPasswordPayloadSchema, payload)
+      /** Validation */
+      validatePayload(resetUserPasswordByCurrentPasswordPayloadSchema, payload)
 
-    const user = await resetUserPasswordByCurrentPassword(auth.api_key, payload)
+      const user = await resetUserPasswordByCurrentPassword(
+        auth.api_key,
+        payload
+      )
 
-    const response = {
-      result: user
+      const response = {
+        result: user
+      }
+      res.status(200).json(response)
+    } catch (e) {
+      res.status(500).json({
+        message: JSON.stringify(e.message)
+      })
     }
-    res.status(200).json(response)
-  } catch (e) {
-    res.status(500).json({
-      message: JSON.stringify(e.message)
-    })
-  }
-}
+  })
 
 export default cors([EApiMethod.POST])(
   resetUserPasswordByCurrentPasswordRoute as any
