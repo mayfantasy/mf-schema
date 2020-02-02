@@ -14,6 +14,15 @@ export const cors = (methods: EApiMethod[]) =>
       'Authorization',
       'Accept',
       'x-acc-k'
+    ],
+    exposeHeaders: [
+      'X-Requested-With',
+      'Access-Control-Allow-Origin',
+      'X-HTTP-Method-Override',
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'x-acc-k'
     ]
   })
 
