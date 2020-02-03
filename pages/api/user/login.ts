@@ -30,4 +30,4 @@ const loginUserRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default micro(loginUserRoute as any)
+export default loginUserRoute as any
