@@ -69,9 +69,9 @@ const FormItems = (props: IProps) => {
           ? getFieldValue('_defKeys')[index]['options']
           : null
         const currentHelperImage = getFieldValue('_defKeys')
-          ? getFieldValue('_defKeys')[index]['helperImage']
+          ? getFieldValue('_defKeys')[index]['helper_image']
           : null
-        const defValuesObject = getFieldsValue()['_defValues']
+        const defValuesObject = getFieldsValue()['_defValues'] || {}
 
         return (
           <Row key={index} style={{ marginBottom: '10px' }}>
@@ -309,8 +309,9 @@ const FormItems = (props: IProps) => {
                         >
                           {getFieldDecorator(`_defValues[${def.helper_image}]`)(
                             <ImageUploader
-                              value={defValuesObject[currentHelperImage]}
+                              value={defValuesObject[currentHelperImage] || ''}
                               onChange={(image: string) => {
+                                console.log('fff: ', currentHelperImage, image)
                                 setFieldsValue({
                                   _defValues: {
                                     ...defValuesObject,
