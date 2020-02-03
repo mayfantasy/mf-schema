@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { ICreateAccessKeyPayload } from '../../../types/access-key.type'
 import { validatePayload } from '../../../server/validators'
@@ -32,4 +32,4 @@ const createAccessKeyRoute = async (
   }
 }
 
-export default cors([EApiMethod.POST])(createAccessKeyRoute as any)
+export default createAccessKeyRoute as any

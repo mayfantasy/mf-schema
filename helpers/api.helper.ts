@@ -2,31 +2,31 @@ import Cors from 'micro-cors'
 import { EApiMethod } from '../types/api.type'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export const cors = (methods: EApiMethod[]) =>
-  Cors({
-    allowMethods: methods.concat(EApiMethod.OPTIONS),
-    origin: '*',
-    allowHeaders: [
-      'X-Requested-With',
-      'Access-Control-Allow-Origin',
-      'X-HTTP-Method-Override',
-      'Content-Type',
-      'Authorization',
-      'Accept',
-      'x-acc-k'
-    ],
-    exposeHeaders: [
-      'X-Requested-With',
-      'Access-Control-Allow-Origin',
-      'X-HTTP-Method-Override',
-      'Content-Type',
-      'Authorization',
-      'Accept',
-      'x-acc-k'
-    ]
-  })
+// export const cors = (methods: EApiMethod[]) =>
+//   Cors({
+//     allowMethods: methods.concat(EApiMethod.OPTIONS),
+//     origin: '*',
+//     allowHeaders: [
+//       'X-Requested-With',
+//       'Access-Control-Allow-Origin',
+//       'X-HTTP-Method-Override',
+//       'Content-Type',
+//       'Authorization',
+//       'Accept',
+//       'x-acc-k'
+//     ],
+//     exposeHeaders: [
+//       'X-Requested-With',
+//       'Access-Control-Allow-Origin',
+//       'X-HTTP-Method-Override',
+//       'Content-Type',
+//       'Authorization',
+//       'Accept',
+//       'x-acc-k'
+//     ]
+//   })
 
-export const passOptions = async (
+export const reqWrapper = async (
   req: NextApiRequest,
   res: NextApiResponse,
   callback: () => any
@@ -36,8 +36,9 @@ export const passOptions = async (
   res.setHeader('Access-Control-Allow-Methods', ' POST, GET, OPTIONS, DELETE')
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
+    'Origin, X-Requested-With, Content-Type, Accept, x-acc-k'
   )
+
   if (req.method === 'OPTIONS') {
     res.status(200).send('Success')
   }

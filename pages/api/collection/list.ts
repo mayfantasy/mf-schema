@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { ICreateCollectionPayload } from '../../../types/collection.type'
@@ -28,4 +28,4 @@ const getCollectionListRoute = async (
   }
 }
 
-export default cors([EApiMethod.GET])(getCollectionListRoute as any)
+export default getCollectionListRoute as any

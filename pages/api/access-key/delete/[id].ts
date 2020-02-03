@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../../types/api.type'
 import { getAuth } from '../../../../helpers/auth.helper'
 import {
@@ -31,4 +31,4 @@ const getAccessKeyListRoute = async (
   }
 }
 
-export default cors([EApiMethod.GET])(getAccessKeyListRoute as any)
+export default getAccessKeyListRoute as any

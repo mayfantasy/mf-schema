@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../helpers/auth.helper'
-import { cors, passOptions } from '../../../helpers/api.helper'
+import { reqWrapper } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { resetUserPasswordByCurrentPasswordPayloadSchema } from '../../../server/validators/user-auth.validator'
@@ -11,7 +11,7 @@ const resetUserPasswordByCurrentPasswordRoute = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
       const payload = req.body as IResetUserPasswordByCurrentPasswordPayload
@@ -35,6 +35,4 @@ const resetUserPasswordByCurrentPasswordRoute = async (
     }
   })
 
-export default cors([EApiMethod.POST])(
-  resetUserPasswordByCurrentPasswordRoute as any
-)
+export default resetUserPasswordByCurrentPasswordRoute as any

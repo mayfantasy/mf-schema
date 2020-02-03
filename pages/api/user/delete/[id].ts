@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../../helpers/auth.helper'
 import { deleteUserById } from '../../../../server/services/user.service'
-import { cors } from '../../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../../types/api.type'
 
 const deleteUserRoute = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,4 +27,4 @@ const deleteUserRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default cors([EApiMethod.DELETE])(deleteUserRoute as any)
+export default deleteUserRoute as any

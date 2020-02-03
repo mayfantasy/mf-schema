@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../helpers/auth.helper'
-import { cors, passOptions } from '../../../helpers/api.helper'
+import { reqWrapper } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { userSendRecoverEmailPayloadSchema } from '../../../server/validators/user-auth.validator'
@@ -11,7 +11,7 @@ const sendRecoverEmailRoute = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
       const payload = req.body as IUserSendRecoverEmailPayload
@@ -32,4 +32,4 @@ const sendRecoverEmailRoute = async (
     }
   })
 
-export default cors([EApiMethod.POST])(sendRecoverEmailRoute as any)
+export default sendRecoverEmailRoute as any

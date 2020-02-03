@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { ICreateCollectionPayload } from '../../../types/collection.type'
@@ -31,4 +31,4 @@ const createSchemaRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default cors([EApiMethod.POST])(createSchemaRoute as any)
+export default createSchemaRoute as any

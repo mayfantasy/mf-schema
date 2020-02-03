@@ -5,7 +5,7 @@ import { varify } from '../../../server/jwt'
 import { ILoginPayload } from '../../../types/auth.type'
 import { getAccountByEmail } from '../../../server/services/auth.service'
 import { IBasicAccountInfo } from '../../../types/account.type'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 
 const loginWithTokenRoute = async (
@@ -42,4 +42,4 @@ const loginWithTokenRoute = async (
   }
 }
 
-export default cors([EApiMethod.POST])(loginWithTokenRoute as any)
+export default loginWithTokenRoute as any

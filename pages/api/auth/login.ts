@@ -1,5 +1,5 @@
 import { NextApiResponse, NextApiRequest } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { ILoginPayload } from '../../../types/auth.type'
 import { validatePayload } from '../../../server/validators'
@@ -36,4 +36,4 @@ const loginRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default cors([EApiMethod.POST])(loginRoute as any)
+export default loginRoute as any

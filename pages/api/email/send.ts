@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors, passOptions } from '../../../helpers/api.helper'
+import { reqWrapper } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { getAuth } from '../../../helpers/auth.helper'
@@ -8,7 +8,7 @@ import { sendEmail } from '../../../server/services/send-email.service'
 import { IEmailTemplatePayload } from '../../../types/email.type'
 
 const updateSchemaRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
       const payload = req.body as IEmailTemplatePayload
@@ -34,4 +34,4 @@ const updateSchemaRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default cors([EApiMethod.POST])(updateSchemaRoute as any)
+export default updateSchemaRoute as any

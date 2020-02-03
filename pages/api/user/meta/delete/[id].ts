@@ -4,7 +4,7 @@ import {
   updateUserMeta,
   deleteUserMeta
 } from '../../../../../server/services/user.service'
-import { cors } from '../../../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../../../types/api.type'
 import {
   IUpdateUserMetaPayload,
@@ -46,4 +46,4 @@ const deleteUserMetaItemRoute = async (
   }
 }
 
-export default cors([EApiMethod.POST])(deleteUserMetaItemRoute as any)
+export default deleteUserMetaItemRoute as any

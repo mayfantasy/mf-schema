@@ -1,5 +1,5 @@
 import { EApiMethod } from '../../../../../types/api.type'
-import { cors, passOptions } from '../../../../../helpers/api.helper'
+import { reqWrapper } from '../../../../../helpers/api.helper'
 import { validatePayload } from '../../../../../server/validators'
 import { getAuth } from '../../../../../helpers/auth.helper'
 import { getObjectListParamsSchema } from '../../../../../server/validators/object.validator'
@@ -7,7 +7,7 @@ import { getObjectList } from '../../../../../server/services/object.service'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const getObjectListRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
       const params = req.query as {
@@ -33,5 +33,5 @@ const getObjectListRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-// export default cors([EApiMethod.GET])(getObjectListRoute as any)
+// export default (getObjectListRoute as any)
 export default getObjectListRoute as any

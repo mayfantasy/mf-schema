@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors, passOptions } from '../../../helpers/api.helper'
+import { reqWrapper } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 import { getAuth } from '../../../helpers/auth.helper'
 import { uploadImage } from '../../../server/services/storage.service'
@@ -9,7 +9,7 @@ import { format } from 'date-fns'
 import formidable from 'formidable'
 
 const uploadImageRoute = async (req: any, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
       const accountId = auth.account_id
@@ -44,7 +44,7 @@ const uploadImageRoute = async (req: any, res: NextApiResponse) =>
     }
   })
 
-export default cors([EApiMethod.POST])(uploadImageRoute as any)
+export default uploadImageRoute as any
 export const config = {
   api: {
     bodyParser: false

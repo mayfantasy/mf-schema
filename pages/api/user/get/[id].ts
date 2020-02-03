@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../../helpers/auth.helper'
 import { getUserById } from '../../../../server/services/user.service'
-import { cors, passOptions } from '../../../../helpers/api.helper'
+import { reqWrapper } from '../../../../helpers/api.helper'
 import { EApiMethod } from '../../../../types/api.type'
 
 const getUserByIdRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
       const id = req.query.id as string
@@ -25,4 +25,4 @@ const getUserByIdRoute = async (req: NextApiRequest, res: NextApiResponse) =>
       })
     }
   })
-export default cors([EApiMethod.GET])(getUserByIdRoute as any)
+export default getUserByIdRoute as any

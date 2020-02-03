@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../helpers/auth.helper'
 import { getUserList } from '../../../server/services/user.service'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 
 const getUserListRoute = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,4 +19,4 @@ const getUserListRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default cors([EApiMethod.GET])(getUserListRoute as any)
+export default getUserListRoute as any

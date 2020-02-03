@@ -1,5 +1,5 @@
 import { EApiMethod } from '../../../../../../types/api.type'
-import { cors, passOptions } from '../../../../../../helpers/api.helper'
+import { reqWrapper } from '../../../../../../helpers/api.helper'
 import { validatePayload } from '../../../../../../server/validators'
 import { getAuth } from '../../../../../../helpers/auth.helper'
 import { getObjectByIdParamsSchema } from '../../../../../../server/validators/object.validator'
@@ -7,7 +7,7 @@ import { getObjectById } from '../../../../../../server/services/object.service'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const getObjectByIdRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
 
@@ -33,4 +33,4 @@ const getObjectByIdRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default cors([EApiMethod.GET])(getObjectByIdRoute as any)
+export default getObjectByIdRoute as any

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { getAuth } from '../../../helpers/auth.helper'
 import { deleteAccountImage } from '../../../server/services/storage.service'
@@ -26,4 +26,4 @@ const deleteImageRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default cors([EApiMethod.POST])(deleteImageRoute as any)
+export default deleteImageRoute as any

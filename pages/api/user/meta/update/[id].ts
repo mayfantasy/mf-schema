@@ -1,14 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../../../helpers/auth.helper'
 import { updateUserMeta } from '../../../../../server/services/user.service'
-import { cors, passOptions } from '../../../../../helpers/api.helper'
+import { reqWrapper } from '../../../../../helpers/api.helper'
 import { EApiMethod } from '../../../../../types/api.type'
 import { IUpdateUserMetaPayload } from '../../../../../types/user.type'
 import { validatePayload } from '../../../../../server/validators'
 import { updateUserMetaPayloadSchema } from '../../../../../server/validators/user.validator'
 
 const updateUserMetaRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     const payload = req.body as IUpdateUserMetaPayload
 
     try {
@@ -35,4 +35,4 @@ const updateUserMetaRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default cors([EApiMethod.POST])(updateUserMetaRoute as any)
+export default updateUserMetaRoute as any

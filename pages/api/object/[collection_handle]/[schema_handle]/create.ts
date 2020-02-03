@@ -1,5 +1,5 @@
 import { EApiMethod } from '../../../../../types/api.type'
-import { cors, passOptions } from '../../../../../helpers/api.helper'
+import { reqWrapper } from '../../../../../helpers/api.helper'
 import { validatePayload } from '../../../../../server/validators'
 import { getAuth } from '../../../../../helpers/auth.helper'
 import { createObjectParamsSchema } from '../../../../../server/validators/object.validator'
@@ -7,7 +7,7 @@ import { createObject } from '../../../../../server/services/object.service'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const createObjectRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     const payload = req.body as any
 
     try {
@@ -37,4 +37,4 @@ const createObjectRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default cors([EApiMethod.POST])(createObjectRoute as any)
+export default createObjectRoute as any

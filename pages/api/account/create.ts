@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { validatePayload } from '../../../server/validators'
 import { IClientCreateAccountPayload } from '../../../types/account.type'
@@ -26,4 +26,4 @@ const createAccountRoute = async (
   }
 }
 
-export default cors([EApiMethod.POST])(createAccountRoute as any)
+export default createAccountRoute as any

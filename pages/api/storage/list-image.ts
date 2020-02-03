@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../types/api.type'
 import { getAuth } from '../../../helpers/auth.helper'
 import { getAccountImages } from '../../../server/services/storage.service'
@@ -20,4 +20,4 @@ const getImageListRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default cors([EApiMethod.POST])(getImageListRoute as any)
+export default getImageListRoute as any

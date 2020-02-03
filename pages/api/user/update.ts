@@ -4,11 +4,11 @@ import { IUpdateUserInfoPayload } from '../../../types/user.type'
 import { validatePayload } from '../../../server/validators'
 import { updateUserPayloadSchema } from '../../../server/validators/user.validator'
 import { createUser, updateUser } from '../../../server/services/user.service'
-import { cors, passOptions } from '../../../helpers/api.helper'
+import { reqWrapper } from '../../../helpers/api.helper'
 import { EApiMethod } from '../../../types/api.type'
 
 const updateUserRoute = async (req: NextApiRequest, res: NextApiResponse) =>
-  await passOptions(req, res, async () => {
+  await reqWrapper(req, res, async () => {
     const payload = req.body as IUpdateUserInfoPayload
     try {
       const auth = (await getAuth(req, res)) || ({} as any)
@@ -28,4 +28,4 @@ const updateUserRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default cors([EApiMethod.PUT])(updateUserRoute as any)
+export default updateUserRoute as any

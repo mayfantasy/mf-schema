@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { cors } from '../../../../helpers/api.helper'
+
 import { EApiMethod } from '../../../../types/api.type'
 import { validatePayload } from '../../../../server/validators'
 import { getAuth } from '../../../../helpers/auth.helper'
@@ -34,4 +34,4 @@ const getSchemaByIdRoute = async (
   }
 }
 
-export default cors([EApiMethod.GET])(getSchemaByIdRoute as any)
+export default getSchemaByIdRoute as any
