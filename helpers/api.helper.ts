@@ -33,7 +33,10 @@ export const reqWrapper = async (
 ) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Content-Type', '*')
-  res.setHeader('Access-Control-Allow-Methods', ' POST, GET, OPTIONS, DELETE')
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'PUT, POST, GET, OPTIONS, DELETE'
+  )
   res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, x-acc-k'
