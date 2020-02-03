@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth } from '../../../../helpers/auth.helper'
 import { getUserById } from '../../../../server/services/user.service'
-import { reqWrapper } from '../../../../helpers/api.helper'
+import { cors, reqWrapper } from '../../../../helpers/api.helper'
 import { EApiMethod } from '../../../../types/api.type'
 
 const getUserByIdRoute = async (req: NextApiRequest, res: NextApiResponse) =>

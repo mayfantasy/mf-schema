@@ -6,6 +6,7 @@ import { ILoginPayload } from '../../../types/auth.type'
 import { validatePayload } from '../../../server/validators'
 import { userLoginPayloadSchema } from '../../../server/validators/user-auth.validator'
 import { loginUser } from '../../../server/services/user-auth.service'
+import cors from 'micro-cors'
 
 const loginUserRoute = async (req: NextApiRequest, res: NextApiResponse) =>
   await reqWrapper(req, res, async () => {
@@ -29,4 +30,6 @@ const loginUserRoute = async (req: NextApiRequest, res: NextApiResponse) =>
     }
   })
 
-export default loginUserRoute as any
+export default cors({
+  allowMethods: ['GET', 'HEAD']
+})(loginUserRoute as any)
