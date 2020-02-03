@@ -31,5 +31,6 @@ const loginUserRoute = async (req: NextApiRequest, res: NextApiResponse) =>
   })
 
 export default cors({
-  allowMethods: ['GET', 'HEAD']
+  allowMethods: ['GET', 'HEAD'],
+  origin: 'localhost:3000'
 })(loginUserRoute as any)
