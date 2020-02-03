@@ -35,4 +35,6 @@ const getObjectListRoute = async (req: NextApiRequest, res: NextApiResponse) =>
   })
 
 // export default (getObjectListRoute as any)
-export default cors()(getObjectListRoute as any)
+export default cors({
+  allowMethods: ['GET', 'HEAD']
+})(getObjectListRoute as any)
