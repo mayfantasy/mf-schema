@@ -6,4 +6,3 @@ env_variables:
   USER_JWT_SECRET: 'user-jwt-secret'
   RECOVER_EMAIL_ADDRESS: 'yuelun123321@hotmail.com'
   RECOVER_EMAIL_PASSWORD: '199051qQqQ'
-  MF_SCHEMA_BASE_URL: 'https://mf-schema.appspot.com'
