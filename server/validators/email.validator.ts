@@ -7,6 +7,6 @@ export const sendEmailPayloadSchema = Joi.object({
     schema_handle: J.j_str.required(),
     id: J.j_str.required()
   }),
-  to_email: J.j_email.required(),
+  to_email: J.j_str.required(),
   data: J.j_any.required()
 })
