@@ -68,7 +68,7 @@ const ObjectsTable = (props: IProps) => {
                   </div>
                 ))}
               </div>
-            ) : f.includes('img_src') ? (
+            ) : f.includes('img_src') || f.includes('img-src') ? (
               <img style={{ width: '50px' }} src={value} />
             ) : (
               value
