@@ -97,7 +97,13 @@ const ImageUploader = (props: IProps) => {
               <Icon type="cloud-download" />
               Download
             </Button>
-            <Button type="danger" onClick={() => setImageUrl(null)}>
+            <Button
+              type="danger"
+              onClick={() => {
+                setImageUrl(null)
+                onChange(null)
+              }}
+            >
               Remove Image
             </Button>
           </Row>
