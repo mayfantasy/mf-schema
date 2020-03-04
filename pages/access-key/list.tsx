@@ -45,15 +45,11 @@ const AccessKeyListPage = () => {
     setDeleteAccessKeyStatus(deleteAccessKeyRequestStatus.loading())
     deleteAccessKeyRequest(id)
       .then((res) => {
-        setDeleteAccessKeyStatus(
-          deleteAccessKeyRequestStatus.success()
-        )
+        setDeleteAccessKeyStatus(deleteAccessKeyRequestStatus.success())
         getAccessKeyList()
       })
       .catch((err: AxiosError) => {
-        setDeleteAccessKeyStatus(
-          deleteAccessKeyRequestStatus.error(err)
-        )
+        setDeleteAccessKeyStatus(deleteAccessKeyRequestStatus.error(err))
       })
   }
 
@@ -120,7 +116,7 @@ const AccessKeyListPage = () => {
         {accessKeyStatus.loading || deleteAccessKeyStatus.loading ? (
           <Loading />
         ) : (
-          <Table dataSource={accessKeys} columns={columns} />
+          <Table pagination={false} dataSource={accessKeys} columns={columns} />
         )}
       </div>
     </PageLayout>

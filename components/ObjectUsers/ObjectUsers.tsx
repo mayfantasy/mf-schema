@@ -7,6 +7,7 @@ import { Collapse, Table, Alert, Typography } from 'antd'
 import UserTable from '../UserTable/UserTable'
 import { IUser } from '../../types/user.type'
 import Loading from '../Loading/Loading'
+import PageHeader from '../PageHeader/PageHeader'
 
 interface IProps {
   currentObject: IObject
@@ -70,19 +71,17 @@ const ObjectUsers = (props: IProps) => {
     <Alert type="error" message={userListStatus.error} />
   ) : userList.length ? (
     <div>
-      <Collapse bordered={false}>
-        <Collapse.Panel header="Registered Users" key="1">
-          {userList.length ? (
-            <UserTable users={userList} />
-          ) : (
-            <Typography.Text type="secondary">
-              <small>
-                <i>No users found.</i>
-              </small>
-            </Typography.Text>
-          )}
-        </Collapse.Panel>
-      </Collapse>
+      <br />
+      <PageHeader name="Registered Users" />
+      {userList.length ? (
+        <UserTable users={userList} />
+      ) : (
+        <Typography.Text type="secondary">
+          <small>
+            <i>No users found.</i>
+          </small>
+        </Typography.Text>
+      )}
     </div>
   ) : null
 }

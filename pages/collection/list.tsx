@@ -77,7 +77,11 @@ const CollectionListPage = () => {
         {collectionStatus.loading ? (
           <Loading />
         ) : (
-          <Table dataSource={collections} columns={columns} />
+          <Table
+            pagination={false}
+            dataSource={collections}
+            columns={columns}
+          />
         )}
       </div>
     </PageLayout>

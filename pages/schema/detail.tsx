@@ -365,7 +365,10 @@ const SchemaListPage = () => {
                 <Link
                   href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
                 >
-                  <Button type="primary">Edit Schema</Button>
+                  <Button type="primary">
+                    <Icon type="edit" />
+                    Edit Schema
+                  </Button>
                 </Link>
               }
               description={currentSchema.description}
@@ -377,7 +380,7 @@ const SchemaListPage = () => {
             <Row>
               <Col>
                 <Button onClick={handleAddObject} type="primary">
-                  Add Object
+                  <Icon type="plus-circle" /> Add Object
                 </Button>
               </Col>
             </Row>

@@ -39,6 +39,8 @@ import { pageRoutes } from '../../navigation/page-routes'
 import StringSingleSelect from '../../components/StringSingleSelect/StringSingleSelect'
 import StringMultiSelect from '../../components/StringMultiSelect/StringMultiSelect'
 import ImageViewer from '../../components/ImageViewer/ImageViewer'
+import PageHeader from '../../components/PageHeader/PageHeader'
+import Link from 'next/link'
 
 interface IFormStructure {
   [key: string]: any
@@ -474,103 +476,118 @@ const ObjectUpdatePage = () => {
   }
 
   return layout(
-    <div style={{ width: '100%', maxWidth: '800px' }}>
-      {!!updateCurrentObjectStatus.error && (
-        <Alert
-          message={updateCurrentObjectStatus.error}
-          type="error"
-          closable
-        />
-      )}
-      {!!updateCurrentObjectStatus.success && (
-        <Alert message="Object updated successfully." type="success" closable />
-      )}
-      <br />
-      <Collapse bordered={false}>
-        <Collapse.Panel header="Update Object" key="1">
-          <Card
-            title="Update Object"
-            extra={
-              <Button
-                type="primary"
-                onClick={handleUpdateObject}
-                disabled={!handle}
-              >
-                Save Object
-              </Button>
+    <Row type="flex">
+      <Col span={13}>
+        {!!updateCurrentObjectStatus.error && (
+          <Alert
+            message={updateCurrentObjectStatus.error}
+            type="error"
+            closable
+          />
+        )}
+        {!!updateCurrentObjectStatus.success && (
+          <Alert
+            message="Object updated successfully."
+            type="success"
+            closable
+          />
+        )}
+        <br />
+
+        <div>
+          <PageHeader
+            name="Update Object"
+            buttons={
+              <div>
+                <Link
+                  href={`${pageRoutes.schemaDetail}?id=${currentObject.schema.id}`}
+                >
+                  <Button>Back to Schema</Button>
+                </Link>
+                &nbsp;
+                <Button
+                  type="primary"
+                  onClick={handleUpdateObject}
+                  disabled={!handle}
+                >
+                  Save Object
+                </Button>
+              </div>
             }
+            description={`Schema ID: ${currentObject.schema.id}
+Object ID: ${currentObject.id}`}
+          />
+        </div>
+        <br />
+        <Row>
+          <Col span={12}>
+            <FormFieldLabel>Handle</FormFieldLabel>
+            <Input
+              value={handle}
+              onChange={(e: any) => setHandle(e.target.value)}
+            />
+            <br />
+            <Typography.Text type="secondary">
+              <small>Unique Object Handle</small>
+            </Typography.Text>
+          </Col>
+        </Row>
+        <br />
+        <br />
+        {Object.keys(form).map((key: string) => {
+          const foundSchemaDef = currentObject.schema.def.find(
+            (d: ISchemaFieldDef) => {
+              return d.key === key
+            }
+          )
+          const type = foundSchemaDef ? foundSchemaDef.type : null
+          const value = form[key]
+          const options = foundSchemaDef ? foundSchemaDef.options : null
+          const helper = foundSchemaDef ? foundSchemaDef.helper : null
+          const helper_image = foundSchemaDef
+            ? foundSchemaDef.helper_image
+            : null
+          const grid = foundSchemaDef ? foundSchemaDef.grid : null
+          const name = foundSchemaDef ? foundSchemaDef.name : null
+          return (
+            !!type &&
+            findFormFieldByKey(
+              type,
+              key,
+              value,
+              options || [],
+              name,
+              grid,
+              helper,
+              helper_image
+            )
+          )
+        })}
+        <br />
+        <br />
+        <br />
+        <div>
+          <Popconfirm
+            title="Are you sure？"
+            onConfirm={() =>
+              deleteCurrentObject(
+                router.query.collection_handle as string,
+                router.query.schema_handle as string,
+                router.query.id as string
+              )
+            }
+            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
           >
-            <Row>
-              <Col span={12}>
-                <FormFieldLabel>Handle</FormFieldLabel>
-                <Input
-                  value={handle}
-                  onChange={(e: any) => setHandle(e.target.value)}
-                />
-                <br />
-                <Typography.Text type="secondary">
-                  <small>Unique Object Handle</small>
-                </Typography.Text>
-              </Col>
-            </Row>
-            <br />
-            <br />
-            {Object.keys(form).map((key: string) => {
-              const foundSchemaDef = currentObject.schema.def.find(
-                (d: ISchemaFieldDef) => {
-                  return d.key === key
-                }
-              )
-              const type = foundSchemaDef ? foundSchemaDef.type : null
-              const value = form[key]
-              const options = foundSchemaDef ? foundSchemaDef.options : null
-              const helper = foundSchemaDef ? foundSchemaDef.helper : null
-              const helper_image = foundSchemaDef
-                ? foundSchemaDef.helper_image
-                : null
-              const grid = foundSchemaDef ? foundSchemaDef.grid : null
-              const name = foundSchemaDef ? foundSchemaDef.name : null
-              return (
-                !!type &&
-                findFormFieldByKey(
-                  type,
-                  key,
-                  value,
-                  options || [],
-                  name,
-                  grid,
-                  helper,
-                  helper_image
-                )
-              )
-            })}
-            <br />
-            <br />
-            <br />
-            <div>
-              <Popconfirm
-                title="Are you sure？"
-                onConfirm={() =>
-                  deleteCurrentObject(
-                    router.query.collection_handle as string,
-                    router.query.schema_handle as string,
-                    router.query.id as string
-                  )
-                }
-                icon={
-                  <Icon type="question-circle-o" style={{ color: 'red' }} />
-                }
-              >
-                <Button type="danger">Delete Object</Button>
-              </Popconfirm>
-            </div>
-          </Card>
-        </Collapse.Panel>
-      </Collapse>
-      <div>
-        <ObjectUsers currentObject={currentObject} />
-      </div>
-    </div>
+            <Button type="danger">Delete Object</Button>
+          </Popconfirm>
+        </div>
+      </Col>
+      <Col span={11}>
+        <div style={{ paddingLeft: '15px' }}>
+          <ObjectUsers currentObject={currentObject} />
+        </div>
+      </Col>
+    </Row>
   )
 }
 

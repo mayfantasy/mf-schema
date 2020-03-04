@@ -53,6 +53,6 @@ const UserTable = (props: IProps) => {
 
     ...(extraColumns ? extraColumns : [])
   ]
-  return <Table dataSource={users} columns={columns} />
+  return <Table pagination={false} dataSource={users} columns={columns} />
 }
 export default UserTable

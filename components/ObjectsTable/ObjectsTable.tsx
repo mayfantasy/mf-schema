@@ -28,6 +28,7 @@ const ObjectsTable = (props: IProps) => {
   return (
     <Table
       dataSource={objectList}
+      pagination={false}
       columns={[
         {
           title: 'Handle',

@@ -8,6 +8,7 @@ export interface IUpdateObjectPayload {
 
 export interface IObject {
   schema: ISchema
+  id: string
   [key: string]: any
 }
 
