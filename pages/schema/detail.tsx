@@ -565,16 +565,16 @@ const SchemaListPage = () => {
               <Loading />
               &nbsp;&nbsp; <span>Loading Objects...</span>
             </div>
+          ) : !!objectList.length ? (
+            <>
+              <br />
+              <ObjectsTable
+                currentSchema={currentSchema}
+                objectList={objectList}
+              />
+            </>
           ) : (
-            !!objectList.length && (
-              <>
-                <br />
-                <ObjectsTable
-                  currentSchema={currentSchema}
-                  objectList={objectList}
-                />
-              </>
-            )
+            <i style={{ color: '#ccc' }}>No object found.</i>
           )}
         </Col>
         <Col span={11}>

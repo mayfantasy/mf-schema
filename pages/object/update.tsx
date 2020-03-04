@@ -515,6 +515,8 @@ const ObjectUpdatePage = () => {
               </div>
             }
             description={`Schema ID: ${currentObject.schema.id}
+Schema Name: ${currentObject.schema.name}
+Schema Handle: ${currentObject.schema.handle}
 Object ID: ${currentObject.id}`}
           />
         </div>
