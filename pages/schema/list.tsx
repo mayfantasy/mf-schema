@@ -19,7 +19,9 @@ const columns = [
     key: 'name',
     render: (name: string, schema: ISchema) => (
       <div>
-        <Link href={`${pageRoutes.schemaDetail}?id=${schema.id}`}>{name}</Link>
+        <Link href={`${pageRoutes.schemaDetail}?id=${schema.id}`}>
+          <a target="_blank">{name}</a>
+        </Link>
         <br />
         <small>{schema.handle}</small>
       </div>
