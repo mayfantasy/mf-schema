@@ -9,6 +9,7 @@ import PageHeader from '../../components/PageHeader/PageHeader'
 import { getCollectionByIdRequest } from '../../requests/collection.request'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { pageRoutes } from '../../navigation/page-routes'
+import Link from 'next/link'
 
 const CollectionDetailPage = () => {
   /** Router */
@@ -68,8 +69,11 @@ const CollectionDetailPage = () => {
           <PageHeader
             name={collection.name}
             sub={collection.handle}
-            buttonLink={`${pageRoutes.updateCollection}?id=${collection.id}`}
-            buttonWord="Update Collection"
+            buttons={
+              <Link href={`${pageRoutes.updateCollection}?id=${collection.id}`}>
+                <Button>Update Collection</Button>
+              </Link>
+            }
           />
           <br />
           <div>

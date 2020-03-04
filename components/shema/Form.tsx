@@ -117,12 +117,27 @@ const SchemaForm = (props: IProps) => {
       <PageHeader
         name={currentSchema ? currentSchema.name : 'Create Schema'}
         sub={currentSchema ? currentSchema.handle : ''}
-        buttonLink={
-          currentSchema
-            ? `${pageRoutes.schemaDetail}?id=${currentSchema.id}`
-            : pageRoutes.listSchemas
+        buttons={
+          <div>
+            <Link
+              href={
+                currentSchema
+                  ? `${pageRoutes.schemaDetail}?id=${currentSchema.id}`
+                  : pageRoutes.listSchemas
+              }
+            >
+              <Button type={currentSchema ? 'primary' : 'default'}>
+                {currentSchema ? 'View Schema' : 'Back'}
+              </Button>
+            </Link>
+            &nbsp;
+            {!currentSchema && (
+              <Link href={pageRoutes.createSchemaFromJson}>
+                <Button>Create from JSON</Button>
+              </Link>
+            )}
+          </div>
         }
-        buttonWord={currentSchema ? 'View Schema' : 'Back'}
         description={currentSchema ? currentSchema.description : ''}
       />
       <br />

@@ -151,7 +151,7 @@ const UserUpdatePage = () => {
         <PageHeader
           name={`${user.last_name} ${user.first_name}`}
           sub={`${user.email}, ${user.phone}`}
-          button={
+          buttons={
             <Button
               loading={updateUserStatus.loading}
               type="primary"

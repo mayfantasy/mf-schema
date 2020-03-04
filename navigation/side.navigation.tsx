@@ -41,6 +41,11 @@ export const sideNavItems: INavItem[] = [
         name: 'Create'
       },
       {
+        key: 'schema-create-from-json',
+        url: pageRoutes.createSchemaFromJson,
+        name: 'Create from JSON'
+      },
+      {
         key: 'schema-list',
         url: pageRoutes.listSchemas,
         name: 'List'

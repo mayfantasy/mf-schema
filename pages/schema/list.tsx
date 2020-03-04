@@ -139,7 +139,7 @@ const SchemaListPage = () => {
         {schemaStatus.loading ? (
           <Loading />
         ) : (
-          <Table dataSource={schemas} columns={columns} />
+          <Table pagination={false} dataSource={schemas} columns={columns} />
         )}
       </div>
     </PageLayout>

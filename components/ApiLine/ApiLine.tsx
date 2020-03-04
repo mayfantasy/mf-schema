@@ -33,6 +33,7 @@ const ApiLine = (props: IProps) => {
           }
           .api-route {
             margin-right: 10px;
+            font-size: 0.8rem;
           }
           .api-description {
             color: grey;
@@ -70,11 +71,13 @@ const ApiLine = (props: IProps) => {
       <div className={`api-line ${method}`}>
         <Row type="flex" align="middle">
           <div className="api-method">{method}</div>
-          <code className="api-route">
-            <strong>{route}</strong>
-          </code>
-          <div className="api-description">
-            <small>{description}</small>
+          <div>
+            <code className="api-route">
+              <strong>{route}</strong>
+            </code>
+            <div className="api-description">
+              <small>{description}</small>
+            </div>
           </div>
         </Row>
       </div>

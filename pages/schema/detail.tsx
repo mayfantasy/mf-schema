@@ -47,6 +47,13 @@ import ApiLine from '../../components/ApiLine/ApiLine'
 import { IApiItem, EApiMethod } from '../../types/api.type'
 import ImageViewer from '../../components/ImageViewer/ImageViewer'
 
+import dynamic from 'next/dynamic'
+const CodeEditor = dynamic({
+  loader: () => import('../../components/CodeEditor/CodeEditor'),
+  loading: () => <Loading />,
+  ssr: false
+})
+
 interface IFormStructureItem {
   value: any
   meta: ISchemaFieldDef
@@ -143,7 +150,7 @@ const SchemaListPage = () => {
         }
       ]}
     >
-      <div style={{ width: '100%', maxWidth: '800px' }}>{c}</div>
+      <div>{c}</div>
     </PageLayout>
   )
 
@@ -348,294 +355,293 @@ const SchemaListPage = () => {
      * Set Page content
      */
     content = (
-      <>
-        <div>
-          <PageHeader
-            name={currentSchema.name}
-            sub={currentSchema.handle}
-            buttonLink={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
-            buttonWord="Edit Schema"
-            description={currentSchema.description}
-          />
-        </div>
-        <br />
-
-        <div>
-          <Collapse bordered={false}>
-            <Collapse.Panel header="Data Definition" key="1">
-              <Descriptions
-                layout="vertical"
-                bordered
-                size="small"
-                style={{ overflowX: 'scroll' }}
-                column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
-              >
-                {currentSchema.def.map((d) => {
-                  return (
-                    <Descriptions.Item
-                      label={
-                        <div>
-                          <FormFieldLabel>{d.key}</FormFieldLabel>
-
-                          <div>
-                            <small>{d.name}</small>
-                          </div>
-                        </div>
-                      }
-                      key={d.key}
-                    >
-                      <div>{d.helper}</div>
-
-                      {d.helper_image && (
-                        <>
-                          <br />
-                          <div>
-                            <ImageViewer src={d.helper_image} />
-                          </div>
-                        </>
-                      )}
-                      <div></div>
-                    </Descriptions.Item>
-                  )
-                })}
-              </Descriptions>
-            </Collapse.Panel>
-          </Collapse>
-        </div>
-        <br />
-
-        <Collapse bordered={false}>
-          <Collapse.Panel header="API" key="1">
-            {apiLines.map((api) => (
-              <ApiLine
-                key={api.route}
-                method={api.method}
-                route={api.route}
-                description={api.description}
-              />
-            ))}
-
-            {/* <Descriptions
-              layout="vertical"
-              bordered
-              size="small"
-              column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
-              style={{ overflowX: 'scroll' }}
-            >
-              {.map((item, index) => {
-                return (
-                  <Descriptions.Item
-                    label={
-                      <div>
-                        <FormFieldLabel>{item.head}</FormFieldLabel>
-                        <div>
-                          <small>{item.helper}</small>
-                        </div>
-                      </div>
-                    }
-                    key={index}
-                  >
-                    {item.content}
-                  </Descriptions.Item>
-                )
-              })}
-            </Descriptions> */}
-          </Collapse.Panel>
-        </Collapse>
-
-        <br />
-        <div style={{ marginBottom: '20px' }}>
-          <Row>
-            <Col>
-              <Button onClick={handleAddObject} type="primary">
-                Add Object
-              </Button>
-            </Col>
-          </Row>
-        </div>
-        {objectCreateStatus.loading ? (
-          <Loading />
-        ) : objectCreateStatus.error ? (
-          <Alert message={objectCreateStatus.error} type="error" closable />
-        ) : null}
-        <div>
-          {!!form && (
-            <Card
-              title="Add Object"
-              extra={
-                <Button
-                  type="primary"
-                  onClick={handleSaveObject}
-                  disabled={!handle}
+      <Row type="flex" gutter={2}>
+        <Col span={13}>
+          <div>
+            <PageHeader
+              name={currentSchema.name}
+              sub={currentSchema.handle}
+              buttons={
+                <Link
+                  href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
                 >
-                  Save Object
-                </Button>
+                  <Button type="primary">Edit Schema</Button>
+                </Link>
               }
-            >
-              <Row>
-                <Col span={12}>
-                  <FormFieldLabel>Handle</FormFieldLabel>
-                  <Input
-                    value={handle}
-                    onChange={(e: any) => setHandle(e.target.value)}
-                  />
-                  <br />
-                  <Typography.Text type="secondary">
-                    <small>Unique Object Handle</small>
-                  </Typography.Text>
-                </Col>
-              </Row>
-              <br />
-              <br />
-              {Object.keys(form).map((field) => {
-                const type = form[field].meta.type
-                const key = form[field].meta.key
-                const name = form[field].meta.name
-                const options = form[field].meta.options || []
-                const grid = form[field].meta.grid
-                const newLine = form[field].meta.new_line
-                const show = form[field].meta.show
-                const helper = form[field].meta.helper
-                const value = form[field].value
-                let input
-                switch (type) {
-                  case ESchemaFieldType.string:
-                    input = (
-                      <Input
-                        style={{ width: '100%' }}
-                        value={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.number:
-                    input = (
-                      <InputNumber
-                        style={{ width: '100%' }}
-                        value={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.boolean:
-                    input = (
-                      <Checkbox
-                        checked={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.textarea:
-                    input = (
-                      <Input.TextArea
-                        autoSize={{ minRows: 8 }}
-                        style={{ width: '100%' }}
-                        value={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.datepicker:
-                    input = (
-                      <div>
-                        <DatePicker
+              description={currentSchema.description}
+            />
+          </div>
+
+          <br />
+          <div style={{ marginBottom: '20px' }}>
+            <Row>
+              <Col>
+                <Button onClick={handleAddObject} type="primary">
+                  Add Object
+                </Button>
+              </Col>
+            </Row>
+          </div>
+          {objectCreateStatus.loading ? (
+            <Loading />
+          ) : objectCreateStatus.error ? (
+            <Alert message={objectCreateStatus.error} type="error" closable />
+          ) : null}
+          <div>
+            {!!form && (
+              <Card
+                title="Add Object"
+                extra={
+                  <Button
+                    type="primary"
+                    onClick={handleSaveObject}
+                    disabled={!handle}
+                  >
+                    Save Object
+                  </Button>
+                }
+              >
+                <Row>
+                  <Col span={12}>
+                    <FormFieldLabel>Handle</FormFieldLabel>
+                    <Input
+                      value={handle}
+                      onChange={(e: any) => setHandle(e.target.value)}
+                    />
+                    <br />
+                    <Typography.Text type="secondary">
+                      <small>Unique Object Handle</small>
+                    </Typography.Text>
+                  </Col>
+                </Row>
+                <br />
+                <br />
+                {Object.keys(form).map((field) => {
+                  const type = form[field].meta.type
+                  const key = form[field].meta.key
+                  const name = form[field].meta.name
+                  const options = form[field].meta.options || []
+                  const grid = form[field].meta.grid
+                  const newLine = form[field].meta.new_line
+                  const show = form[field].meta.show
+                  const helper = form[field].meta.helper
+                  const value = form[field].value
+                  let input
+                  switch (type) {
+                    case ESchemaFieldType.string:
+                      input = (
+                        <Input
+                          style={{ width: '100%' }}
                           value={value}
                           onChange={(e: any) => handleFieldChange(e, type, key)}
                         />
-                      </div>
-                    )
-                    break
-                  case ESchemaFieldType.image:
-                    input = (
-                      <ImageUploader
-                        value={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.string_array:
-                    input = (
-                      <StringArray
-                        value={value}
-                        onChange={(v: string[]) => {
-                          handleFieldChange(v, type, key)
-                        }}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.rich_text:
-                    input = (
-                      <RichTextField
-                        value={value}
-                        onChange={(v: string) => {
-                          handleFieldChange(v, type, key)
-                        }}
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.string_single_select:
-                    input = (
-                      <SingleSelect
-                        value={value}
-                        options={options}
-                        onChange={(v: string) =>
-                          handleFieldChange(v, type, key)
-                        }
-                      />
-                    )
-                    break
-                  case ESchemaFieldType.string_multi_select:
-                    input = (
-                      <MultiSelect
-                        value={value || []}
-                        options={options}
-                        onChange={(v: string[]) =>
-                          handleFieldChange(v, type, key)
-                        }
-                      />
-                    )
-                    break
-                  default:
-                    input = (
-                      <Input
-                        value={value}
-                        onChange={(e: any) => handleFieldChange(e, type, key)}
-                      />
-                    )
-                    break
-                }
-                return (
-                  <Row style={{ marginBottom: '15px' }} key={key}>
-                    <Col span={Number(grid)}>
-                      <FormFieldLabel>{key}</FormFieldLabel>&nbsp;&nbsp;
-                      <Typography.Text type="secondary">
-                        <small>{name}</small>
-                      </Typography.Text>
-                      {input}
-                      <br />
-                      {!!helper && (
+                      )
+                      break
+                    case ESchemaFieldType.number:
+                      input = (
+                        <InputNumber
+                          style={{ width: '100%' }}
+                          value={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.boolean:
+                      input = (
+                        <Checkbox
+                          checked={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.textarea:
+                      input = (
+                        <Input.TextArea
+                          autoSize={{ minRows: 8 }}
+                          style={{ width: '100%' }}
+                          value={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.datepicker:
+                      input = (
+                        <div>
+                          <DatePicker
+                            value={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        </div>
+                      )
+                      break
+                    case ESchemaFieldType.image:
+                      input = (
+                        <ImageUploader
+                          value={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.string_array:
+                      input = (
+                        <StringArray
+                          value={value}
+                          onChange={(v: string[]) => {
+                            handleFieldChange(v, type, key)
+                          }}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.rich_text:
+                      input = (
+                        <RichTextField
+                          value={value}
+                          onChange={(v: string) => {
+                            handleFieldChange(v, type, key)
+                          }}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.string_single_select:
+                      input = (
+                        <SingleSelect
+                          value={value}
+                          options={options}
+                          onChange={(v: string) =>
+                            handleFieldChange(v, type, key)
+                          }
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.string_multi_select:
+                      input = (
+                        <MultiSelect
+                          value={value || []}
+                          options={options}
+                          onChange={(v: string[]) =>
+                            handleFieldChange(v, type, key)
+                          }
+                        />
+                      )
+                      break
+                    default:
+                      input = (
+                        <Input
+                          value={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      )
+                      break
+                  }
+                  return (
+                    <Row style={{ marginBottom: '15px' }} key={key}>
+                      <Col span={Number(grid)}>
+                        <FormFieldLabel>{key}</FormFieldLabel>&nbsp;&nbsp;
                         <Typography.Text type="secondary">
-                          <small>{helper}</small>
+                          <small>{name}</small>
                         </Typography.Text>
-                      )}
-                    </Col>
-                  </Row>
-                )
-              })}
-            </Card>
-          )}
-        </div>
+                        {input}
+                        <br />
+                        {!!helper && (
+                          <Typography.Text type="secondary">
+                            <small>{helper}</small>
+                          </Typography.Text>
+                        )}
+                      </Col>
+                    </Row>
+                  )
+                })}
+              </Card>
+            )}
+          </div>
 
-        {!!objectList.length && (
-          <>
-            <br />
-            <ObjectsTable
-              currentSchema={currentSchema}
-              objectList={objectList}
-            />
-          </>
-        )}
-      </>
+          {objectListStatus.loading ? (
+            <div>
+              <Loading />
+              &nbsp;&nbsp; <span>Loading Objects...</span>
+            </div>
+          ) : (
+            !!objectList.length && (
+              <>
+                <br />
+                <ObjectsTable
+                  currentSchema={currentSchema}
+                  objectList={objectList}
+                />
+              </>
+            )
+          )}
+        </Col>
+        <Col span={11}>
+          <div style={{ padding: '0 0 0 15px' }}>
+            <Collapse bordered={false}>
+              <Collapse.Panel header="Data Definition" key="1">
+                <Descriptions
+                  layout="vertical"
+                  bordered
+                  size="small"
+                  style={{ overflowX: 'scroll' }}
+                  column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+                >
+                  {currentSchema.def.map((d) => {
+                    return (
+                      <Descriptions.Item
+                        label={
+                          <div>
+                            <FormFieldLabel>{d.key}</FormFieldLabel>
+
+                            <div>
+                              <small>{d.name}</small>
+                            </div>
+                          </div>
+                        }
+                        key={d.key}
+                      >
+                        <div>{d.helper}</div>
+
+                        {d.helper_image && (
+                          <>
+                            <br />
+                            <div>
+                              <ImageViewer src={d.helper_image} />
+                            </div>
+                          </>
+                        )}
+                        <div></div>
+                      </Descriptions.Item>
+                    )
+                  })}
+                </Descriptions>
+              </Collapse.Panel>
+            </Collapse>
+
+            <Collapse bordered={false}>
+              <Collapse.Panel header="API" key="1">
+                {apiLines.map((api) => (
+                  <ApiLine
+                    key={api.route}
+                    method={api.method}
+                    route={api.route}
+                    description={api.description}
+                  />
+                ))}
+              </Collapse.Panel>
+            </Collapse>
+
+            <Collapse bordered={false}>
+              <Collapse.Panel header="JSON" key="1">
+                <CodeEditor
+                  value={JSON.stringify(currentSchema, null, '   ')}
+                  readOnly={true}
+                  onChange={() => {}}
+                />
+              </Collapse.Panel>
+            </Collapse>
+          </div>
+        </Col>
+      </Row>
     )
   }
 

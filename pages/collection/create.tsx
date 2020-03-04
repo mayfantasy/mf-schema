@@ -23,6 +23,7 @@ import { createCollectionRequest } from '../../requests/collection.request'
 import { AxiosError } from 'axios'
 import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
+import Link from 'next/link'
 
 interface ICreateCollectionFormProps<V> {
   handleSubmit: (e: any) => void
@@ -135,8 +136,11 @@ const CreateCollectionPage = (props: IProps) => {
       <div style={{ width: '100%', maxWidth: '800px' }}>
         <PageHeader
           name="Create Collection"
-          buttonLink="/collection/list"
-          buttonWord="Back"
+          buttons={
+            <Link href="/collection/list">
+              <Button>Back</Button>
+            </Link>
+          }
         />
         <br />
         {collectionStatus.error && (

@@ -4,16 +4,14 @@ import Link from 'next/link'
 interface IProps {
   name: string
   sub?: string
-  button?: React.ReactNode
-  buttonLink?: string
-  buttonWord?: string
+  buttons?: React.ReactNode
   description?: string
 }
 const PageHeader = (props: IProps) => {
-  const { name, sub, buttonLink, buttonWord, description, button } = props
+  const { name, sub, description, buttons } = props
   return (
     <Row type="flex" justify="space-between">
-      <Col span={18}>
+      <Col span={12}>
         <h2>
           <Typography.Text strong>{name}</Typography.Text>
           {!!sub && (
@@ -29,16 +27,11 @@ const PageHeader = (props: IProps) => {
           </Typography.Text>
         )}
       </Col>
-      {!!buttonLink && (
-        <Col span={5}>
-          <Row type="flex" justify="end">
-            <Link href={buttonLink}>
-              <Button type="primary">{buttonWord}</Button>
-            </Link>
-          </Row>
-        </Col>
-      )}
-      {button || null}
+      <Col span={12}>
+        <Row type="flex" justify="end" gutter={1}>
+          {buttons}
+        </Row>
+      </Col>
     </Row>
   )
 }
