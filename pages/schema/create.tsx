@@ -80,7 +80,15 @@ const CreateSchemaPage = (props: IProps) => {
         })
 
         // Create schema
-        createSchema(values, defs as ISchemaFieldDef[])
+        createSchema(
+          values,
+          (defs.map((d) => ({
+            ...d,
+            key: d.key.trim(),
+            name: d.name ? d.name.trim() : '',
+            helper: d.helper ? d.helper.trim() : ''
+          })) as ISchemaFieldDef[]) as ISchemaFieldDef[]
+        )
       }
     })
   }

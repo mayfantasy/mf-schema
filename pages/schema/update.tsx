@@ -150,7 +150,12 @@ const UpdateSchemaPage = (props: IProps) => {
             ...(values.description
               ? { description: values.description.trim() }
               : {}),
-            def: defs as ISchemaFieldDef[]
+            def: defs.map((d) => ({
+              ...d,
+              key: d.key.trim(),
+              name: d.name ? d.name.trim() : '',
+              helper: d.helper ? d.helper.trim() : ''
+            })) as ISchemaFieldDef[]
           })
         }
       }
