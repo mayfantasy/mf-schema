@@ -43,17 +43,25 @@ const ShortcutCard = (props: IProps) => {
       <style jsx>
         {`
           .shortcut--general {
-            border: 1px solid green;
+            border: 1px solid #ccc;
             padding: 8px;
             height: 200px;
             width: 200px;
             cursor: pointer;
-            color: green;
+            color: #ccc;
             text-align: center;
+            &:hover {
+              border: 1px solid #aaa;
+            }
           }
           .shortcut-card {
             margin-right: 15px;
             margin-bottom: 15px;
+            &:hover {
+              .title {
+                text-decoration: underline;
+              }
+            }
             .title {
               font-size: 1.1rem;
             }

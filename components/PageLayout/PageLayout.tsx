@@ -208,7 +208,6 @@ const PageLayout = (props: IProps) => {
                 overflow: 'scroll'
               }}
             >
-              {getDefaultSelectedKeys()}
               {children}
             </Content>
           </Layout>
