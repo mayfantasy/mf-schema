@@ -1,20 +1,33 @@
 import Link from 'next/link'
 import { Icon, Row, Modal, Input, Button } from 'antd'
 import { useState } from 'react'
+import { IShortcutForm } from '../../types/shortcut.type'
 
 interface IProps {
   id?: string
   title?: string
-  description?: string
   url?: string
   isAdd?: boolean
+  creating?: boolean
+  deleting?: boolean
+  createShortcut?: (form: IShortcutForm) => void
+  deleteShortcut?: (id: string) => void
 }
 
 const ShortcutCard = (props: IProps) => {
-  const { id, title, url, description, isAdd } = props
+  const {
+    id,
+    title,
+    url,
+    isAdd,
+    createShortcut,
+    deleteShortcut,
+    creating,
+    deleting
+  } = props
   const [modalOpen, setModalOpen] = useState(false)
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<IShortcutForm>({
     title: title || '',
     url: url || ''
   })
@@ -24,15 +37,7 @@ const ShortcutCard = (props: IProps) => {
       [n]: v
     })
   }
-  const createShortcut = () => {
-    console.log('Create: ', form)
-  }
 
-  const deleteShortcut = () => {
-    if (id) {
-      console.log('Delete: ', id)
-    }
-  }
   return (
     <div>
       <style jsx>
@@ -73,7 +78,7 @@ const ShortcutCard = (props: IProps) => {
           }
         `}
       </style>
-      {!isAdd && title && url && description ? (
+      {!isAdd && title && url ? (
         <div className="shortcut-card shortcut--general">
           <Link href={url}>
             <a target="_blank">
@@ -87,9 +92,18 @@ const ShortcutCard = (props: IProps) => {
               </Row>
             </a>
           </Link>
-          <div className="delete-button" onClick={deleteShortcut}>
-            <Icon type="close" />
-          </div>
+          {deleteShortcut && !deleting && (
+            <div
+              className="delete-button"
+              onClick={() => {
+                if (id) {
+                  deleteShortcut(id)
+                }
+              }}
+            >
+              <Icon type="close" />
+            </div>
+          )}
         </div>
       ) : (
         <div className="shortcut--general" onClick={() => setModalOpen(true)}>
@@ -105,13 +119,19 @@ const ShortcutCard = (props: IProps) => {
       )}
       <Modal
         title="Create Shortcut"
-        onOk={() => createShortcut()}
+        okButtonProps={{
+          disabled: creating
+        }}
+        okText={creating ? 'Creating...' : 'Create'}
+        onOk={() => {
+          if (createShortcut) {
+            createShortcut(form)
+          }
+        }}
         visible={modalOpen}
         closable={true}
         onCancel={() => {
-          console.log('here', modalOpen)
           setModalOpen(false)
-          console.log(false)
           Modal.destroyAll()
         }}
       >

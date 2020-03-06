@@ -6,6 +6,7 @@ import { accountDb } from './db/admin.db'
 import randomstring from 'randomstring'
 import { query as q } from 'faunadb'
 import { client } from './db/client.db'
+import { createShortcutCollectionIfNotExist } from './db/create-collection.db'
 
 export const createAccount = async (payload: IClientCreateAccountPayload) => {
   const { email, username, password } = payload
@@ -81,6 +82,9 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
       unique: true
     })
   )
+
+  // Create Shortcut Collection
+  await createShortcutCollectionIfNotExist(clientDB)
 
   // Create Schema Collection
   await clientDB.query(q.CreateCollection({ name: 'schema' }))

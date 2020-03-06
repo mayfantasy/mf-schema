@@ -58,6 +58,11 @@ import {
   resetPasswordRoute
 } from './routes/user-auth.route'
 import { sendEmailRoute } from './routes/email.route'
+import {
+  createShortcutRoute,
+  getShortcutListRoute,
+  deleteShortcutByIdRoute
+} from './routes/shortcut.route'
 
 const port = parseInt(process.env.PORT || '3001', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -140,6 +145,11 @@ app.prepare().then(() => {
   router.post('/api/user/reset-email', resetUserEmailRoute)
   router.post('/api/user/send-recover-email', sendRecoverEmailRoute)
   router.post('/api/user/reset-password', resetPasswordRoute)
+
+  // Shortcut
+  router.post('/api/shortcut/create', createShortcutRoute)
+  router.get('/api/shortcut/list', getShortcutListRoute)
+  router.delete('/api/shortcut/delete/:id', deleteShortcutByIdRoute)
 
   // Email
   router.post('/api/email/send', sendEmailRoute)

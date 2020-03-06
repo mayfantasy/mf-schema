@@ -4,6 +4,16 @@ import { pageRoutes } from './page-routes'
 
 export const sideNavItems: INavItem[] = [
   {
+    key: 'dashboard',
+    url: pageRoutes.home,
+    name: (
+      <span>
+        <Icon type="appstore" />
+        Dashboard
+      </span>
+    )
+  },
+  {
     key: 'collection',
     open: true,
     name: (

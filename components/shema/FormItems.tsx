@@ -311,7 +311,6 @@ const FormItems = (props: IProps) => {
                             <ImageUploader
                               value={defValuesObject[currentHelperImage] || ''}
                               onChange={(image: string) => {
-                                console.log('fff: ', currentHelperImage, image)
                                 setFieldsValue({
                                   _defValues: {
                                     ...defValuesObject,

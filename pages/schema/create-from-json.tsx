@@ -97,7 +97,6 @@ const CreateSchemaFromJsonPage = () => {
             <CodeEditor
               value={json}
               onChange={(value: string) => {
-                console.log(value)
                 setJson(value)
               }}
             />

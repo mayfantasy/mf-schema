@@ -7,6 +7,14 @@ import { IBasicAccountInfo } from '../types/account.type'
 import Loading from '../components/Loading/Loading'
 import { pageRoutes } from '../navigation/page-routes'
 import ShortcutCard from '../components/ShortcutCard/ShortcutCard'
+import { IShortcutForm } from '../types/shortcut.type'
+import { RequestStatus } from '../helpers/request'
+import {
+  createShortcutRequest,
+  getShortcutListRequest,
+  deleteShortcutRequest
+} from '../requests/shortcut.request'
+import ShortcutList from '../components/ShortcutList/ShortcutList'
 
 const HomePage = () => {
   const [user, setUser] = useState<IBasicAccountInfo | null>(null)
@@ -19,6 +27,7 @@ const HomePage = () => {
       router.push(pageRoutes.login)
     }
   }, [])
+
   return (
     <>
       <PageLayout
@@ -42,18 +51,7 @@ const HomePage = () => {
           <Loading />
         )}
         <br />
-        <Typography>Shortcuts</Typography>
-        <div>
-          <Row type="flex" gutter={1}>
-            <ShortcutCard
-              id="asdfasdfasdfasdf"
-              title="Collections asdf afea fasefasefasdfa ceaefa sefasefaw"
-              description="Collection List list here, and there, and here, and there, and so on, butt this is just a test"
-              url={pageRoutes.listCollections}
-            />
-            <ShortcutCard isAdd={true} />
-          </Row>
-        </div>
+        <ShortcutList />
       </PageLayout>
     </>
   )

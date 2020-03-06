@@ -51,9 +51,11 @@ const PageLayout = (props: IProps) => {
   }
   const getDefaultSelectedKeys = () => {
     if (router) {
-      const foundNavItem = sideNavItems.find((s) =>
-        s.children ? s.children.some((c) => c.url === router.pathname) : false
-      )
+      const foundNavItem = sideNavItems.find((s) => {
+        return s.children && s.children.length
+          ? s.children.some((c) => c.url === router.pathname)
+          : s.url === router.pathname
+      })
       if (foundNavItem) {
         if (foundNavItem.children) {
           const foundChild = foundNavItem.children.find(
@@ -64,7 +66,7 @@ const PageLayout = (props: IProps) => {
           }
           return []
         }
-        return []
+        return [foundNavItem.key]
       }
       return []
     }
@@ -149,10 +151,10 @@ const PageLayout = (props: IProps) => {
                 .map((s) => s.key)}
             >
               {user
-                ? sideNavItems.map((s) => (
-                    <SubMenu key={s.key} title={<b>{s.name}</b>}>
-                      {!!s.children &&
-                        s.children.map((c) => (
+                ? sideNavItems.map((s) =>
+                    !!s.children && s.children.length ? (
+                      <SubMenu key={s.key} title={<b>{s.name}</b>}>
+                        {s.children.map((c) => (
                           <Menu.Item key={c.key}>
                             {c.url ? (
                               <Link href={c.url}>
@@ -163,8 +165,19 @@ const PageLayout = (props: IProps) => {
                             )}
                           </Menu.Item>
                         ))}
-                    </SubMenu>
-                  ))
+                      </SubMenu>
+                    ) : (
+                      <Menu.Item key={s.key}>
+                        {s.url ? (
+                          <Link href={s.url}>
+                            <a>{s.name}</a>
+                          </Link>
+                        ) : (
+                          <span>{s.name}</span>
+                        )}
+                      </Menu.Item>
+                    )
+                  )
                 : []}
             </Menu>
           </Sider>
@@ -195,6 +208,7 @@ const PageLayout = (props: IProps) => {
                 overflow: 'scroll'
               }}
             >
+              {getDefaultSelectedKeys()}
               {children}
             </Content>
           </Layout>
