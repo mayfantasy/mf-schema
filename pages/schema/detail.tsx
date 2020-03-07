@@ -85,6 +85,9 @@ const SchemaListPage = () => {
   const [form, setForm] = useState<IFormStructure | null>(null)
   const [handle, setHandle] = useState('')
 
+  /** Hide API section toggle */
+  const [hideAPI, setHideAPI] = useState(true)
+
   const router = useRouter()
 
   /**
@@ -356,20 +359,32 @@ const SchemaListPage = () => {
      */
     content = (
       <Row type="flex" gutter={2}>
-        <Col span={13}>
+        <Col span={hideAPI ? 24 : 13}>
           <div>
             <PageHeader
               name={currentSchema.name}
               sub={currentSchema.handle}
               buttons={
-                <Link
-                  href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
-                >
-                  <Button type="primary">
-                    <Icon type="edit" />
-                    Edit Schema
+                <div>
+                  <Link
+                    href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
+                  >
+                    <Button type="primary">
+                      <Icon type="edit" />
+                      Edit Schema
+                    </Button>
+                  </Link>
+                  &nbsp;
+                  <Button type="default" onClick={() => setHideAPI(!hideAPI)}>
+                    {hideAPI ? (
+                      <Icon type="step-backward" />
+                    ) : (
+                      <Icon type="step-forward" />
+                    )}
+                    &nbsp;
+                    {hideAPI ? 'Show API' : 'Hide API'}
                   </Button>
-                </Link>
+                </div>
               }
               description={currentSchema.description}
             />
@@ -577,73 +592,75 @@ const SchemaListPage = () => {
             <i style={{ color: '#ccc' }}>No object found.</i>
           )}
         </Col>
-        <Col span={11}>
-          <div style={{ padding: '0 0 0 15px' }}>
-            <Collapse bordered={false}>
-              <Collapse.Panel header="Data Definition" key="1">
-                <Descriptions
-                  layout="vertical"
-                  bordered
-                  size="small"
-                  style={{ overflowX: 'scroll' }}
-                  column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
-                >
-                  {currentSchema.def.map((d) => {
-                    return (
-                      <Descriptions.Item
-                        label={
-                          <div>
-                            <FormFieldLabel>{d.key}</FormFieldLabel>
-
+        {!hideAPI && (
+          <Col span={11}>
+            <div style={{ padding: '0 0 0 15px' }}>
+              <Collapse bordered={false}>
+                <Collapse.Panel header="Data Definition" key="1">
+                  <Descriptions
+                    layout="vertical"
+                    bordered
+                    size="small"
+                    style={{ overflowX: 'scroll' }}
+                    column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+                  >
+                    {currentSchema.def.map((d) => {
+                      return (
+                        <Descriptions.Item
+                          label={
                             <div>
-                              <small>{d.name}</small>
-                            </div>
-                          </div>
-                        }
-                        key={d.key}
-                      >
-                        <div>{d.helper}</div>
+                              <FormFieldLabel>{d.key}</FormFieldLabel>
 
-                        {d.helper_image && (
-                          <>
-                            <br />
-                            <div>
-                              <ImageViewer src={d.helper_image} />
+                              <div>
+                                <small>{d.name}</small>
+                              </div>
                             </div>
-                          </>
-                        )}
-                        <div></div>
-                      </Descriptions.Item>
-                    )
-                  })}
-                </Descriptions>
-              </Collapse.Panel>
-            </Collapse>
+                          }
+                          key={d.key}
+                        >
+                          <div>{d.helper}</div>
 
-            <Collapse bordered={false}>
-              <Collapse.Panel header="API" key="1">
-                {apiLines.map((api) => (
-                  <ApiLine
-                    key={api.route}
-                    method={api.method}
-                    route={api.route}
-                    description={api.description}
+                          {d.helper_image && (
+                            <>
+                              <br />
+                              <div>
+                                <ImageViewer src={d.helper_image} />
+                              </div>
+                            </>
+                          )}
+                          <div></div>
+                        </Descriptions.Item>
+                      )
+                    })}
+                  </Descriptions>
+                </Collapse.Panel>
+              </Collapse>
+
+              <Collapse bordered={false}>
+                <Collapse.Panel header="API" key="1">
+                  {apiLines.map((api) => (
+                    <ApiLine
+                      key={api.route}
+                      method={api.method}
+                      route={api.route}
+                      description={api.description}
+                    />
+                  ))}
+                </Collapse.Panel>
+              </Collapse>
+
+              <Collapse bordered={false}>
+                <Collapse.Panel header="JSON" key="1">
+                  <CodeEditor
+                    value={JSON.stringify(currentSchema, null, '   ')}
+                    readOnly={true}
+                    onChange={() => {}}
                   />
-                ))}
-              </Collapse.Panel>
-            </Collapse>
-
-            <Collapse bordered={false}>
-              <Collapse.Panel header="JSON" key="1">
-                <CodeEditor
-                  value={JSON.stringify(currentSchema, null, '   ')}
-                  readOnly={true}
-                  onChange={() => {}}
-                />
-              </Collapse.Panel>
-            </Collapse>
-          </div>
-        </Col>
+                </Collapse.Panel>
+              </Collapse>
+            </div>
+          </Col>
+        )}
       </Row>
     )
   }
