@@ -29,7 +29,7 @@ export const createSchemaPayloadSchema = Joi.object({
 export const updateSchemaPayloadSchema = Joi.object({
   id: J.j_handle.required(),
   name: J.j_str.required(),
-  handle: J.j_handle.required(),
+  handle: J.j_handle,
   description: J.j_str,
   def: schemaDef
 })
