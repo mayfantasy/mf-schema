@@ -32,7 +32,6 @@ export const createUserRoute = async (ctx: Koa.Context) => {
   validatePayload(createUserPayloadSchema, payload)
 
   const user = await createUser(auth.api_key, payload)
-  console.log(user)
 
   ctx.body = {
     result: user

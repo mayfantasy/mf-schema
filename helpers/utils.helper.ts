@@ -34,7 +34,6 @@ export const downloadXlsxFile = (
   name: string
 ) => {
   const title = `${name}.xlsx`
-  console.log(title, data)
   const bufData = xlsx.build([{ name: title, data }])
   const url = window.URL.createObjectURL(new Blob([bufData]))
   const link = document.createElement('a')

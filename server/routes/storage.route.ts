@@ -51,11 +51,8 @@ export const deleteImageRoute = async (ctx: Koa.Context) => {
   const auth = (await getAuth(ctx)) || ({} as any)
   const { filename } = ctx.request.body as IDeleteAccountImagePayload
 
-  console.log(filename)
-
   if (filename) {
     const result = await deleteAccountImage(filename)
-    console.log(result)
     ctx.body = {
       result
     }

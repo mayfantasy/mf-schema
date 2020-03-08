@@ -48,7 +48,6 @@ const ImportObjectsBox = (props: IProps) => {
           create: status.create + (res.data.result.isUpdate ? 0 : 1)
         }
       } catch (e) {
-        console.log(errors, `${parseResult[i]._handle}: ${e.message}`)
         errors.push(`${parseResult[i]._handle}: ${e.message}`)
       }
     }
@@ -89,7 +88,6 @@ const ImportObjectsBox = (props: IProps) => {
             onChange(info) {
               const { status } = info.file
               if (status !== 'uploading') {
-                console.log(info.file, info.fileList)
               }
               if (status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully.`)

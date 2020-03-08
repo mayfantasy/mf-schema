@@ -146,7 +146,6 @@ export const updateOrCreateByHandleRoute = async (ctx: Koa.Context) => {
       schema_handle,
       handle
     })
-    console.log('existingObject: ', existingObject)
     const id = existingObject.id
     object = await updateObjectById(auth.api_key, payload, {
       collection_handle,
