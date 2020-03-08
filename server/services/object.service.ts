@@ -2,7 +2,10 @@ import { accountDb } from './db/admin.db'
 import faunadb, { query as q } from 'faunadb'
 import { IAccount } from '../../types/account.type'
 import { client } from './db/client.db'
-import { IObjectServiceMetaWithID } from '../../types/object.type'
+import {
+  IObjectServiceMetaWithID,
+  IObjectServiceMetaWithHandle
+} from '../../types/object.type'
 
 export interface IObjectServiceMeta {
   collection_handle: string
@@ -110,6 +113,37 @@ export const getObjectById = async (
   // Get object
   const object: any = await clientDB.query(
     q.Get(q.Ref(q.Collection('object'), id))
+  )
+
+  return {
+    id: object.ref.id,
+    schema: {
+      id: schemaAndCollection.schema.ref.id,
+      ...schemaAndCollection.schema.data,
+      collection: {
+        id: schemaAndCollection.collection.ref.id,
+        ...schemaAndCollection.collection.data
+      }
+    },
+    ...object.data
+  }
+}
+
+export const getObjectByHandle = async (
+  api_key: string,
+  meta: IObjectServiceMetaWithHandle
+) => {
+  const { collection_handle, schema_handle, handle } = meta
+  const clientDB = client(api_key)
+  const schemaAndCollection = await validateCollectionAndSchemaHandles(
+    clientDB,
+    collection_handle,
+    schema_handle
+  )
+
+  // Get object
+  const object: any = await clientDB.query(
+    q.Get(q.Match(q.Index('get_object_by_handle'), handle))
   )
 
   return {

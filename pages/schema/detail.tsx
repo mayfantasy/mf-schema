@@ -48,6 +48,7 @@ import { IApiItem, EApiMethod } from '../../types/api.type'
 import ImageViewer from '../../components/ImageViewer/ImageViewer'
 
 import dynamic from 'next/dynamic'
+import ImportObjectsBox from '../../components/ImportObjectsBox/ImportObjectsBox'
 const CodeEditor = dynamic({
   loader: () => import('../../components/CodeEditor/CodeEditor'),
   loading: () => <Loading />,
@@ -84,6 +85,9 @@ const SchemaListPage = () => {
   const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
   const [form, setForm] = useState<IFormStructure | null>(null)
   const [handle, setHandle] = useState('')
+
+  /** Import Objects Section Toggle */
+  const [importBoxOpen, setImportBoxOpen] = useState(false)
 
   /** Hide API section toggle */
   const [hideAPI, setHideAPI] = useState(true)
@@ -392,14 +396,35 @@ const SchemaListPage = () => {
 
           <br />
           <div style={{ marginBottom: '20px' }}>
-            <Row>
-              <Col>
-                <Button onClick={handleAddObject} type="primary">
-                  <Icon type="plus-circle" /> Add Object
-                </Button>
-              </Col>
-            </Row>
+            <Button onClick={handleAddObject} type="primary">
+              <Icon type="plus-circle" /> Add Object
+            </Button>
+            &nbsp;
+            {!!objectListRequestStatus.loading && (
+              <Button
+                onClick={() =>
+                  getObjectList(
+                    currentSchema.collection.handle,
+                    currentSchema.handle
+                  )
+                }
+              >
+                <Icon type="reload" /> Reload Objects
+              </Button>
+            )}
+            &nbsp;
+            <Button onClick={() => setImportBoxOpen(!importBoxOpen)}>
+              <Icon type="import" />{' '}
+              {importBoxOpen ? 'Close Import' : 'Import Objects'}
+            </Button>
           </div>
+          {importBoxOpen && (
+            <ImportObjectsBox
+              collection_handle={currentSchema.collection.handle}
+              schema_handle={currentSchema.handle}
+              schema={currentSchema}
+            />
+          )}
           {objectCreateStatus.loading ? (
             <Loading />
           ) : objectCreateStatus.error ? (

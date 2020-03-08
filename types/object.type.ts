@@ -6,6 +6,10 @@ export interface IUpdateObjectPayload {
   data: any
 }
 
+export interface IParseObjectsPayload {
+  file: File
+}
+
 export interface IObject {
   schema: ISchema
   id: string
@@ -16,4 +20,10 @@ export interface IObjectServiceMetaWithID {
   collection_handle: string
   schema_handle: string
   id: string
+}
+
+export interface IObjectServiceMetaWithHandle {
+  collection_handle: string
+  schema_handle: string
+  handle: string
 }

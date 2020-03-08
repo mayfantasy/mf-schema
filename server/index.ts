@@ -28,7 +28,9 @@ import {
   getObjectListRoute,
   updateObjectByIdRoute,
   getObjectByIdRoute,
-  deleteObjectByIdRoute
+  deleteObjectByIdRoute,
+  parseObjectsFromXlsxRoute,
+  updateOrCreateByHandleRoute
 } from './routes/object.route'
 import {
   uploadImageRoute,
@@ -109,6 +111,10 @@ app.prepare().then(() => {
     '/api/object/:collection_handle/:schema_handle/create',
     createObjectRoute
   )
+  router.post(
+    '/api/object/:collection_handle/:schema_handle/parse',
+    parseObjectsFromXlsxRoute
+  )
   router.get(
     '/api/object/:collection_handle/:schema_handle/list',
     getObjectListRoute
@@ -124,6 +130,14 @@ app.prepare().then(() => {
   router.delete(
     '/api/object/:collection_handle/:schema_handle/delete/:id',
     deleteObjectByIdRoute
+  )
+  router.post(
+    '/api/object/:collection_handle/:schema_handle/update_or_create/:handle',
+    updateOrCreateByHandleRoute
+  )
+  router.get(
+    '/api/object/:collection_handle/:schema_handle/get-template/:id',
+    getObjectByIdRoute
   )
 
   // User

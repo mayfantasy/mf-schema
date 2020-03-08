@@ -1,10 +1,13 @@
-import { Icon, Table } from 'antd'
+import { Icon, Table, Button, Badge } from 'antd'
 import Link from 'next/link'
 import { ISchema } from '../../types/schema.type'
 import { useState } from 'react'
 import { getObjectListRequest } from '../../requests/object.request'
 import { IObject } from '../../types/object.type'
 import { pageRoutes } from '../../navigation/page-routes'
+import { downloadXlsxFile } from '../../helpers/utils.helper'
+import { IKeyValue } from '../../types/utils.type'
+import { convertObjectsToXlsxData } from '../../helpers/object.helper'
 
 interface IProps {
   currentSchema: ISchema
@@ -13,6 +16,7 @@ interface IProps {
 
 const ObjectsTable = (props: IProps) => {
   const { currentSchema, objectList } = props
+  const [selectedRows, setSelectedRows] = useState([])
 
   /**
    * Retrieve fields that tag as show in list
@@ -25,59 +29,83 @@ const ObjectsTable = (props: IProps) => {
     }
     return []
   }
+
+  /**
+   * Row Selection
+   */
+  const rowSelection = {
+    onChange: (_: any, _selectedRows: any) => {
+      setSelectedRows(_selectedRows)
+    }
+  }
+
+  const onDownloadObjects = () => {
+    const data = convertObjectsToXlsxData(selectedRows)
+    downloadXlsxFile(document, data, 'object-download')
+  }
   return (
-    <Table
-      dataSource={objectList}
-      pagination={false}
-      columns={[
-        {
-          title: 'Handle',
-          dataIndex: '_handle',
-          key: '_handle',
-          render: (handle: string, row: any) => (
-            <Link
-              href={`${pageRoutes.updateObject}?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
-            >
-              {handle}
-            </Link>
-          )
-        },
-        ...getShownFields().map((f) => ({
-          title: f,
-          dataIndex: f,
-          key: f,
-          render: (value: any) => {
-            return typeof value === 'boolean' ? (
-              value ? (
-                <Icon
-                  type="check-circle"
-                  theme="twoTone"
-                  twoToneColor="#52c41a"
-                />
-              ) : (
-                <Icon
-                  type="close-circle"
-                  theme="twoTone"
-                  twoToneColor="#eb2f96"
-                />
-              )
-            ) : typeof value === 'object' && value.length ? (
-              <div>
-                {(value as string[]).map((v, i) => (
-                  <div key={v}>
-                    [{i + 1}] {v}
-                  </div>
-                ))}
-              </div>
-            ) : f.includes('img_src') || f.includes('img-src') ? (
-              <img style={{ width: '50px' }} src={value} />
-            ) : (
-              value
+    <div>
+      <div style={{ marginBottom: '8px' }}>
+        <Badge count={selectedRows.length}>
+          <Button onClick={onDownloadObjects} disabled={!selectedRows.length}>
+            <Icon type="download" /> Download Selected
+          </Button>
+        </Badge>
+      </div>
+      <Table
+        rowSelection={rowSelection}
+        dataSource={objectList}
+        pagination={false}
+        columns={[
+          {
+            title: 'Handle',
+            dataIndex: '_handle',
+            key: '_handle',
+            render: (handle: string, row: any) => (
+              <Link
+                href={`${pageRoutes.updateObject}?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
+              >
+                {handle}
+              </Link>
             )
-          }
-        }))
-      ]}
-    />
+          },
+          ...getShownFields().map((f) => ({
+            title: f,
+            dataIndex: f,
+            key: f,
+            render: (value: any) => {
+              return typeof value === 'boolean' ? (
+                value ? (
+                  <Icon
+                    type="check-circle"
+                    theme="twoTone"
+                    twoToneColor="#52c41a"
+                  />
+                ) : (
+                  <Icon
+                    type="close-circle"
+                    theme="twoTone"
+                    twoToneColor="#eb2f96"
+                  />
+                )
+              ) : typeof value === 'object' && value.length ? (
+                <div>
+                  {(value as string[]).map((v, i) => (
+                    <div key={v}>
+                      [{i + 1}] {v}
+                    </div>
+                  ))}
+                </div>
+              ) : f.includes('img_src') || f.includes('img-src') ? (
+                <img style={{ width: '50px' }} src={value} />
+              ) : (
+                value
+              )
+            }
+          }))
+        ]}
+      />
+    </div>
   )
 }
 export default ObjectsTable
