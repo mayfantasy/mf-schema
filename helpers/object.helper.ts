@@ -104,10 +104,16 @@ export const parseObjectsFromXlsx = (
   }
 }
 
-export const convertObjectsToXlsxData = (objects: IKeyValue[]) => {
+export const convertObjectsToXlsxData = (
+  objects: IKeyValue[],
+  fields: string[]
+) => {
   const _objects = objects
     .map((r: IKeyValue) => {
-      const _r = { ...r }
+      const _r = fields.reduce((a, c) => {
+        a[c] = r[c]
+        return a
+      }, {} as IKeyValue)
       delete _r.id
       delete _r._schema_handle
       return Object.keys(_r).reduce((a, c) => {
