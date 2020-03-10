@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import { HotKeys } from 'react-hotkeys'
 import {
   getObjectByIdRequest,
   deleteObjectByIdRequest,
@@ -153,6 +154,20 @@ const ObjectUpdatePage = () => {
     }
   }
 
+  const handleUpdateObject = () => {
+    const values = {
+      _handle: handle,
+      ...form
+    }
+    const { collection_handle, schema_handle, id } = router.query
+    updateCurrentObject(
+      collection_handle as string,
+      schema_handle as string,
+      id as string,
+      values
+    )
+  }
+
   useEffect(() => {
     const { id, schema_handle, collection_handle } = router.query
     if (id && schema_handle && collection_handle) {
@@ -163,6 +178,17 @@ const ObjectUpdatePage = () => {
       )
     }
   }, [])
+
+  /**
+   * Hot Key Save
+   */
+  const hotKeyMap = {
+    SAVE_OBJECT: 'command+shift+s'
+  }
+
+  const hotKeyHandlers = {
+    SAVE_OBJECT: handleUpdateObject
+  }
 
   const layout = (content: React.ReactNode) => (
     <PageLayout
@@ -185,7 +211,9 @@ const ObjectUpdatePage = () => {
         }
       ]}
     >
-      {content}
+      <HotKeys keyMap={hotKeyMap} handlers={hotKeyHandlers}>
+        {content}
+      </HotKeys>
     </PageLayout>
   )
 
@@ -212,20 +240,6 @@ const ObjectUpdatePage = () => {
       >
         Load
       </Button>
-    )
-  }
-
-  const handleUpdateObject = () => {
-    const values = {
-      _handle: handle,
-      ...form
-    }
-    const { collection_handle, schema_handle, id } = router.query
-    updateCurrentObject(
-      collection_handle as string,
-      schema_handle as string,
-      id as string,
-      values
     )
   }
 
