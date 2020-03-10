@@ -73,9 +73,15 @@ const ObjectUpdatePage = () => {
         const data = res.data.result as IObject
         setCurrentObject(data)
         const formData = data.schema.def.reduce((a, c) => {
-          a[c.key] = data[c.key] || null
+          // Handle false situation
+          a[c.key] =
+            data[c.key] !== null && data[c.key] !== undefined
+              ? data[c.key]
+              : null
           return a
         }, {} as { [key: string]: any })
+
+        console.log(formData)
 
         // convert datepicker value to moment
         data.schema.def.forEach((d: ISchemaFieldDef) => {
@@ -159,6 +165,7 @@ const ObjectUpdatePage = () => {
       _handle: handle,
       ...form
     }
+    console.log(form)
     const { collection_handle, schema_handle, id } = router.query
     updateCurrentObject(
       collection_handle as string,
