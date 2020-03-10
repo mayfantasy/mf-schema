@@ -183,11 +183,13 @@ const ObjectUpdatePage = () => {
    * Hot Key Save
    */
   const hotKeyMap = {
-    SAVE_OBJECT: 'command+shift+s'
+    SAVE_OBJECT_MAC: 'command+shift+s',
+    SAVE_OBJECT_PC: 'ctrl+shift+s'
   }
 
   const hotKeyHandlers = {
-    SAVE_OBJECT: handleUpdateObject
+    SAVE_OBJECT_MAC: handleUpdateObject,
+    SAVE_OBJECT_PC: handleUpdateObject
   }
 
   const layout = (content: React.ReactNode) => (
