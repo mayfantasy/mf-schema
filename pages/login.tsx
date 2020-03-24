@@ -1,19 +1,7 @@
 import React, { useState } from 'react'
 import PageLayout from '../components/PageLayout/PageLayout'
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Checkbox,
-  Button,
-  Row,
-  Alert,
-  Col
-} from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
+import { Form, Input, Tooltip, Checkbox, Button, Row, Alert, Col } from 'antd'
 import { createAccountRequest } from '../requests/account.request'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
 import Loading from '../components/Loading/Loading'
 import { ILoginPayload } from '../types/auth.type'
 import { loginRequest } from '../requests/auth.request'
@@ -23,93 +11,37 @@ import { AxiosError } from 'axios'
 import { RequestStatus } from '../helpers/request'
 import Link from 'next/link'
 import { pageRoutes } from '../navigation/page-routes'
+import { useForm } from 'antd/lib/form/util'
+import { isFormInvalid } from '../helpers/form.helper'
 
-interface ILoginFormProps<V> {
-  handleSubmit: (e: any) => void
-  form: WrappedFormUtils<V>
-}
-
-const LoginForm = (props: ILoginFormProps<ILoginPayload>) => {
-  const { form, handleSubmit } = props
-  const { getFieldDecorator } = form
-
-  return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Item label="E-mail">
-        {getFieldDecorator('email', {
-          rules: [
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!'
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!'
-            }
-          ]
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Password" hasFeedback>
-        {getFieldDecorator('password', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input your password'
-            }
-          ]
-        })(<Input.Password />)}
-      </Form.Item>
-      <Form.Item>
-        <Row type="flex" justify="space-between">
-          <Col>
-            <Button type="primary" htmlType="submit">
-              Login
-            </Button>
-          </Col>
-          <Col>
-            <Link href="register">
-              <a>Register</a>
-            </Link>
-          </Col>
-        </Row>
-      </Form.Item>
-    </Form>
-  )
-}
-
-interface IProps extends FormComponentProps<ILoginPayload> {}
-
-const LoginPage = (props: IProps) => {
+const LoginPage = () => {
   const loginRequestStatus = new RequestStatus()
   const [loginStatus, setLoginStatus] = useState(loginRequestStatus.status)
-  const { form } = props
+  const [form] = useForm()
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        setLoginStatus(loginRequestStatus.loading())
-        loginRequest({
-          email: values.email,
-          password: values.password
-        })
-          .then((res) => {
-            setLoginStatus(loginRequestStatus.success())
+  const login = () => {
+    const values = form.getFieldsValue()
+    setLoginStatus(loginRequestStatus.loading())
+    loginRequest(values as ILoginPayload)
+      .then((res) => {
+        setLoginStatus(loginRequestStatus.success())
 
-            const user = res.data.result.account
-            const token = res.data.result.token
+        const user = res.data.result.account
+        const token = res.data.result.token
 
-            setToken(token)
-            setUser(user)
+        setToken(token)
+        setUser(user)
 
-            router.push(pageRoutes.home)
-          })
-          .catch((err: AxiosError) => {
-            console.log(err)
-            setLoginStatus(loginRequestStatus.error(err))
-          })
-      }
-    })
+        router.push(pageRoutes.home)
+      })
+      .catch((err: AxiosError) => {
+        console.log(err)
+        setLoginStatus(loginRequestStatus.error(err))
+      })
+  }
+
+  const onFinish = () => {
+    login()
   }
 
   return (
@@ -133,7 +65,59 @@ const LoginPage = (props: IProps) => {
           <div style={{ color: 'green' }}>Logged in successfully.</div>
         ) : (
           <div style={{ width: '50%' }}>
-            <LoginForm form={form} handleSubmit={handleSubmit} />
+            <Form
+              layout="vertical"
+              form={form}
+              name="register"
+              onFinish={() => onFinish()}
+            >
+              <Form.Item
+                label="E-mail"
+                name="email"
+                rules={[
+                  {
+                    type: 'email',
+                    message: 'The input is not valid E-mail!'
+                  },
+                  {
+                    required: true,
+                    message: 'Please input your E-mail!'
+                  }
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Password"
+                hasFeedback
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your password'
+                  }
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+              <br />
+              <Form.Item shouldUpdate>
+                {() => (
+                  <Row justify="space-between" align="middle">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      disabled={isFormInvalid(form)}
+                    >
+                      Login
+                    </Button>
+                    <Link href="register">
+                      <a>Register</a>
+                    </Link>
+                  </Row>
+                )}
+              </Form.Item>
+            </Form>
           </div>
         )}
       </div>
@@ -141,6 +125,4 @@ const LoginPage = (props: IProps) => {
   )
 }
 
-const WrappedLoginPage = Form.create({ name: 'login' })(LoginPage)
-
-export default WrappedLoginPage
+export default LoginPage

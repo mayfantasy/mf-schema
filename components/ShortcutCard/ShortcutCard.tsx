@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { Icon, Row, Modal, Input, Button } from 'antd'
+import { Row, Modal, Input, Button } from 'antd'
 import { useState } from 'react'
 import { IShortcutForm } from '../../types/shortcut.type'
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 interface IProps {
   id?: string
@@ -92,7 +93,6 @@ const ShortcutCard = (props: IProps) => {
             <a target="_blank">
               <Row
                 style={{ width: '100%', height: '100%' }}
-                type="flex"
                 justify="center"
                 align="middle"
               >
@@ -109,7 +109,7 @@ const ShortcutCard = (props: IProps) => {
                 }
               }}
             >
-              <Icon type="close" />
+              <CloseCircleOutlined />
             </div>
           )}
         </div>
@@ -117,11 +117,10 @@ const ShortcutCard = (props: IProps) => {
         <div className="shortcut--general" onClick={() => setModalOpen(true)}>
           <Row
             style={{ width: '100%', height: '100%' }}
-            type="flex"
             justify="center"
             align="middle"
           >
-            <Icon type="plus" style={{ fontSize: '2rem' }} />
+            <PlusOutlined style={{ fontSize: '2rem' }} />
           </Row>
         </div>
       )}

@@ -4,11 +4,12 @@ import {
   getAccountImagesRequest,
   deleteAccountImageRequest
 } from '../../requests/storage.request'
-import { Row, Col, Icon, Button, Modal, Alert, Popconfirm } from 'antd'
+import { Row, Col, Button, Modal, Alert, Popconfirm } from 'antd'
 import Link from 'next/link'
 import Loading from '../Loading/Loading'
 import { IImageListEntry } from '../../types/storage.type'
 import { color } from '../../helpers/color.helper'
+import { QuestionCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons'
 
 interface IProps {
   onSelect: (img: IImageListEntry) => void
@@ -129,7 +130,7 @@ const StorageImagesSelector = (props: IProps) => {
           <Popconfirm
             title="Deleting image from library can not be undone, are you sure？"
             onConfirm={onDelete}
-            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           >
             <Button
               style={{ marginRight: '8px' }}
@@ -161,7 +162,7 @@ const StorageImagesSelector = (props: IProps) => {
           <Alert type="error" message={listStatus.error} />
         ) : (
           <div className="storage-images-selector">
-            <Row type="flex" gutter={1}>
+            <Row gutter={1}>
               {images.map((img) => {
                 const isActive = activeImage ? activeImage.id === img.id : false
                 return (
@@ -177,7 +178,6 @@ const StorageImagesSelector = (props: IProps) => {
                       className={`image-item__container ${
                         isActive ? 'active' : ''
                       }`}
-                      type="flex"
                       justify="center"
                       align="middle"
                       onClick={() => {
@@ -194,11 +194,9 @@ const StorageImagesSelector = (props: IProps) => {
                       >
                         {/* <img className="image-item" src={img}  /> */}
                         {isActive && (
-                          <Icon
+                          <CheckCircleTwoTone
                             twoToneColor={color.primary}
                             className="selected-icon"
-                            type="check-circle"
-                            theme="twoTone"
                           />
                         )}
                       </div>

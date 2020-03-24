@@ -2,7 +2,6 @@ import {
   Row,
   Col,
   Card,
-  Icon,
   Form,
   Input,
   Select,
@@ -17,14 +16,18 @@ import {
   ESchemaFieldType,
   IUpdateSchemaFormValues
 } from '../../types/schema.type'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { enumToKeyArray } from '../../helpers/utils.helper'
 import { removeField } from '../../helpers/schema/form'
 import StringArray from '../StringArray/StringArray'
 import ImageUploader from '../ImageUploader/ImageUploader'
+import {
+  CaretUpOutlined,
+  CaretDownOutlined,
+  MinusCircleOutlined
+} from '@ant-design/icons'
 
 interface IProps {
-  form: WrappedFormUtils<ICreateSchemaFormValues | IUpdateSchemaFormValues>
+  form: any
   isCreate: boolean
 }
 const FormItems = (props: IProps) => {
@@ -88,18 +91,14 @@ const FormItems = (props: IProps) => {
                     extra={
                       _defKeys.length > 1 ? (
                         <>
-                          <Icon
-                            className="dynamic-delete-button"
-                            type="caret-up"
+                          <CaretUpOutlined
                             style={{
                               ...(index === 0 ? { color: '#ccc' } : {})
                             }}
                             onClick={() => onMoveUpItem(index)}
                           />
                           &nbsp;&nbsp;
-                          <Icon
-                            className="dynamic-delete-button"
-                            type="caret-down"
+                          <CaretDownOutlined
                             style={{
                               ...(index === _defKeys.length - 1
                                 ? { color: '#ccc' }
@@ -108,9 +107,7 @@ const FormItems = (props: IProps) => {
                             onClick={() => onMoveDownItem(index)}
                           />
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <Icon
-                            className="dynamic-delete-button"
-                            type="minus-circle-o"
+                          <MinusCircleOutlined
                             style={{ color: 'red' }}
                             onClick={() => removeField(form, def.key)}
                           />
@@ -119,7 +116,7 @@ const FormItems = (props: IProps) => {
                     }
                     style={{ width: '100%' }}
                   >
-                    <Row type="flex" gutter={2} align="middle">
+                    <Row gutter={2} align="middle">
                       {/* Key */}
                       <Col span={11}>
                         <Form.Item
@@ -168,7 +165,7 @@ const FormItems = (props: IProps) => {
                         </Form.Item>
                       </Col>
                     </Row>
-                    <Row type="flex" gutter={2} align="middle">
+                    <Row gutter={2} align="middle">
                       {/* Name */}
                       <Col span={22}>
                         <Form.Item
@@ -189,7 +186,7 @@ const FormItems = (props: IProps) => {
                         </Form.Item>
                       </Col>
                     </Row>
-                    <Row type="flex" gutter={2} align="middle">
+                    <Row gutter={2} align="middle">
                       {/* Grid */}
                       <Col span={5}>
                         <Form.Item

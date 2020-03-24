@@ -97,7 +97,7 @@ const ShortcutList = (props: IProps) => {
       ) : (
         <div>
           <Typography>Shortcuts</Typography>
-          <Row type="flex" gutter={1}>
+          <Row gutter={1}>
             {shortcuts.map((s) => {
               return (
                 <ShortcutCard

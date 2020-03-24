@@ -1,6 +1,13 @@
 import { INavItem } from '../types/navigation.type'
-import { Icon } from 'antd'
 import { pageRoutes } from './page-routes'
+import {
+  AppstoreTwoTone,
+  FolderOpenTwoTone,
+  BuildTwoTone,
+  ContactsTwoTone,
+  UnlockTwoTone,
+  FileTextTwoTone
+} from '@ant-design/icons'
 
 export const sideNavItems: INavItem[] = [
   {
@@ -8,7 +15,7 @@ export const sideNavItems: INavItem[] = [
     url: pageRoutes.home,
     name: (
       <span>
-        <Icon type="appstore" />
+        <AppstoreTwoTone />
         Dashboard
       </span>
     )
@@ -18,7 +25,7 @@ export const sideNavItems: INavItem[] = [
     open: true,
     name: (
       <span>
-        <Icon type="folder" />
+        <FolderOpenTwoTone />
         Collection
       </span>
     ),
@@ -40,7 +47,7 @@ export const sideNavItems: INavItem[] = [
     open: true,
     name: (
       <span>
-        <Icon type="build" />
+        <BuildTwoTone />
         Schema
       </span>
     ),
@@ -67,7 +74,7 @@ export const sideNavItems: INavItem[] = [
     open: true,
     name: (
       <span>
-        <Icon type="user" />
+        <ContactsTwoTone />
         User
       </span>
     ),
@@ -89,7 +96,7 @@ export const sideNavItems: INavItem[] = [
     open: true,
     name: (
       <span>
-        <Icon type="key" />
+        <UnlockTwoTone />
         Access Key
       </span>
     ),
@@ -111,7 +118,7 @@ export const sideNavItems: INavItem[] = [
     open: true,
     name: (
       <span>
-        <Icon type="read" />
+        <FileTextTwoTone />
         Documentation
       </span>
     ),

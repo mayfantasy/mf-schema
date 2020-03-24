@@ -15,7 +15,6 @@ import {
   DatePicker,
   Card,
   Descriptions,
-  Icon,
   List,
   Typography,
   Collapse
@@ -49,6 +48,14 @@ import ImageViewer from '../../components/ImageViewer/ImageViewer'
 
 import dynamic from 'next/dynamic'
 import ImportObjectsBox from '../../components/ImportObjectsBox/ImportObjectsBox'
+import {
+  EditOutlined,
+  StepBackwardOutlined,
+  StepForwardOutlined,
+  PlusCircleOutlined,
+  ReloadOutlined,
+  ImportOutlined
+} from '@ant-design/icons'
 const CodeEditor = dynamic({
   loader: () => import('../../components/CodeEditor/CodeEditor'),
   loading: () => <Loading />,
@@ -362,7 +369,7 @@ const SchemaListPage = () => {
      * Set Page content
      */
     content = (
-      <Row type="flex" gutter={2}>
+      <Row gutter={2}>
         <Col span={hideAPI ? 24 : 13}>
           <div>
             <PageHeader
@@ -374,16 +381,16 @@ const SchemaListPage = () => {
                     href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
                   >
                     <Button type="primary">
-                      <Icon type="edit" />
+                      <EditOutlined />
                       Edit Schema
                     </Button>
                   </Link>
                   &nbsp;
                   <Button type="default" onClick={() => setHideAPI(!hideAPI)}>
                     {hideAPI ? (
-                      <Icon type="step-backward" />
+                      <StepBackwardOutlined />
                     ) : (
-                      <Icon type="step-forward" />
+                      <StepForwardOutlined />
                     )}
                     &nbsp;
                     {hideAPI ? 'Show API' : 'Hide API'}
@@ -397,7 +404,7 @@ const SchemaListPage = () => {
           <br />
           <div style={{ marginBottom: '20px' }}>
             <Button onClick={handleAddObject} type="primary">
-              <Icon type="plus-circle" /> Add Object
+              <PlusCircleOutlined /> Add Object
             </Button>
             &nbsp;
             {!!objectListRequestStatus.loading && (
@@ -409,12 +416,12 @@ const SchemaListPage = () => {
                   )
                 }
               >
-                <Icon type="reload" /> Reload Objects
+                <ReloadOutlined /> Reload Objects
               </Button>
             )}
             &nbsp;
             <Button onClick={() => setImportBoxOpen(!importBoxOpen)}>
-              <Icon type="import" />{' '}
+              <ImportOutlined />{' '}
               {importBoxOpen ? 'Close Import' : 'Import Objects'}
             </Button>
           </div>

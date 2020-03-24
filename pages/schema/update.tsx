@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { Form, Button, Alert } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
+import {
+  Form,
+  Button,
+  Alert,
+  Row,
+  Col,
+  Input,
+  Collapse,
+  Card,
+  Select,
+  InputNumber,
+  Checkbox
+} from 'antd'
 import Loading from '../../components/Loading/Loading'
 import {
   ISchemaFieldDef,
   ISchemaFieldDefKeys,
   IUpdateSchemaPayload,
   ISchema,
-  IUpdateSchemaFormValues
+  IUpdateSchemaFormValues,
+  ESchemaFieldType
 } from '../../types/schema.type'
 import {
   updateSchemaRequest,
@@ -21,46 +32,34 @@ import { setInitialFormValues } from '../../helpers/schema/form'
 import { RequestStatus } from '../../helpers/request'
 import SchemaForm from '../../components/shema/Form'
 import { pageRoutes } from '../../navigation/page-routes'
+import PageHeader from '../../components/PageHeader/PageHeader'
+import Link from 'next/link'
+import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
+import { useForm } from 'antd/lib/form/util'
+import {
+  CaretUpOutlined,
+  CaretDownOutlined,
+  MinusCircleOutlined,
+  EditOutlined
+} from '@ant-design/icons'
+import { enumToKeyArray } from '../../helpers/utils.helper'
+import StringArray from '../../components/StringArray/StringArray'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
+import ImageViewer from '../../components/ImageViewer/ImageViewer'
+import SchemaKeyField from '../../components/SchemaKeyField/SchemaKeyField'
+import SchemaField from '../../components/shema/SchemaField'
 
-interface IUpdateSchemaFormProps<V> {
-  handleSubmit: (e: any) => void
-  form: WrappedFormUtils<V>
-}
+interface IProps {}
 
-const UpdateSchemaForm = (
-  props: IUpdateSchemaFormProps<IUpdateSchemaFormValues>
-) => {
-  const { form, handleSubmit } = props
-  const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
-
-  const schemaRequestStatus = new RequestStatus()
-  const [currentSchemaStatus, setCurrentSchemaStatus] = useState(
-    schemaRequestStatus.status
-  )
+const UpdateSchemaPage = (props: IProps) => {
+  const metaForm = useForm()[0]
+  const defForm = useForm()[0]
+  const [activeDefKey, setActiveDefKey] = useState<string | null>(null)
+  /**
+   * || ===============================
+   * || Get Current Schema when page loads
+   */
   const router = useRouter()
-
-  /**
-   *
-   * @param id schema ID
-   * Get current schema by ID
-   */
-  const getCurrentSchema = (id: string) => {
-    setCurrentSchemaStatus(schemaRequestStatus.loading())
-    getSchemaByIdRequest(id as string)
-      .then((res) => {
-        setCurrentSchemaStatus(schemaRequestStatus.success())
-        const data = res.data.result
-        setCurrentSchema(data)
-        setInitialFormValues(form, data)
-      })
-      .catch((err) => {
-        setCurrentSchemaStatus(schemaRequestStatus.error(err))
-      })
-  }
-
-  /**
-   * Get Current Schema when page loads
-   */
   useEffect(() => {
     const { id } = router.query
     if (id) {
@@ -69,100 +68,54 @@ const UpdateSchemaForm = (
   }, [])
 
   /**
-   * Handle loading, error and none-data states
+   * || ===============
+   * || Current schema
    */
-  if (currentSchemaStatus.loading) {
-    return <Loading />
-  }
+  const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
 
-  if (currentSchemaStatus.error) {
-    return <Alert message={currentSchemaStatus.error} type="error" closable />
-  }
+  const schemaRequestStatus = new RequestStatus()
+  const [currentSchemaStatus, setCurrentSchemaStatus] = useState(
+    schemaRequestStatus.status
+  )
 
-  if (!currentSchema) {
-    return (
-      <Button onClick={() => getCurrentSchema(router.query.id as string)}>
-        Load
-      </Button>
-    )
+  const getCurrentSchema = (id: string) => {
+    setCurrentSchemaStatus(schemaRequestStatus.loading())
+    getSchemaByIdRequest(id as string)
+      .then((res) => {
+        setCurrentSchemaStatus(schemaRequestStatus.success())
+        const data = res.data.result
+        setCurrentSchema(data)
+      })
+      .catch((err) => {
+        setCurrentSchemaStatus(schemaRequestStatus.error(err))
+      })
   }
 
   /**
-   * Set initial Form values
+   * || ===============
+   * || Update schema
    */
-  if (currentSchema) {
-    setInitialFormValues(form, currentSchema)
-  }
-
-  return (
-    <SchemaForm
-      form={form}
-      currentSchema={currentSchema}
-      handleSubmit={handleSubmit}
-    />
+  const updateSchemaRequestStatus = new RequestStatus()
+  const [updateSchemaStatus, setUpdateSchemaStatus] = useState(
+    updateSchemaRequestStatus.status
   )
-}
-
-interface IProps extends FormComponentProps<IUpdateSchemaFormValues> {}
-
-const UpdateSchemaPage = (props: IProps) => {
-  const schemaRequestStatus = new RequestStatus()
-  const [schemaStatus, setSchemaStatus] = useState(schemaRequestStatus.status)
-
-  const { form } = props
-  const router = useRouter()
-
   const updateSchema = (payload: IUpdateSchemaPayload) => {
     // Update schema
-    setSchemaStatus(schemaRequestStatus.loading())
+    setUpdateSchemaStatus(updateSchemaRequestStatus.loading())
     updateSchemaRequest(payload)
       .then((res) => {
-        setSchemaStatus(schemaRequestStatus.success())
+        setUpdateSchemaStatus(updateSchemaRequestStatus.success())
       })
       .catch((err: AxiosError) => {
-        setSchemaStatus(schemaRequestStatus.error(err))
+        setUpdateSchemaStatus(updateSchemaRequestStatus.error(err))
       })
   }
 
   /**
-   *
-   * @param e
-   * Handle schema update submission
+   * || ==============================================
+   * || Layout
    */
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        const { _defKeys, _defValues } = values
-        const defs = (_defKeys as ISchemaFieldDefKeys[]).map((def) => {
-          const obj = {} as { [key: string]: any }
-
-          Object.keys(def).forEach((key) => {
-            obj[key] = _defValues[(def as any)[key]]
-          })
-          return obj
-        })
-        if (router.query.id) {
-          updateSchema({
-            id: router.query.id as string,
-            ...(values.name ? { name: values.name.trim() } : {}),
-            ...(values.handle ? { handle: values.handle.trim() } : {}),
-            ...(values.description
-              ? { description: values.description.trim() }
-              : {}),
-            def: defs.map((d) => ({
-              ...d,
-              key: d.key.trim(),
-              name: d.name ? d.name.trim() : '',
-              helper: d.helper ? d.helper.trim() : ''
-            })) as ISchemaFieldDef[]
-          })
-        }
-      }
-    })
-  }
-
-  return (
+  const layout = (content: React.ReactNode) => (
     <PageLayout
       breadCrumb={[
         {
@@ -177,19 +130,135 @@ const UpdateSchemaPage = (props: IProps) => {
         }
       ]}
     >
-      {schemaStatus.error && (
+      {content}
+    </PageLayout>
+  )
+
+  /**
+   * || ==============================================
+   * || Handle loading, error and none-data states
+   */
+
+  if (!currentSchema) {
+    return layout(
+      currentSchemaStatus.loading ? (
+        <Loading />
+      ) : currentSchemaStatus.error ? (
+        <Alert message={currentSchemaStatus.error} type="error" closable />
+      ) : (
+        <Button onClick={() => getCurrentSchema(router.query.id as string)}>
+          Load
+        </Button>
+      )
+    )
+  }
+
+  const initialMetaFormValues = {
+    name: currentSchema.name,
+    handle: currentSchema.handle,
+    description: currentSchema.description
+  }
+
+  /**
+   * ||==========================
+   * || Handle def modification
+   */
+  const removeField = (index: number) => {
+    const values = defForm.getFieldsValue()
+    const def = currentSchema.def
+    const newDef = [...def.slice(0, index), ...def.slice(index + 1, def.length)]
+    setCurrentSchema({
+      ...currentSchema,
+      def: newDef
+    })
+    setActiveDefKey(null)
+  }
+
+  const onMoveUpItem = (index: number) => {
+    const newDef = [...currentSchema.def]
+    const origItem = newDef[index]
+    const upItem = newDef[index - 1]
+    newDef[index] = upItem
+    newDef[index - 1] = origItem
+    setCurrentSchema({
+      ...currentSchema,
+      def: newDef
+    })
+  }
+
+  const onMoveDownItem = (index: number) => {
+    const newDef = [...currentSchema.def]
+    const origItem = newDef[index]
+    const upItem = newDef[index + 1]
+    newDef[index] = upItem
+    newDef[index + 1] = origItem
+    setCurrentSchema({
+      ...currentSchema,
+      def: newDef
+    })
+    console.log(index)
+  }
+
+  const onEditDef = (key: string | null) => {
+    const def = currentSchema.def.find((d) => d.key === key)
+    if (def) {
+      defForm.setFieldsValue(def)
+      setActiveDefKey(def.key)
+    } else {
+      setActiveDefKey(null)
+    }
+  }
+
+  const onConfirmEditDef = (index: number) => {
+    const values = defForm.getFieldsValue()
+    const def = currentSchema.def
+    const newDef = [
+      ...def.slice(0, index),
+      values as ISchemaFieldDef,
+      ...def.slice(index + 1, def.length)
+    ]
+    setCurrentSchema({
+      ...currentSchema,
+      def: newDef
+    })
+    console.log(currentSchema)
+    setActiveDefKey(null)
+  }
+
+  /**
+   * ||======================
+   * || Submit schema update
+   */
+  const onSubmit = () => {
+    const meta = metaForm.getFieldsValue()
+    updateSchema({
+      id: currentSchema.id,
+      name: meta.name,
+      handle: meta.handle,
+      description: meta.description,
+      def: currentSchema.def
+    })
+  }
+
+  /**
+   * ||====================================
+   * || Layout
+   */
+  return layout(
+    <>
+      {updateSchemaStatus.error && (
         <>
-          <Alert message={schemaStatus.error} type="error" closable />
+          <Alert message={updateSchemaStatus.error} type="error" closable />
           <br />
         </>
       )}
 
       <div style={{ height: '70%' }}>
-        {schemaStatus.loading ? (
+        {updateSchemaStatus.loading ? (
           <Loading />
         ) : (
           <div style={{ width: '100%', maxWidth: '800px' }}>
-            {schemaStatus.success && (
+            {updateSchemaStatus.success && (
               <Alert
                 message="Schema updated successfully."
                 type="success"
@@ -197,16 +266,147 @@ const UpdateSchemaPage = (props: IProps) => {
               />
             )}
             <br />
-            <UpdateSchemaForm form={form} handleSubmit={handleSubmit} />
+            <PageHeader
+              name={currentSchema.name}
+              sub={currentSchema.handle}
+              buttons={
+                <Row>
+                  <Link
+                    href={
+                      currentSchema
+                        ? `${pageRoutes.schemaDetail}?id=${currentSchema.id}`
+                        : pageRoutes.listSchemas
+                    }
+                  >
+                    <Button type="default">View Schema</Button>
+                  </Link>
+                  &nbsp;
+                  <div>
+                    <Button type="primary" onClick={onSubmit}>
+                      Submit
+                    </Button>
+                  </div>
+                  {!currentSchema && (
+                    <Link href={pageRoutes.createSchemaFromJson}>
+                      <Button>Create from JSON</Button>
+                    </Link>
+                  )}
+                </Row>
+              }
+              description={currentSchema ? currentSchema.description : ''}
+            />
+            <br />
+            <br />
+
+            {/* Meta */}
+            <div>
+              <Link
+                href={`${pageRoutes.collectionDetail}?id=${currentSchema.collection.id}`}
+              >
+                <a>{currentSchema.collection.name}</a>
+              </Link>
+            </div>
+            <br />
+
+            <Form
+              name="meta"
+              layout="vertical"
+              form={metaForm}
+              initialValues={initialMetaFormValues}
+              onFinish={(values: any) => console.log(values)}
+            >
+              <Row gutter={2}>
+                <Col span={12}>
+                  <Form.Item
+                    label={<FormFieldLabel>Name</FormFieldLabel>}
+                    name="name"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input the schema name'
+                      }
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    label={<FormFieldLabel>Handle</FormFieldLabel>}
+                    name="handle"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input the schema handle'
+                      }
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Form.Item
+                    label={<FormFieldLabel>Description</FormFieldLabel>}
+                    name="description"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input the schema description'
+                      }
+                    ]}
+                    hasFeedback
+                  >
+                    <Input.TextArea autoSize={{ minRows: 8 }} />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+
+            <Form layout="vertical" form={defForm}>
+              {currentSchema.def.map((d, i) => (
+                <SchemaField
+                  form={defForm}
+                  def={d}
+                  index={i}
+                  editMode={activeDefKey === d.key}
+                  onConfirmEditDef={onConfirmEditDef}
+                  onEditDef={onEditDef}
+                  removeField={removeField}
+                  schemaDefLength={currentSchema.def.length}
+                  onMoveUpItem={onMoveUpItem}
+                  onMoveDownItem={onMoveDownItem}
+                  onOptionsChange={(v: string[]) =>
+                    defForm.setFieldsValue({
+                      options: v
+                    })
+                  }
+                  onHelperImageChange={(image: string) =>
+                    defForm.setFieldsValue({
+                      helper_image: image
+                    })
+                  }
+                />
+              ))}
+            </Form>
+            <br />
+            <Row justify="end">
+              <Button type="primary" onClick={onSubmit}>
+                Submit
+              </Button>
+            </Row>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
           </div>
         )}
       </div>
-    </PageLayout>
+    </>
   )
 }
 
-const WrappedSchemaPage = Form.create({ name: 'update-schema' })(
-  UpdateSchemaPage
-)
-
-export default WrappedSchemaPage
+export default UpdateSchemaPage

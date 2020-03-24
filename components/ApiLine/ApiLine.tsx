@@ -69,7 +69,7 @@ const ApiLine = (props: IProps) => {
         }
       `}</style>
       <div className={`api-line ${method}`}>
-        <Row type="flex" align="middle">
+        <Row align="middle">
           <div className="api-method">{method}</div>
           <div>
             <code className="api-route">

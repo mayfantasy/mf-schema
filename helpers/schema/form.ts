@@ -1,4 +1,3 @@
-import { WrappedFormUtils } from 'antd/lib/form/Form'
 import {
   ISchemaFieldDefKeys,
   ICreateSchemaFormValues,
@@ -8,10 +7,7 @@ import {
 /**
  * Add schema definition field
  */
-export const addField = (
-  form: WrappedFormUtils<ICreateSchemaFormValues | IUpdateSchemaFormValues>,
-  fieldIndex: number
-) => {
+export const addField = (form: any, fieldIndex: number) => {
   const _defKeys = form.getFieldValue('_defKeys') as ISchemaFieldDefKeys[]
   const newDefs = _defKeys.concat({
     key: `key-${fieldIndex}`,
@@ -36,10 +32,7 @@ export const addField = (
  * @param key schema definitioin key
  * Remove from schema definition array_defKeys
  */
-export const removeField = (
-  form: WrappedFormUtils<ICreateSchemaFormValues | IUpdateSchemaFormValues>,
-  key: string
-) => {
+export const removeField = (form: any, key: string) => {
   const _defKeys: ISchemaFieldDefKeys[] = form.getFieldValue('_defKeys')
 
   const _newDefKeys = _defKeys.filter((def) => def.key !== key)
@@ -53,10 +46,7 @@ export const removeField = (
  * @param schema shema to load to the form
  * Set initial form values based on the schema
  */
-export const setInitialFormValues = (
-  form: WrappedFormUtils<ICreateSchemaFormValues | IUpdateSchemaFormValues>,
-  schema: ISchema
-) => {
+export const setInitialFormValues = (form: any, schema: ISchema) => {
   const { getFieldDecorator } = form
   const map = (i: number): ISchemaFieldDefKeys => ({
     key: `key-${i}`,

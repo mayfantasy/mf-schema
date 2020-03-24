@@ -1,11 +1,16 @@
 import Dragger from 'antd/lib/upload/Dragger'
-import { message, Icon, Button, Progress, Alert } from 'antd'
+import { message, Button, Progress, Alert } from 'antd'
 import { useState } from 'react'
 import { getToken } from '../../helpers/auth.helper'
 import { updateOrCreateByHandleRequest } from '../../requests/object.request'
 import Loading from '../Loading/Loading'
 import { ISchema } from '../../types/schema.type'
 import { downloadXlsxFile } from '../../helpers/utils.helper'
+import {
+  DownloadOutlined,
+  InboxOutlined,
+  UploadOutlined
+} from '@ant-design/icons'
 
 interface IProps {
   collection_handle: string
@@ -14,7 +19,7 @@ interface IProps {
 }
 const ImportObjectsBox = (props: IProps) => {
   const { collection_handle, schema_handle, schema } = props
-  const [parseResult, setParseResult] = useState()
+  const [parseResult, setParseResult] = useState<any[]>([])
   const apiToken = getToken()
 
   /** Object Import */
@@ -74,7 +79,7 @@ const ImportObjectsBox = (props: IProps) => {
       <div className="import-objects-box">
         <div style={{ marginBottom: '8px' }}>
           <Button onClick={onDownloadTemplate}>
-            <Icon type="download" /> Download Template
+            <DownloadOutlined /> Download Template
           </Button>
         </div>
         <Dragger
@@ -101,14 +106,14 @@ const ImportObjectsBox = (props: IProps) => {
           }}
         >
           <p className="ant-upload-drag-icon">
-            <Icon type="inbox" />
+            <InboxOutlined />
           </p>
           <p className="ant-upload-text">
             Click or drag file to this area to upload
           </p>
         </Dragger>
         {/* Parse and Import results */}
-        {parseResult && parseResult.length && (
+        {parseResult && !!parseResult.length && (
           <div>
             <br />
             <Alert
@@ -155,7 +160,7 @@ const ImportObjectsBox = (props: IProps) => {
                   }}
                   disabled={importStatus.loading}
                 >
-                  <Icon type="upload" />{' '}
+                  <UploadOutlined />{' '}
                   {importStatus.loading ? 'Importing...' : 'Import'}
                 </Button>
               </div>

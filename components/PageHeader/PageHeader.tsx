@@ -10,7 +10,7 @@ interface IProps {
 const PageHeader = (props: IProps) => {
   const { name, sub, description, buttons } = props
   return (
-    <Row type="flex" justify="space-between">
+    <Row justify="space-between">
       <Col span={12}>
         <h2>
           <Typography.Text strong>{name}</Typography.Text>
@@ -28,7 +28,7 @@ const PageHeader = (props: IProps) => {
         )}
       </Col>
       <Col span={12}>
-        <Row type="flex" justify="end" gutter={1}>
+        <Row justify="end" gutter={1}>
           {buttons}
         </Row>
       </Col>

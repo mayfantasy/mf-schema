@@ -19,7 +19,6 @@ import {
   DatePicker,
   Typography,
   Popconfirm,
-  Icon,
   Collapse
 } from 'antd'
 import Loading from '../../components/Loading/Loading'
@@ -42,6 +41,7 @@ import StringMultiSelect from '../../components/StringMultiSelect/StringMultiSel
 import ImageViewer from '../../components/ImageViewer/ImageViewer'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import Link from 'next/link'
+import { CaretLeftOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 
 interface IFormStructure {
   [key: string]: any
@@ -464,9 +464,8 @@ const ObjectUpdatePage = () => {
                   bordered={false}
                   className="helper-image__collapse"
                   expandIcon={({ isActive }) => (
-                    <Icon
+                    <CaretLeftOutlined
                       style={{ marginLeft: '60px' }}
-                      type="caret-right"
                       rotate={isActive ? 90 : 0}
                     />
                   )}
@@ -499,7 +498,7 @@ const ObjectUpdatePage = () => {
   }
 
   return layout(
-    <Row type="flex">
+    <Row>
       <Col span={13}>
         {!!updateCurrentObjectStatus.error && (
           <Alert
@@ -601,7 +600,7 @@ Object ID: ${currentObject.id}`}
                 router.query.id as string
               )
             }
-            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           >
             <Button type="danger">Delete Object</Button>
           </Popconfirm>

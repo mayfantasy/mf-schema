@@ -1,10 +1,16 @@
-import { message, Upload, Icon, Button, Row } from 'antd'
+import { message, Upload, Button, Row } from 'antd'
 import { useState, useEffect } from 'react'
 import { RequestStatus } from '../../helpers/request'
 import { getToken } from '../../helpers/auth.helper'
 import StorageImagesSelector from '../StorageImagesSelector/StorageImagesSelector'
 import { IImageListEntry } from '../../types/storage.type'
 import ImageViewer from '../ImageViewer/ImageViewer'
+import {
+  PlusCircleOutlined,
+  LoadingOutlined,
+  CloudTwoTone,
+  CloudDownloadOutlined
+} from '@ant-design/icons'
 
 interface IProps {
   value: string
@@ -51,7 +57,8 @@ const ImageUploader = (props: IProps) => {
 
   const uploadButton = (
     <Button type="primary">
-      <Icon type={uploadStatus.loading ? 'loading' : 'plus'} /> Upload Image
+      {uploadStatus.loading ? <LoadingOutlined /> : <PlusCircleOutlined />}{' '}
+      Upload Image
     </Button>
   )
 
@@ -72,8 +79,7 @@ const ImageUploader = (props: IProps) => {
           {uploadButton}
         </Upload>{' '}
         <Button onClick={() => setImageSelectorOpen(true)}>
-          <Icon type="cloud" theme="twoTone" twoToneColor="#00a854" /> Select
-          From Library
+          <CloudTwoTone /> Select From Library
         </Button>
       </div>
 
@@ -92,9 +98,9 @@ const ImageUploader = (props: IProps) => {
             <ImageViewer src={imageUrl || ''} />
           </div>
           <br />
-          <Row type="flex">
+          <Row>
             <Button type="default" style={{ marginRight: '5px' }}>
-              <Icon type="cloud-download" />
+              <CloudDownloadOutlined />
               Download
             </Button>
             <Button

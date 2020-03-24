@@ -3,8 +3,8 @@ import {
   ICreateSchemaFormValues,
   ISchema
 } from '../../types/schema.type'
-import Form, { WrappedFormUtils } from 'antd/lib/form/Form'
-import { Row, Col, Input, Button, Icon, Select, Alert } from 'antd'
+
+import { Form, Row, Col, Input, Button, Select, Alert } from 'antd'
 import Link from 'next/link'
 import FormFieldLabel from '../FormFieldLabel/FormFieldLabel'
 import FormItems from './FormItems'
@@ -26,7 +26,7 @@ import { pageRoutes } from '../../navigation/page-routes'
 let defIndex = 0
 
 interface IProps {
-  form: WrappedFormUtils<ICreateSchemaFormValues | IUpdateSchemaFormValues>
+  form: any
   currentSchema?: ISchema
   handleSubmit: any
 }
@@ -113,7 +113,10 @@ const SchemaForm = (props: IProps) => {
   }
 
   return (
-    <Form layout="vertical" onSubmit={handleSubmit}>
+    <Form
+      layout="vertical"
+      // onSubmit={onSubmit}
+    >
       <PageHeader
         name={currentSchema ? currentSchema.name : 'Create Schema'}
         sub={currentSchema ? currentSchema.handle : ''}
@@ -212,13 +215,13 @@ const SchemaForm = (props: IProps) => {
               defIndex++
             }}
           >
-            <Icon type="plus" /> Add field
+            [icon] Add field
           </Button>
         </Form.Item>
       </Row>
 
       {/* Submit */}
-      <Row type="flex" justify="space-between">
+      <Row justify="space-between">
         <Form.Item>
           <Button type="primary" htmlType="submit">
             {currentSchema ? 'Update Schema' : 'Create Schema'}

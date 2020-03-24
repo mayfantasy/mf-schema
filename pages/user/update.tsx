@@ -165,7 +165,7 @@ const UserUpdatePage = () => {
         <br />
         <div>
           <div>
-            <Row type="flex">
+            <Row>
               <Col span={24}>
                 <FormFieldLabel>Profile Image</FormFieldLabel>
                 <div>
@@ -182,7 +182,7 @@ const UserUpdatePage = () => {
               </Col>
             </Row>
             <br />
-            <Row type="flex">
+            <Row>
               <Col span={24}>
                 <FormFieldLabel>Email</FormFieldLabel>
                 <Input
@@ -197,7 +197,7 @@ const UserUpdatePage = () => {
               </Col>
             </Row>
             <br />
-            <Row type="flex">
+            <Row>
               <Col span={24}>
                 <FormFieldLabel>Username</FormFieldLabel>
                 <Input
@@ -215,7 +215,7 @@ const UserUpdatePage = () => {
             <br />
 
             <br />
-            <Row type="flex" gutter={2}>
+            <Row gutter={2}>
               <Col span={12}>
                 <FormFieldLabel>First Name</FormFieldLabel>
                 <Input
@@ -242,7 +242,7 @@ const UserUpdatePage = () => {
               </Col>
             </Row>
             <br />
-            <Row type="flex" gutter={2}>
+            <Row gutter={2}>
               <Col span={12}>
                 <FormFieldLabel>Date of Birth</FormFieldLabel>
                 <DatePicker

@@ -1,4 +1,4 @@
-import { Icon, Table, Button, Badge } from 'antd'
+import { Table, Button, Badge } from 'antd'
 import Link from 'next/link'
 import { ISchema } from '../../types/schema.type'
 import { useState } from 'react'
@@ -8,6 +8,11 @@ import { pageRoutes } from '../../navigation/page-routes'
 import { downloadXlsxFile } from '../../helpers/utils.helper'
 import { IKeyValue } from '../../types/utils.type'
 import { convertObjectsToXlsxData } from '../../helpers/object.helper'
+import {
+  DownloadOutlined,
+  CheckCircleTwoTone,
+  CloseCircleOutlined
+} from '@ant-design/icons'
 
 interface IProps {
   currentSchema: ISchema
@@ -51,7 +56,7 @@ const ObjectsTable = (props: IProps) => {
       <div style={{ marginBottom: '8px' }}>
         <Badge count={selectedRows.length}>
           <Button onClick={onDownloadObjects} disabled={!selectedRows.length}>
-            <Icon type="download" /> Download Selected
+            <DownloadOutlined /> Download Selected
           </Button>
         </Badge>
       </div>
@@ -79,22 +84,14 @@ const ObjectsTable = (props: IProps) => {
             render: (value: any) => {
               return typeof value === 'boolean' ? (
                 value ? (
-                  <Icon
-                    type="check-circle"
-                    theme="twoTone"
-                    twoToneColor="#52c41a"
-                  />
+                  <CheckCircleTwoTone twoToneColor="#52c41a" />
                 ) : (
-                  <Icon
-                    type="close-circle"
-                    theme="twoTone"
-                    twoToneColor="#eb2f96"
-                  />
+                  <CloseCircleOutlined twoToneColor="#eb2f96" />
                 )
               ) : typeof value === 'object' && value.length ? (
                 <div>
                   {(value as string[]).map((v, i) => (
-                    <div key={v}>
+                    <div key={i}>
                       [{i + 1}] {v}
                     </div>
                   ))}
