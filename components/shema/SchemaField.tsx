@@ -23,7 +23,6 @@ import StringArray from '../StringArray/StringArray'
 import ImageUploader from '../ImageUploader/ImageUploader'
 import ImageViewer from '../ImageViewer/ImageViewer'
 import { FormInstance } from 'antd/lib/form'
-import { isFormInvalid } from '../../helpers/form.helper'
 
 interface IProps {
   def: ISchemaFieldDef
