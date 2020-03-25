@@ -72,13 +72,12 @@ const SchemaField = (props: IProps) => {
               size="small"
               title={
                 editMode && (
-                  <>
+                  <Row>
                     <Form.Item shouldUpdate>
                       {() => {
                         return (
                           <Button
                             type="primary"
-                            htmlType="submit"
                             onClick={() => onConfirmEditDef(index)}
                             disabled={
                               form
@@ -115,7 +114,7 @@ const SchemaField = (props: IProps) => {
                         </Button>
                       </>
                     )}
-                  </>
+                  </Row>
                 )
               }
               extra={
@@ -319,19 +318,23 @@ const SchemaField = (props: IProps) => {
               </Row>
               <br />
               {/* Options */}
-              <>
-                <Row>
-                  <Col span={24}>
-                    {editMode ? (
-                      <Form.Item
-                        label={<FormFieldLabel>Options</FormFieldLabel>}
-                        key="options"
-                        name="options"
-                        shouldUpdate
-                      >
-                        {() => {
-                          console.log('e')
-                          return (
+              {editMode ? (
+                <Form.Item shouldUpdate noStyle>
+                  {() => {
+                    const enabled =
+                      form.getFieldValue('type') ===
+                        ESchemaFieldType.string_single_select ||
+                      form.getFieldValue('type') ===
+                        ESchemaFieldType.string_multi_select
+
+                    return enabled ? (
+                      <Row>
+                        <Col span={24}>
+                          <Form.Item
+                            label={<FormFieldLabel>Options</FormFieldLabel>}
+                            name="options"
+                            shouldUpdate
+                          >
                             <StringArray
                               disabled={
                                 !(
@@ -341,43 +344,31 @@ const SchemaField = (props: IProps) => {
                                     ESchemaFieldType.string_multi_select
                                 )
                               }
-                              value={def.options || ['1', '2']}
+                              value={form.getFieldValue('options') || []}
                               onChange={(v) => onOptionsChange(v)}
                             />
-                          )
-                        }}
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    ) : null
+                  }}
+                </Form.Item>
+              ) : (
+                <SchemaKeyField
+                  name="Options"
+                  value={
+                    <div>
+                      {(def.options || []).map((o, i) => (
+                        <div key={i} style={{ marginBottom: '5px' }}>
+                          [{i + 1}] {o}
+                        </div>
+                      ))}
+                    </div>
+                  }
+                />
+              )}
 
-                        {/* <StringArray
-                          disabled={
-                            !(
-                              form.getFieldValue('type') ===
-                                ESchemaFieldType.string_single_select ||
-                              form.getFieldValue('type') ===
-                                ESchemaFieldType.string_multi_select
-                            )
-                          }
-                          value={def.options || ['1', '2']}
-                          onChange={(v) => onOptionsChange(v)}
-                        /> */}
-                      </Form.Item>
-                    ) : (
-                      <SchemaKeyField
-                        name="Options"
-                        value={
-                          <div>
-                            {(def.options || []).map((o, i) => (
-                              <div style={{ marginBottom: '5px' }}>
-                                [{i + 1}] {o}
-                              </div>
-                            ))}
-                          </div>
-                        }
-                      />
-                    )}
-                  </Col>
-                </Row>
-                <br />
-              </>
+              <br />
 
               <Row>
                 {/* Helper Text */}

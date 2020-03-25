@@ -11,8 +11,6 @@ const StringArray = (props: IProps) => {
   const [array, setArray] = useState<string[]>(value || [])
   const [newValue, setNewValue] = useState('')
 
-  console.log(value)
-
   const obmitValue = (v: string[]) => {
     setArray(v)
     onChange(v)

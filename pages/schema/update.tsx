@@ -241,6 +241,16 @@ const UpdateSchemaPage = (props: IProps) => {
   }
 
   /**
+   * ||======================
+   * || Submit button
+   */
+  const SubmitButton = (
+    <Button type="primary" onClick={onSubmit} disabled={!!activeDefKey}>
+      Submit
+    </Button>
+  )
+
+  /**
    * ||====================================
    * || Layout
    */
@@ -281,11 +291,7 @@ const UpdateSchemaPage = (props: IProps) => {
                     <Button type="default">View Schema</Button>
                   </Link>
                   &nbsp;
-                  <div>
-                    <Button type="primary" onClick={onSubmit}>
-                      Submit
-                    </Button>
-                  </div>
+                  {SubmitButton}
                   {!currentSchema && (
                     <Link href={pageRoutes.createSchemaFromJson}>
                       <Button>Create from JSON</Button>
@@ -391,11 +397,7 @@ const UpdateSchemaPage = (props: IProps) => {
               ))}
             </Form>
             <br />
-            <Row justify="end">
-              <Button type="primary" onClick={onSubmit}>
-                Submit
-              </Button>
-            </Row>
+            <Row justify="end">{SubmitButton}</Row>
             <br />
             <br />
             <br />

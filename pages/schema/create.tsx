@@ -1,65 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import {
-  Form,
-  Button,
-  Alert,
-  Row,
-  Col,
-  Input,
-  Collapse,
-  Card,
-  Select,
-  InputNumber,
-  Checkbox,
-  Spin
-} from 'antd'
+import { Form, Button, Alert, Row, Col, Input, Select } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import {
   ISchemaFieldDef,
-  ISchemaFieldDefKeys,
-  IUpdateSchemaPayload,
-  ISchema,
-  IUpdateSchemaFormValues,
   ESchemaFieldType,
-  ICreateSchemaFormValues,
   ICreateSchemaPayload
 } from '../../types/schema.type'
-import {
-  updateSchemaRequest,
-  getSchemaByIdRequest,
-  createSchemaRequest
-} from '../../requests/schema.request'
+import { createSchemaRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
-import { setInitialFormValues } from '../../helpers/schema/form'
 import { RequestStatus } from '../../helpers/request'
-import SchemaForm from '../../components/shema/Form'
 import { pageRoutes } from '../../navigation/page-routes'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import Link from 'next/link'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { useForm } from 'antd/lib/form/util'
-import {
-  CaretUpOutlined,
-  CaretDownOutlined,
-  MinusCircleOutlined,
-  EditOutlined,
-  PlusCircleOutlined
-} from '@ant-design/icons'
-import { enumToKeyArray } from '../../helpers/utils.helper'
-import StringArray from '../../components/StringArray/StringArray'
-import ImageUploader from '../../components/ImageUploader/ImageUploader'
-import ImageViewer from '../../components/ImageViewer/ImageViewer'
-import SchemaKeyField from '../../components/SchemaKeyField/SchemaKeyField'
+
 import { getCollectionListRequest } from '../../requests/collection.request'
 import { ICollection } from '../../types/collection.type'
 import SchemaField from '../../components/shema/SchemaField'
-import { isFormInvalid } from '../../helpers/form.helper'
 
-interface IProps {}
-
-const CreateSchemaPage = (props: IProps) => {
+const CreateSchemaPage = () => {
   const metaForm = useForm()[0]
   const defForm = useForm()[0]
   const newFieldForm = useForm()[0]
@@ -229,7 +191,7 @@ const CreateSchemaPage = (props: IProps) => {
 
   /**
    * ||======================
-   * || Submit schema update
+   * || Submit schema Create
    */
   const onSubmit = () => {
     if (newSchema) {
@@ -251,6 +213,10 @@ const CreateSchemaPage = (props: IProps) => {
     helper_image: ''
   }
 
+  /**
+   * ||=====================================
+   * || Add confirmed new field to new schema
+   */
   const onConfirmAddNewField = () => {
     const newDef = [
       ...(newSchema ? newSchema.def : []),
@@ -262,14 +228,19 @@ const CreateSchemaPage = (props: IProps) => {
       def: newDef
     } as ICreateSchemaPayload)
 
+    // Clear new field form
     newFieldForm.setFieldsValue(initialNewFieldValues)
   }
 
+  /**
+   * ||==================
+   * || Submit button
+   */
   const submitButton = (
     <Button
       type="primary"
       onClick={onSubmit}
-      disabled={!(newSchema && newSchema.def.length)}
+      disabled={!(newSchema && newSchema.def.length && !activeDefKey)}
     >
       Submit
     </Button>
