@@ -55,7 +55,9 @@ const CreateSchemaPage = () => {
    * || Get Collection list when page loads
    */
   useEffect(() => {
-    getCollections()
+    if (window) {
+      getCollections()
+    }
   }, [])
 
   /**

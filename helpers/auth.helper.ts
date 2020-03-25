@@ -38,26 +38,31 @@ export const getAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 export const setToken = (token: string) => {
-  window.localStorage.setItem('token', token)
+  localStorage.setItem('token', token)
 }
 
 export const setUser = (user: IBasicAccountInfo) => {
-  window.localStorage.setItem('user', JSON.stringify(user))
+  localStorage.setItem('user', JSON.stringify(user))
 }
 
 export const removeToken = () => {
-  window.localStorage.removeItem('token')
+  localStorage.removeItem('token')
 }
 
 export const removeUser = () => {
-  window.localStorage.removeItem('user')
+  localStorage.removeItem('user')
 }
 
 export const getToken = () => {
-  return window.localStorage.getItem('token')
+  try {
+    return localStorage.getItem('token')
+  } catch (e) {
+    console.log(e)
+    return null
+  }
 }
 
 export const getUser = () => {
-  const user = window.localStorage.getItem('user')
+  const user = localStorage.getItem('user')
   return user ? JSON.parse(user) : null
 }

@@ -1,26 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import {
-  Form,
-  Button,
-  Alert,
-  Row,
-  Col,
-  Input,
-  Collapse,
-  Card,
-  Select,
-  InputNumber,
-  Checkbox
-} from 'antd'
+import { Form, Button, Alert, Row, Col, Input } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import {
   ISchemaFieldDef,
-  ISchemaFieldDefKeys,
   IUpdateSchemaPayload,
-  ISchema,
-  IUpdateSchemaFormValues,
-  ESchemaFieldType
+  ISchema
 } from '../../types/schema.type'
 import {
   updateSchemaRequest,
@@ -28,25 +13,12 @@ import {
 } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
-import { setInitialFormValues } from '../../helpers/schema/form'
 import { RequestStatus } from '../../helpers/request'
-import SchemaForm from '../../components/shema/Form'
 import { pageRoutes } from '../../navigation/page-routes'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import Link from 'next/link'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { useForm } from 'antd/lib/form/util'
-import {
-  CaretUpOutlined,
-  CaretDownOutlined,
-  MinusCircleOutlined,
-  EditOutlined
-} from '@ant-design/icons'
-import { enumToKeyArray } from '../../helpers/utils.helper'
-import StringArray from '../../components/StringArray/StringArray'
-import ImageUploader from '../../components/ImageUploader/ImageUploader'
-import ImageViewer from '../../components/ImageViewer/ImageViewer'
-import SchemaKeyField from '../../components/SchemaKeyField/SchemaKeyField'
 import SchemaField from '../../components/shema/SchemaField'
 
 interface IProps {}
