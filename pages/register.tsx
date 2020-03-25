@@ -11,7 +11,7 @@ import { pageRoutes } from '../navigation/page-routes'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form'
 import { useForm } from 'antd/lib/form/util'
-import { isFormInvalid } from '../helpers/form.helper'
+import { isFormInvalid, confirmPasswordRule } from '../helpers/form.helper'
 
 const RegisterPage = () => {
   /**
@@ -19,16 +19,6 @@ const RegisterPage = () => {
    * || Register Form
    */
   const [form] = useForm()
-  const confirmPasswordRule: any = (form: FormInstance) => {
-    return {
-      validator: (_: any, value: string) => {
-        if (!value || form.getFieldValue('password') === value) {
-          return Promise.resolve()
-        }
-        return Promise.reject('The two password you entered do not match.')
-      }
-    }
-  }
 
   /**
    * ||=============================

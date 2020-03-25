@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { Form, Input, Tooltip, Icon, Checkbox, Button, Row, Alert } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
-import { createAccountRequest } from '../../requests/account.request'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
+import { Form, Input, Button, Alert } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import { setToken, setUser } from '../../helpers/auth.helper'
 import router from 'next/router'
@@ -12,77 +9,41 @@ import { AxiosError } from 'axios'
 import { ICreateAccessKeyPayload } from '../../types/access-key.type'
 import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
+import { useForm } from 'antd/lib/form/util'
+import { isFormInvalid } from '../../helpers/form.helper'
 
-interface ICreateAccessKeyFormProps<V> {
-  handleSubmit: (e: any) => void
-  form: WrappedFormUtils<V>
-}
-
-const CreateAccessKeyForm = (
-  props: ICreateAccessKeyFormProps<ICreateAccessKeyPayload>
-) => {
-  const { form, handleSubmit } = props
-  const { getFieldDecorator } = form
-
-  return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Item label="Name">
-        {getFieldDecorator('name', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the access-key name'
-            }
-          ]
-        })(<Input />)}
-      </Form.Item>
-      <Form.Item label="Description" hasFeedback>
-        {getFieldDecorator('description', {
-          rules: [
-            {
-              required: true,
-              message: 'Please input the access-key desctiption'
-            }
-          ]
-        })(<Input.TextArea autoSize={{ minRows: 8 }} />)}
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Create
-        </Button>
-      </Form.Item>
-    </Form>
-  )
-}
-
-interface IProps extends FormComponentProps<ICreateAccessKeyPayload> {}
-
-const CreateAccessKeyPage = (props: IProps) => {
+const CreateAccessKeyPage = () => {
+  /**
+   * ||==================
+   * || Create Access Key
+   */
   const accessKeyRequestStatus = new RequestStatus()
   const [accessKeyStatus, setAccessKeyStatus] = useState(
     accessKeyRequestStatus.status
   )
-  const { form } = props
+  const createAccessKey = (values: ICreateAccessKeyPayload) => {
+    setAccessKeyStatus(accessKeyRequestStatus.loading())
+    createAccessKeyRequest({
+      name: values.name,
+      description: values.description
+    } as any)
+      .then((res) => {
+        setAccessKeyStatus(accessKeyRequestStatus.success())
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        setAccessKeyStatus(accessKeyRequestStatus.loading())
-        createAccessKeyRequest({
-          name: values.name,
-          description: values.description
-        } as any)
-          .then((res) => {
-            setAccessKeyStatus(accessKeyRequestStatus.success())
+        router.push(pageRoutes.listAccessKeys)
+      })
+      .catch((err: AxiosError) => {
+        setAccessKeyStatus(accessKeyRequestStatus.error(err))
+      })
+  }
 
-            router.push(pageRoutes.listAccessKeys)
-          })
-          .catch((err: AxiosError) => {
-            setAccessKeyStatus(accessKeyRequestStatus.error(err))
-          })
-      }
-    })
+  /**
+   * ||===================
+   * || Form
+   */
+  const [form] = useForm()
+  const onFinish = (values: ICreateAccessKeyPayload) => {
+    createAccessKey(values)
   }
 
   return (
@@ -110,7 +71,48 @@ const CreateAccessKeyPage = (props: IProps) => {
           <div style={{ color: 'green' }}>AccessKey created successfully.</div>
         ) : (
           <div style={{ width: '100%', maxWidth: '800px' }}>
-            <CreateAccessKeyForm form={form} handleSubmit={handleSubmit} />
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={(values) => onFinish(values as ICreateAccessKeyPayload)}
+            >
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input the access-key name'
+                  }
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Description"
+                hasFeedback
+                name="description"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input the access-key desctiption'
+                  }
+                ]}
+              >
+                <Input.TextArea autoSize={{ minRows: 8 }} />
+              </Form.Item>
+              <Form.Item shouldUpdate>
+                {() => (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={isFormInvalid(form, ['name', 'description'])}
+                  >
+                    Create
+                  </Button>
+                )}
+              </Form.Item>
+            </Form>
           </div>
         )}
       </div>
@@ -118,8 +120,4 @@ const CreateAccessKeyPage = (props: IProps) => {
   )
 }
 
-const WrappedAccessKeyPage = Form.create({ name: 'access-key' })(
-  CreateAccessKeyPage
-)
-
-export default WrappedAccessKeyPage
+export default CreateAccessKeyPage

@@ -84,9 +84,9 @@ const ObjectsTable = (props: IProps) => {
             render: (value: any) => {
               return typeof value === 'boolean' ? (
                 value ? (
-                  <CheckCircleTwoTone twoToneColor="#52c41a" />
+                  <CheckCircleTwoTone style={{ color: 'green' }} />
                 ) : (
-                  <CloseCircleOutlined twoToneColor="#eb2f96" />
+                  <CloseCircleOutlined style={{ color: 'red' }} />
                 )
               ) : typeof value === 'object' && value.length ? (
                 <div>

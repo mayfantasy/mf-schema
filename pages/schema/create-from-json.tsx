@@ -1,23 +1,14 @@
 import React, { useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { Form, Alert, Button } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
+import { Alert, Button } from 'antd'
 import Loading from '../../components/Loading/Loading'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import router from 'next/router'
-import {
-  ISchemaFieldDef,
-  ISchemaFieldDefKeys,
-  ICreateSchemaFormValues,
-  ISchema
-} from '../../types/schema.type'
+import { ISchema } from '../../types/schema.type'
 import { createSchemaRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { RequestStatus } from '../../helpers/request'
-import SchemaForm from '../../components/shema/Form'
 import { pageRoutes } from '../../navigation/page-routes'
-// import CodeEditor from '../../components/CodeEditor/CodeEditor'
 
 import dynamic from 'next/dynamic'
 const CodeEditor = dynamic({

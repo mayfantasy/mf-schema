@@ -16,9 +16,9 @@ const SchemaKeyField = (props: IProps) => {
         return value || 0
       case 'boolean':
         return value ? (
-          <CheckCircleTwoTone twoToneColor="#52c41a" />
+          <CheckCircleTwoTone style={{ color: 'green' }} />
         ) : (
-          <CloseCircleOutlined twoToneColor="#eb2f96" />
+          <CloseCircleOutlined style={{ color: 'red' }} />
         )
       default:
         return value || '--'

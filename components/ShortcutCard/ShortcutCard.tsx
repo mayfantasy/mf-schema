@@ -109,7 +109,7 @@ const ShortcutCard = (props: IProps) => {
                 }
               }}
             >
-              <CloseCircleOutlined />
+              <CloseCircleOutlined style={{ color: 'red' }} />
             </div>
           )}
         </div>

@@ -20,7 +20,7 @@ export const updateUserPayloadSchema = Joi.object({
   username: J.j_handle,
   date_of_birth: J.j_date_str,
   password: J.j_pwd,
-  phone: J.j_phone_str,
+  phone: J.j_phone_str.optional(),
   profile_img: J.j_uri
 })
 
