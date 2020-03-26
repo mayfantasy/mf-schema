@@ -5,7 +5,8 @@ import Loading from '../../components/Loading/Loading'
 import {
   ISchemaFieldDef,
   IUpdateSchemaPayload,
-  ISchema
+  ISchema,
+  ESchemaFieldType
 } from '../../types/schema.type'
 import {
   updateSchemaRequest,
@@ -26,6 +27,8 @@ interface IProps {}
 const UpdateSchemaPage = (props: IProps) => {
   const metaForm = useForm()[0]
   const defForm = useForm()[0]
+  const newFieldForm = useForm()[0]
+
   const [activeDefKey, setActiveDefKey] = useState<string | null>(null)
   /**
    * || ===============================
@@ -222,6 +225,38 @@ const UpdateSchemaPage = (props: IProps) => {
     </Button>
   )
 
+  const initialNewFieldValues: ISchemaFieldDef = {
+    type: ESchemaFieldType.string,
+    key: '',
+    name: '',
+    helper: '',
+    order: 1,
+    grid: 24,
+    new_line: false,
+    show: false,
+    options: [],
+    helper_image: ''
+  }
+
+  /**
+   * ||=====================================
+   * || Add confirmed new field to new schema
+   */
+  const onConfirmAddNewField = () => {
+    const newDef = [
+      ...(currentSchema ? currentSchema.def : []),
+      newFieldForm.getFieldsValue() as ISchemaFieldDef
+    ] as ISchemaFieldDef[]
+
+    setCurrentSchema({
+      ...currentSchema,
+      def: newDef
+    })
+
+    // Clear new field form
+    newFieldForm.setFieldsValue(initialNewFieldValues)
+  }
+
   /**
    * ||====================================
    * || Layout
@@ -369,6 +404,35 @@ const UpdateSchemaPage = (props: IProps) => {
               ))}
             </Form>
             <br />
+            <Form
+              layout="vertical"
+              form={newFieldForm}
+              initialValues={initialNewFieldValues}
+            >
+              {/* <pre>
+                {JSON.stringify(newFieldForm.getFieldsError(), null, ' ')}
+              </pre> */}
+              <SchemaField
+                form={newFieldForm}
+                def={newFieldForm.getFieldsValue() as ISchemaFieldDef}
+                title="New Field"
+                onConfirmEditButtonText="Confirm add"
+                index={0}
+                editMode={true}
+                onConfirmEditDef={onConfirmAddNewField}
+                schemaDefLength={1}
+                onOptionsChange={(v: string[]) =>
+                  newFieldForm.setFieldsValue({
+                    options: v
+                  })
+                }
+                onHelperImageChange={(image: string) =>
+                  newFieldForm.setFieldsValue({
+                    helper_image: image
+                  })
+                }
+              />
+            </Form>
             <Row justify="end">{SubmitButton}</Row>
             <br />
             <br />
