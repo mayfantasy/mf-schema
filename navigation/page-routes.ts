@@ -13,6 +13,7 @@ export const pageRoutes = {
   createSchemaFromJson: '/schema/create-from-json',
   listSchemas: '/schema/list',
   updateSchema: '/schema/update',
+  updateSchemaFromJson: '/schema/update-from-json',
   schemaDetail: '/schema/detail',
   createUser: '/user/create',
   listUsers: '/user/list',

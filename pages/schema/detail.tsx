@@ -54,7 +54,9 @@ import {
   StepForwardOutlined,
   PlusCircleOutlined,
   ReloadOutlined,
-  ImportOutlined
+  ImportOutlined,
+  CodeFilled,
+  CodeOutlined
 } from '@ant-design/icons'
 const CodeEditor = dynamic({
   loader: () => import('../../components/CodeEditor/CodeEditor'),
@@ -383,6 +385,15 @@ const SchemaListPage = () => {
                     <Button type="primary">
                       <EditOutlined />
                       Edit Schema
+                    </Button>
+                  </Link>
+                  &nbsp;
+                  <Link
+                    href={`${pageRoutes.updateSchemaFromJson}?id=${currentSchema.id}`}
+                  >
+                    <Button type="default">
+                      <CodeOutlined />
+                      Edit from JSON
                     </Button>
                   </Link>
                   &nbsp;

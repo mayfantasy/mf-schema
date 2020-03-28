@@ -84,11 +84,16 @@ const PageLayout = (props: IProps) => {
         }
 
         .mf-page-layout {
+          li.ant-menu-item:first-child {
+            margin-top: 0;
+          }
           .header {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             padding-left: 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ccc;
             .logo {
               width: 170px;
               cursor: pointer;
@@ -100,7 +105,7 @@ const PageLayout = (props: IProps) => {
         }
       `}</style>
       <Layout className="mf-page-layout">
-        <Header className="header" style={{ background: '#fff' }}>
+        <Header className="header">
           <div className="logo">
             <Link href="/">
               <a>

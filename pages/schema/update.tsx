@@ -99,9 +99,9 @@ const UpdateSchemaPage = (props: IProps) => {
           name: 'Schema'
         },
         {
-          key: 'update',
+          key: 'edit',
           url: pageRoutes.updateSchema,
-          name: 'Update'
+          name: 'Edit'
         }
       ]}
     >
@@ -289,13 +289,15 @@ const UpdateSchemaPage = (props: IProps) => {
               buttons={
                 <Row>
                   <Link
-                    href={
-                      currentSchema
-                        ? `${pageRoutes.schemaDetail}?id=${currentSchema.id}`
-                        : pageRoutes.listSchemas
-                    }
+                    href={`${pageRoutes.schemaDetail}?id=${currentSchema.id}`}
                   >
                     <Button type="default">View Schema</Button>
+                  </Link>
+                  &nbsp;
+                  <Link
+                    href={`${pageRoutes.updateSchemaFromJson}?id=${currentSchema.id}`}
+                  >
+                    <Button type="default">Edit from JSON</Button>
                   </Link>
                   &nbsp;
                   {SubmitButton}

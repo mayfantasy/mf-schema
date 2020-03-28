@@ -61,46 +61,48 @@ const CreateSchemaFromJsonPage = () => {
         }
       ]}
     >
-      {schemaStatus.error && (
-        <Alert
-          message={schemaStatus.error}
-          type="error"
-          closable
-          style={{ marginBottom: '5px' }}
-        />
-      )}
-      {error && <Alert message="JSON is not valid." type="error" closable />}
-      <br />
-      <div>
-        <PageHeader
-          name="Create Schema from JSON"
-          description="If you are copying from other schema, you must change the schema_handle field."
-        />
-      </div>
-      <br />
-      <div style={{ height: '70%' }}>
-        {schemaStatus.loading ? (
-          <Loading />
-        ) : schemaStatus.success ? (
-          <div style={{ color: 'green' }}>Schema created successfully.</div>
-        ) : (
-          <div style={{ width: '100%', maxWidth: '800px' }}>
-            <CodeEditor
-              value={json}
-              onChange={(value: string) => {
-                setJson(value)
-              }}
-            />
-            <br />
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              disabled={!json.trim()}
-            >
-              Create
-            </Button>
-          </div>
+      <div style={{ width: '70%' }}>
+        {schemaStatus.error && (
+          <Alert
+            message={schemaStatus.error}
+            type="error"
+            closable
+            style={{ marginBottom: '5px' }}
+          />
         )}
+        {error && <Alert message="JSON is not valid." type="error" closable />}
+        <br />
+        <div>
+          <PageHeader
+            name="Create Schema from JSON"
+            description="If you are copying from other schema, you must change the schema_handle field."
+          />
+        </div>
+        <br />
+        <div>
+          {schemaStatus.loading ? (
+            <Loading />
+          ) : schemaStatus.success ? (
+            <div style={{ color: 'green' }}>Schema created successfully.</div>
+          ) : (
+            <div style={{ width: '100%', maxWidth: '800px' }}>
+              <CodeEditor
+                value={json}
+                onChange={(value: string) => {
+                  setJson(value)
+                }}
+              />
+              <br />
+              <Button
+                type="primary"
+                onClick={handleSubmit}
+                disabled={!json.trim()}
+              >
+                Create
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </PageLayout>
   )
