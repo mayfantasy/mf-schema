@@ -41,7 +41,12 @@ import StringMultiSelect from '../../components/StringMultiSelect/StringMultiSel
 import ImageViewer from '../../components/ImageViewer/ImageViewer'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import Link from 'next/link'
-import { CaretLeftOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import {
+  CaretLeftOutlined,
+  QuestionCircleOutlined,
+  StepForwardOutlined,
+  StepBackwardOutlined
+} from '@ant-design/icons'
 
 interface IFormStructure {
   [key: string]: any
@@ -51,6 +56,9 @@ const ObjectUpdatePage = () => {
   const router = useRouter()
   const [form, setForm] = useState<IFormStructure>({})
   const [handle, setHandle] = useState('')
+
+  /** Hide API section toggle */
+  const [hideUsers, setHideUsers] = useState(true)
 
   /**
    * Get current object
@@ -416,90 +424,89 @@ const ObjectUpdatePage = () => {
         )
     }
     return (
-      <Row
+      <Col
         style={{
-          marginBottom: '15px',
+          marginBottom: '20px',
           padding: '15px',
           borderLeft: '3px solid #eee',
           backgroundColor: '#f6f7f8',
           borderRadius: '3px'
         }}
         key={key}
+        span={Number(grid || 24)}
       >
-        <Col span={Number(grid || 24)}>
-          <FormFieldLabel>
-            <Typography.Text strong style={{ color: 'black' }}>
-              {key}
-            </Typography.Text>
-            &nbsp;&nbsp;
+        <FormFieldLabel>
+          <Typography.Text strong style={{ color: 'black' }}>
+            {key}
+          </Typography.Text>
+          &nbsp;&nbsp;
+          <Typography.Text type="secondary">
+            <small>{name}</small>
+          </Typography.Text>
+        </FormFieldLabel>
+        {input}
+        <br />
+        <div>
+          {!!helper && (
             <Typography.Text type="secondary">
-              <small>{name}</small>
+              <small>{helper}</small>
             </Typography.Text>
-          </FormFieldLabel>
-          {input}
-          <br />
-          <div>
-            {!!helper && (
-              <Typography.Text type="secondary">
-                <small>{helper}</small>
-              </Typography.Text>
-            )}
-          </div>
+          )}
+        </div>
 
-          <div>
-            {!!helper_image && (
-              <>
-                <style jsx global>{`
-                  .helper-image__collapse {
-                    .ant-collapse-header {
-                      padding: 0 !important;
-                      margin-bottom: 10px;
-                    }
-                    .ant-collapse-content-box {
-                      padding: 0 !important;
-                    }
+        <div>
+          {!!helper_image && (
+            <>
+              <style jsx global>{`
+                .helper-image__collapse {
+                  .ant-collapse-header {
+                    padding: 0 !important;
+                    margin-bottom: 10px;
                   }
-                `}</style>
-                <Collapse
-                  bordered={false}
-                  className="helper-image__collapse"
-                  expandIcon={({ isActive }) => (
-                    <CaretLeftOutlined
-                      style={{ marginLeft: '60px' }}
-                      rotate={isActive ? 90 : 0}
-                    />
-                  )}
-                >
-                  <Collapse.Panel
-                    style={{
-                      backgroundColor: '#f6f7f8',
-                      borderRadius: 4,
-                      border: 0,
-                      overflow: 'hidden'
-                    }}
-                    header={
-                      <Typography.Text>
-                        <small>Helper Image</small>
-                      </Typography.Text>
-                    }
-                    key="1"
-                  >
-                    <Typography.Text type="secondary">
-                      <ImageViewer src={helper_image} width="300px" />
+                  .ant-collapse-content-box {
+                    padding: 0 !important;
+                  }
+                }
+              `}</style>
+              <Collapse
+                bordered={false}
+                className="helper-image__collapse"
+                expandIcon={({ isActive }) => (
+                  <CaretLeftOutlined
+                    style={{ marginLeft: '60px' }}
+                    rotate={isActive ? 90 : 0}
+                  />
+                )}
+              >
+                <Collapse.Panel
+                  style={{
+                    backgroundColor: '#f6f7f8',
+                    borderRadius: 4,
+                    border: 0,
+                    overflow: 'hidden'
+                  }}
+                  header={
+                    <Typography.Text>
+                      <small>Helper Image</small>
                     </Typography.Text>
-                  </Collapse.Panel>
-                </Collapse>
-              </>
-            )}
-          </div>
-        </Col>
-      </Row>
+                  }
+                  key="1"
+                >
+                  <Typography.Text type="secondary">
+                    <ImageViewer src={helper_image} width="300px" />
+                  </Typography.Text>
+                </Collapse.Panel>
+              </Collapse>
+            </>
+          )}
+        </div>
+      </Col>
     )
   }
 
   return layout(
     <Row>
-      <Col span={13}>
+      <Col span={hideUsers ? 24 : 13}>
         {!!updateCurrentObjectStatus.error && (
           <Alert
             message={updateCurrentObjectStatus.error}
@@ -534,6 +541,16 @@ const ObjectUpdatePage = () => {
                 >
                   Save Object
                 </Button>
+                &nbsp;
+                <Button type="default" onClick={() => setHideUsers(!hideUsers)}>
+                  {hideUsers ? (
+                    <StepBackwardOutlined />
+                  ) : (
+                    <StepForwardOutlined />
+                  )}
+                  &nbsp;
+                  {hideUsers ? 'Show Users' : 'Hide Users'}
+                </Button>
               </div>
             }
             description={`Schema ID: ${currentObject.schema.id}
@@ -558,35 +575,43 @@ Object ID: ${currentObject.id}`}
         </Row>
         <br />
         <br />
-        {Object.keys(form).map((key: string) => {
-          const foundSchemaDef = currentObject.schema.def.find(
-            (d: ISchemaFieldDef) => {
-              return d.key === key
-            }
-          )
-          const type = foundSchemaDef ? foundSchemaDef.type : null
-          const value = form[key]
-          const options = foundSchemaDef ? foundSchemaDef.options : null
-          const helper = foundSchemaDef ? foundSchemaDef.helper : null
-          const helper_image = foundSchemaDef
-            ? foundSchemaDef.helper_image
-            : null
-          const grid = foundSchemaDef ? foundSchemaDef.grid : null
-          const name = foundSchemaDef ? foundSchemaDef.name : null
-          return (
-            !!type &&
-            findFormFieldByKey(
-              type,
-              key,
-              value,
-              options || [],
-              name,
-              grid,
-              helper,
-              helper_image
+        <Row
+          gutter={4}
+          style={{
+            marginBottom: '15px'
+          }}
+        >
+          {Object.keys(form).map((key: string) => {
+            const foundSchemaDef = currentObject.schema.def.find(
+              (d: ISchemaFieldDef) => {
+                return d.key === key
+              }
             )
-          )
-        })}
+            const type = foundSchemaDef ? foundSchemaDef.type : null
+            const value = form[key]
+            const options = foundSchemaDef ? foundSchemaDef.options : null
+            const helper = foundSchemaDef ? foundSchemaDef.helper : null
+            const helper_image = foundSchemaDef
+              ? foundSchemaDef.helper_image
+              : null
+            const grid = foundSchemaDef ? foundSchemaDef.grid : null
+            const name = foundSchemaDef ? foundSchemaDef.name : null
+            return (
+              !!type &&
+              findFormFieldByKey(
+                type,
+                key,
+                value,
+                options || [],
+                name,
+                grid,
+                helper,
+                helper_image
+              )
+            )
+          })}
+        </Row>
+
         <br />
         <br />
         <br />
@@ -606,11 +631,13 @@ Object ID: ${currentObject.id}`}
           </Popconfirm>
         </div>
       </Col>
-      <Col span={11}>
-        <div style={{ paddingLeft: '15px' }}>
-          <ObjectUsers currentObject={currentObject} />
-        </div>
-      </Col>
+      {!hideUsers && (
+        <Col span={11}>
+          <div style={{ paddingLeft: '15px' }}>
+            <ObjectUsers currentObject={currentObject} />
+          </div>
+        </Col>
+      )}
     </Row>
   )
 }

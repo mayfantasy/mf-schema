@@ -236,7 +236,7 @@ const SchemaField = (props: IProps) => {
               <br />
               <Row gutter={2} align="middle">
                 {/* Grid */}
-                <Col span={6}>
+                <Col span={12}>
                   {editMode ? (
                     <Form.Item
                       label={<FormFieldLabel>Grid</FormFieldLabel>}
@@ -268,7 +268,7 @@ const SchemaField = (props: IProps) => {
                   )}
                 </Col>
                 {/* Order */}
-                <Col span={6}>
+                {/* <Col span={8}>
                   {editMode ? (
                     <Form.Item
                       label={<FormFieldLabel>Order</FormFieldLabel>}
@@ -281,10 +281,10 @@ const SchemaField = (props: IProps) => {
                   ) : (
                     <SchemaKeyField name="Order" value={def.order} />
                   )}
-                </Col>
+                </Col> */}
 
                 {/* New Line */}
-                <Col span={6}>
+                {/* <Col span={6}>
                   {editMode ? (
                     <Form.Item
                       label={<FormFieldLabel>New Line ?</FormFieldLabel>}
@@ -297,10 +297,10 @@ const SchemaField = (props: IProps) => {
                   ) : (
                     <SchemaKeyField name="New Line ?" value={def.new_line} />
                   )}
-                </Col>
+                </Col> */}
 
                 {/* Show on list */}
-                <Col span={6}>
+                <Col span={12}>
                   {editMode ? (
                     <Form.Item
                       label={<FormFieldLabel>Show in List ?</FormFieldLabel>}

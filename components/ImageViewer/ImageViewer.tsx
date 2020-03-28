@@ -14,7 +14,8 @@ const ImageViewer = (props: IProps) => {
     <>
       <img
         style={{
-          width: width || '300px'
+          width: width || '300px',
+          maxWidth: '100%'
         }}
         src={src}
         onClick={() => toggle(true)}

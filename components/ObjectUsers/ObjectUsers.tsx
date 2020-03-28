@@ -83,6 +83,8 @@ const ObjectUsers = (props: IProps) => {
         </Typography.Text>
       )}
     </div>
-  ) : null
+  ) : (
+    <i>No registered users found.</i>
+  )
 }
 export default ObjectUsers
