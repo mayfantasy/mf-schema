@@ -22,6 +22,7 @@ import { createUserRequest } from '../../requests/user.request'
 import { pageRoutes } from '../../navigation/page-routes'
 import { useForm } from 'antd/lib/form/util'
 import { confirmPasswordRule, isFormInvalid } from '../../helpers/form.helper'
+import PageHeader from '../../components/PageHeader/PageHeader'
 
 const CreateUserPage = () => {
   /**
@@ -66,7 +67,7 @@ const CreateUserPage = () => {
       breadCrumb={[
         {
           key: 'user',
-          name: 'AccessKey'
+          name: 'User'
         },
         {
           key: 'create',
@@ -75,11 +76,18 @@ const CreateUserPage = () => {
         }
       ]}
     >
-      {createUserStatus.error && (
-        <Alert message={createUserStatus.error} type="error" closable />
-      )}
-      <br />
       <div style={{ height: '70%' }}>
+        {createUserStatus.error && (
+          <>
+            <Alert message={createUserStatus.error} type="error" closable />
+            <br />
+          </>
+        )}
+        <PageHeader
+          name="Create User"
+          description="Create user for your website or app."
+        />
+        <br />
         {createUserStatus.loading ? (
           <Loading />
         ) : createUserStatus.success ? (

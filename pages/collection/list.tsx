@@ -3,12 +3,14 @@ import PageLayout from '../../components/PageLayout/PageLayout'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
-import { Alert, Table } from 'antd'
+import { Alert, Table, Row, Button } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { ICollection } from '../../types/collection.type'
 import Link from 'next/link'
 import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
+import { PlusCircleOutlined } from '@ant-design/icons'
+import PageHeader from '../../components/PageHeader/PageHeader'
 
 const columns: ColumnProps<ICollection>[] = [
   {
@@ -69,9 +71,20 @@ const CollectionListPage = () => {
         }
       ]}
     >
+      <PageHeader
+        name="Collections"
+        buttons={
+          <Link href={pageRoutes.createCollection}>
+            <Button type="primary">
+              <PlusCircleOutlined /> Add Collection
+            </Button>
+          </Link>
+        }
+      />
       {collectionStatus.error && (
         <Alert message={collectionStatus.error} type="error" closable />
       )}
+
       <br />
       <div>
         {collectionStatus.loading ? (

@@ -9,16 +9,29 @@ import {
 } from '../../types/user.type'
 import {
   getUserByIdRequest,
-  updateUserByIdRequest
+  updateUserByIdRequest,
+  deleteUserRequest
 } from '../../requests/user.request'
 import PageLayout from '../../components/PageLayout/PageLayout'
 import { pageRoutes } from '../../navigation/page-routes'
-import { Alert, Button, Descriptions, Row, Col, Input, DatePicker } from 'antd'
+import {
+  Alert,
+  Button,
+  Descriptions,
+  Row,
+  Col,
+  Input,
+  DatePicker,
+  Popconfirm
+} from 'antd'
 import Loading from '../../components/Loading/Loading'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import UserSchemaMeta from '../../components/UserSchemaMeta/UserSchemaMeta'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
+import { AxiosError } from 'axios'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import Link from 'next/link'
 
 const UserUpdatePage = () => {
   const [form, setForm] = useState({
@@ -67,7 +80,10 @@ const UserUpdatePage = () => {
   /** Update User */
   const updateUser = (id: string) => {
     setUpdateUserStatus(updateReq.loading())
-    updateUserByIdRequest({ id, ...form } as IUpdateUserInfoPayload)
+    updateUserByIdRequest({
+      id,
+      ...form
+    } as IUpdateUserInfoPayload)
       .then(() => {
         setUpdateUserStatus(updateReq.success())
         getUser(id)
@@ -83,6 +99,27 @@ const UserUpdatePage = () => {
       getUser(id as string)
     }
   }, [])
+
+  /**
+   * ||=================
+   * || Delete user
+   */
+  const deleteUserRequestStatus = new RequestStatus()
+  const [deleteUserStatus, setDeleteUserStatus] = useState(
+    deleteUserRequestStatus.status
+  )
+
+  const deleteUser = (id: string) => {
+    setDeleteUserStatus(deleteUserRequestStatus.loading())
+    deleteUserRequest(id)
+      .then((res) => {
+        setDeleteUserStatus(deleteUserRequestStatus.success())
+        router.push(pageRoutes.listUsers)
+      })
+      .catch((err: AxiosError) => {
+        setDeleteUserStatus(deleteUserRequestStatus.error(err))
+      })
+  }
 
   /**
    * Set content
@@ -129,7 +166,12 @@ const UserUpdatePage = () => {
     delete userWithoutMeta.meta
     const meta = user.meta
     content = (
-      <div style={{ width: '100%', maxWidth: '800px' }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '800px'
+        }}
+      >
         {updateUserStatus.error && (
           <>
             <Alert message={updateUserStatus.error} type="error" closable />
@@ -152,13 +194,11 @@ const UserUpdatePage = () => {
           name={`${user.last_name} ${user.first_name}`}
           sub={`${user.email}, ${user.phone}`}
           buttons={
-            <Button
-              loading={updateUserStatus.loading}
-              type="primary"
-              onClick={() => updateUser(router.query.id as string)}
-            >
-              Update
-            </Button>
+            <>
+              <Link href={pageRoutes.listUsers}>
+                <Button>Back to list</Button>
+              </Link>
+            </>
           }
         />
         <br />
@@ -339,6 +379,22 @@ const UserUpdatePage = () => {
               })}
           </>
         }
+        <Row justify="space-between">
+          <Button
+            loading={updateUserStatus.loading}
+            type="primary"
+            onClick={() => updateUser(router.query.id as string)}
+          >
+            Submit
+          </Button>
+          <Popconfirm
+            title="Are you sure？"
+            onConfirm={() => deleteUser(router.query.id as string)}
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          >
+            <Button type="danger">Delete</Button>
+          </Popconfirm>
+        </Row>
       </div>
     )
     return layout(content)

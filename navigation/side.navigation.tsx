@@ -6,7 +6,8 @@ import {
   BuildOutlined,
   UserOutlined,
   KeyOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  TeamOutlined
 } from '@ant-design/icons'
 
 export const sideNavItems: INavItem[] = [
@@ -22,7 +23,7 @@ export const sideNavItems: INavItem[] = [
   },
   {
     key: 'collection',
-    open: true,
+    open: false,
     name: (
       <span>
         <FolderOpenOutlined />
@@ -71,7 +72,7 @@ export const sideNavItems: INavItem[] = [
   },
   {
     key: 'user',
-    open: true,
+    open: false,
     name: (
       <span>
         <UserOutlined />
@@ -93,7 +94,7 @@ export const sideNavItems: INavItem[] = [
   },
   {
     key: 'access-key',
-    open: true,
+    open: false,
     name: (
       <span>
         <KeyOutlined />
@@ -114,8 +115,30 @@ export const sideNavItems: INavItem[] = [
     ]
   },
   {
+    key: 'team-member',
+    open: false,
+    name: (
+      <span>
+        <TeamOutlined />
+        Team Member
+      </span>
+    ),
+    children: [
+      {
+        key: 'member-create',
+        url: pageRoutes.createMember,
+        name: 'Create Member'
+      },
+      {
+        key: 'member-list',
+        url: pageRoutes.listMembers,
+        name: 'List'
+      }
+    ]
+  },
+  {
     key: 'docs',
-    open: true,
+    open: false,
     name: (
       <span>
         <FileTextOutlined />

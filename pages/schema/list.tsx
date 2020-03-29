@@ -3,7 +3,7 @@ import PageLayout from '../../components/PageLayout/PageLayout'
 import { getSchemaListRequest } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
-import { Alert, Table, Select } from 'antd'
+import { Alert, Table, Select, Row, Button } from 'antd'
 import { ICollection } from '../../types/collection.type'
 import { ISchema } from '../../types/schema.type'
 import Link from 'next/link'
@@ -11,6 +11,8 @@ import { RequestStatus } from '../../helpers/request'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { pageRoutes } from '../../navigation/page-routes'
+import { PlusCircleOutlined } from '@ant-design/icons'
+import PageHeader from '../../components/PageHeader/PageHeader'
 
 const columns = [
   {
@@ -105,29 +107,42 @@ const SchemaListPage = () => {
         }
       ]}
     >
+      <PageHeader
+        name="Schemas"
+        buttons={
+          <Link href={pageRoutes.createSchema}>
+            <Button type="primary">
+              <PlusCircleOutlined /> Add Schema
+            </Button>
+          </Link>
+        }
+      />
+      <br />
       <div>
         {collectionStatus.loading ? (
           'Loading Collections...'
         ) : collectionStatus.error ? (
           <Alert type="error" message={collectionStatus.error} />
         ) : (
-          <div>
+          <Row justify="space-between" align="middle">
             <div>
-              <FormFieldLabel>Filter by Collection</FormFieldLabel>
+              <div>
+                <FormFieldLabel>Filter by Collection</FormFieldLabel>
+              </div>
+              <Select
+                defaultValue=""
+                style={{ width: 300 }}
+                onChange={handleSelectCollection}
+              >
+                <Select.Option value="">All</Select.Option>
+                {collections.map((c) => (
+                  <Select.Option key={c.id} value={c.id}>
+                    {c.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </div>
-            <Select
-              defaultValue=""
-              style={{ width: 300 }}
-              onChange={handleSelectCollection}
-            >
-              <Select.Option value="">All</Select.Option>
-              {collections.map((c) => (
-                <Select.Option key={c.id} value={c.id}>
-                  {c.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </div>
+          </Row>
         )}
       </div>
 

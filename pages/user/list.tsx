@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
-import { Alert, Table, Button } from 'antd'
+import { Alert, Table, Button, Row } from 'antd'
 import { RequestStatus } from '../../helpers/request'
 import {
   getUserListRequest,
@@ -12,14 +12,13 @@ import { IUser } from '../../types/user.type'
 import Link from 'next/link'
 import UserTable from '../../components/UserTable/UserTable'
 import { pageRoutes } from '../../navigation/page-routes'
+import { PlusCircleOutlined } from '@ant-design/icons'
+import PageHeader from '../../components/PageHeader/PageHeader'
 
 const UserListPage = () => {
   const userRequestStatus = new RequestStatus()
   const [userStatus, setUserStatus] = useState(userRequestStatus.status)
-  const deleteUserRequestStatus = new RequestStatus()
-  const [deleteUserStatus, setDeleteUserStatus] = useState(
-    userRequestStatus.status
-  )
+
   const [users, setUsers] = useState([])
 
   /**
@@ -34,23 +33,6 @@ const UserListPage = () => {
       })
       .catch((err: AxiosError) => {
         setUserStatus(userRequestStatus.error(err))
-      })
-  }
-
-  /**
-   *
-   * @param id
-   * Delete Access Key
-   */
-  const deleteUser = (id: string) => {
-    setDeleteUserStatus(deleteUserRequestStatus.loading())
-    deleteUserRequest(id)
-      .then((res) => {
-        setDeleteUserStatus(deleteUserRequestStatus.success())
-        getUserList()
-      })
-      .catch((err: AxiosError) => {
-        setDeleteUserStatus(deleteUserRequestStatus.error(err))
       })
   }
 
@@ -90,37 +72,45 @@ const UserListPage = () => {
         }
       ]}
     >
+      <PageHeader
+        name="Users"
+        buttons={
+          <Link href={pageRoutes.createUser}>
+            <Button type="primary">
+              <PlusCircleOutlined /> Add User
+            </Button>
+          </Link>
+        }
+      />
       {userStatus.error && (
         <Alert message={userStatus.error} type="error" closable />
       )}
-      {deleteUserStatus.error && (
-        <Alert message={deleteUserStatus.error} type="error" closable />
-      )}
+
       <br />
       <div>
-        {userStatus.loading || deleteUserStatus.loading ? (
+        {userStatus.loading ? (
           <Loading />
         ) : (
           <UserTable
             users={users}
-            extraColumns={[
-              {
-                title: 'Actions',
-                dataIndex: 'id',
-                key: 'action',
-                render: (id: string) => (
-                  <div>
-                    <Button
-                      type="danger"
-                      disabled={deleteUserStatus.loading || true}
-                      onClick={() => deleteUser(id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                )
-              }
-            ]}
+            // extraColumns={[
+            //   {
+            //     title: 'Actions',
+            //     dataIndex: 'id',
+            //     key: 'action',
+            //     render: (id: string) => (
+            //       <div>
+            //         <Button
+            //           type="danger"
+            //           disabled={deleteUserStatus.loading || true}
+            //           onClick={() => deleteUser(id)}
+            //         >
+            //           Delete
+            //         </Button>
+            //       </div>
+            //     )
+            //   }
+            // ]}
           />
         )}
       </div>

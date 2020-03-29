@@ -65,6 +65,13 @@ import {
   getShortcutListRoute,
   deleteShortcutByIdRoute
 } from './routes/shortcut.route'
+import {
+  createMemberRoute,
+  getMemberListRoute,
+  getMemberByIdRoute,
+  updateMemberRoute,
+  deleteMemberRoute
+} from './routes/member.route'
 
 const port = parseInt(process.env.PORT || '3001', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -145,7 +152,8 @@ app.prepare().then(() => {
   router.get('/api/user/list', getUserListRoute)
   router.get('/api/user/get/:id', getUserByIdRoute)
   router.put('/api/user/update', updateUserRoute)
-  router.delete('/api/user/:id', deleteUserRoute)
+  router.delete('/api/user/delete/:id', deleteUserRoute)
+
   // User Meta
   router.post('/api/user/meta/update/:id', updateUserMetaRoute)
   router.post('/api/user/meta/delete/:id', deleteUserMetaItemRoute)
@@ -159,6 +167,13 @@ app.prepare().then(() => {
   router.post('/api/user/reset-email', resetUserEmailRoute)
   router.post('/api/user/send-recover-email', sendRecoverEmailRoute)
   router.post('/api/user/reset-password', resetPasswordRoute)
+
+  // Member
+  router.post('/api/member/create', createMemberRoute)
+  router.get('/api/member/list', getMemberListRoute)
+  router.get('/api/member/get/:id', getMemberByIdRoute)
+  router.put('/api/member/update', updateMemberRoute)
+  router.delete('/api/member/delete/:id', deleteMemberRoute)
 
   // Shortcut
   router.post('/api/shortcut/create', createShortcutRoute)

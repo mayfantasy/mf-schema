@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PageLayout from '../components/PageLayout/PageLayout'
-import { Form, Input, Tooltip, Checkbox, Button, Row, Alert } from 'antd'
+import { Form, Input, Tooltip, Checkbox, Button, Row, Alert, Card } from 'antd'
 import { createAccountRequest } from '../requests/account.request'
 import { IClientCreateAccountPayload } from '../types/account.type'
 import Loading from '../components/Loading/Loading'
@@ -12,6 +12,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form'
 import { useForm } from 'antd/lib/form/util'
 import { isFormInvalid, confirmPasswordRule } from '../helpers/form.helper'
+import PageHeader from '../components/PageHeader/PageHeader'
 
 const RegisterPage = () => {
   /**
@@ -59,102 +60,107 @@ const RegisterPage = () => {
         }
       ]}
     >
-      {registerStatus.error && (
-        <Alert message={registerStatus.error} type="error" closable />
-      )}
-      <br />
-      <div style={{ height: '70%' }}>
-        {registerStatus.loading ? (
-          <Loading />
-        ) : (
-          <div style={{ width: '50%' }}>
-            <Form
-              layout="vertical"
-              form={form}
-              name="register"
-              onFinish={onFinish}
-            >
-              <Form.Item
-                label="E-mail"
-                name="email"
-                rules={[
-                  {
-                    type: 'email',
-                    message: 'The input is not valid E-mail!'
-                  },
-                  {
-                    required: true,
-                    message: 'Please input your E-mail!'
-                  }
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label={
-                  <span>
-                    Username&nbsp;
-                    <Tooltip title="What do you want others to call you?">
-                      <QuestionCircleOutlined />
-                    </Tooltip>
-                  </span>
-                }
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your username',
-                    whitespace: true
-                  }
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Password"
-                hasFeedback
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your password',
-                    whitespace: true
-                  }
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-              <Form.Item
-                label="Confirm Password"
-                hasFeedback
-                name="confirm_password"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please re-enter your password',
-                    whitespace: true
-                  },
-                  confirmPasswordRule
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-              <br />
-              <Form.Item shouldUpdate>
-                {() => (
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    disabled={isFormInvalid(form)}
+      <Row justify="center" align="middle">
+        <Card style={{ width: '100%', maxWidth: '500px' }}>
+          <PageHeader name="register" />
+          {registerStatus.error && (
+            <Alert message={registerStatus.error} type="error" closable />
+          )}
+          <br />
+          <div>
+            {registerStatus.loading ? (
+              <Loading />
+            ) : (
+              <div>
+                <Form
+                  layout="vertical"
+                  form={form}
+                  name="register"
+                  onFinish={onFinish}
+                >
+                  <Form.Item
+                    label="E-mail"
+                    name="email"
+                    rules={[
+                      {
+                        type: 'email',
+                        message: 'The input is not valid E-mail!'
+                      },
+                      {
+                        required: true,
+                        message: 'Please input your E-mail!'
+                      }
+                    ]}
                   >
-                    Register
-                  </Button>
-                )}
-              </Form.Item>
-            </Form>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <span>
+                        Username&nbsp;
+                        <Tooltip title="What do you want others to call you?">
+                          <QuestionCircleOutlined />
+                        </Tooltip>
+                      </span>
+                    }
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your username',
+                        whitespace: true
+                      }
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    label="Password"
+                    hasFeedback
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your password',
+                        whitespace: true
+                      }
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+                  <Form.Item
+                    label="Confirm Password"
+                    hasFeedback
+                    name="confirm_password"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please re-enter your password',
+                        whitespace: true
+                      },
+                      confirmPasswordRule
+                    ]}
+                  >
+                    <Input.Password />
+                  </Form.Item>
+                  <br />
+                  <Form.Item shouldUpdate>
+                    {() => (
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        disabled={isFormInvalid(form)}
+                      >
+                        Register
+                      </Button>
+                    )}
+                  </Form.Item>
+                </Form>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </Card>
+      </Row>
     </PageLayout>
   )
 }
