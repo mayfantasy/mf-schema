@@ -5,6 +5,7 @@ import { getAccountList } from '../server/services/account.service'
 import { IAccount } from '../types/account.type'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { IBasicAccountInfo } from '../types/account.type'
+import { tiers } from './tier.helper'
 
 export const getAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = req.headers['authentication'] as string
@@ -38,38 +39,57 @@ export const getAuth = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 export const setToken = (token: string) => {
-  localStorage.setItem('token', token)
+  try {
+    localStorage.setItem('token', token)
+  } catch (e) {
+    return null
+  }
 }
 
 export const setUser = (user: IBasicAccountInfo) => {
-  localStorage.setItem('user', JSON.stringify(user))
+  try {
+    localStorage.setItem('user', JSON.stringify(user))
+  } catch (e) {
+    return null
+  }
 }
 
 export const removeToken = () => {
-  localStorage.removeItem('token')
+  try {
+    localStorage.removeItem('token')
+  } catch (e) {
+    return null
+  }
 }
 
 export const removeUser = () => {
-  localStorage.removeItem('user')
+  try {
+    localStorage.removeItem('user')
+  } catch (e) {
+    return null
+  }
 }
 
 export const getToken = () => {
   try {
     return localStorage.getItem('token')
   } catch (e) {
-    console.log(e)
     return null
   }
 }
 
 export const getUser = () => {
-  const user = localStorage.getItem('user')
-  return user ? JSON.parse(user) : null
+  try {
+    const user = localStorage.getItem('user')
+    return user ? JSON.parse(user) : null
+  } catch (e) {
+    return null
+  }
 }
 
 export const getTier = (): number => {
   if (getUser()) {
     return getUser().tier
   }
-  return 100
+  return tiers.basic.tier
 }
