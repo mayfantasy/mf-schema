@@ -35,4 +35,5 @@ export interface IClientUpdateAccountPayload {
 export interface IBasicAccountInfo {
   email: string
   username: string
+  tier: number
 }

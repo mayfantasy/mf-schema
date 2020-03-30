@@ -10,8 +10,8 @@ import { uploadSchema } from '../validators/storage.validator'
 import { validateUpload } from '../validators'
 import { IDeleteAccountImagePayload } from '../../types/storage.type'
 
-export const uploadImageRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const uploadImageRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const accountId = auth.account_id
 
   const files = ctx.request.files
@@ -36,8 +36,8 @@ export const uploadImageRoute = async (ctx: Koa.Context) => {
     return new Error('File not found.')
   }
 }
-export const getImageListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getImageListRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const accountId = auth.account_id
 
   const images = await getAccountImages(`images/_account_${accountId}`)
@@ -47,8 +47,8 @@ export const getImageListRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const deleteImageRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const deleteImageRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const { filename } = ctx.request.body as IDeleteAccountImagePayload
 
   if (filename) {

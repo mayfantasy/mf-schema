@@ -10,6 +10,8 @@ import Loading from '../Loading/Loading'
 import { IImageListEntry } from '../../types/storage.type'
 import { color } from '../../helpers/color.helper'
 import { QuestionCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons'
+import TierWrapper from '../TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 interface IProps {
   onSelect: (img: IImageListEntry) => void
@@ -132,15 +134,17 @@ const StorageImagesSelector = (props: IProps) => {
             onConfirm={onDelete}
             icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           >
-            <Button
-              style={{ marginRight: '8px' }}
-              key="delete"
-              loading={delStatus.loading}
-              disabled={!activeImage || listStatus.loading}
-              type="danger"
-            >
-              Delete this image
-            </Button>
+            <TierWrapper tier={tierMap.DELETE_IMAGE.tier}>
+              <Button
+                style={{ marginRight: '8px' }}
+                key="delete"
+                loading={delStatus.loading}
+                disabled={!activeImage || listStatus.loading}
+                type="danger"
+              >
+                Delete this image
+              </Button>
+            </TierWrapper>
           </Popconfirm>,
           <Button key="back" onClick={onCancel}>
             Cancel

@@ -32,6 +32,8 @@ import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import { AxiosError } from 'axios'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import Link from 'next/link'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 const UserUpdatePage = () => {
   const [form, setForm] = useState({
@@ -392,7 +394,9 @@ const UserUpdatePage = () => {
             onConfirm={() => deleteUser(router.query.id as string)}
             icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           >
-            <Button type="danger">Delete</Button>
+            <TierWrapper tier={tierMap.DELETE_USER.tier}>
+              <Button type="danger">Delete</Button>
+            </TierWrapper>
           </Popconfirm>
         </Row>
       </div>

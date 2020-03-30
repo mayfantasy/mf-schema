@@ -14,8 +14,10 @@ import { handleRxp } from '../../helpers/utils.helper'
 import { createCollectionPayloadSchema } from '../validators/collection.validator'
 import { validatePayload } from '../validators'
 
-export const createCollectionRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const createCollectionRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as ICreateCollectionPayload
 
   /** Validation */
@@ -28,16 +30,20 @@ export const createCollectionRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getCollectionListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getCollectionListRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const collections = await getCollectionList(auth.api_key)
   ctx.body = {
     result: collections
   }
 }
 
-export const getCollectionByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getCollectionByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
 
   /** Validation */

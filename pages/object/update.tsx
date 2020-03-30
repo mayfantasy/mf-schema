@@ -47,6 +47,8 @@ import {
   StepForwardOutlined,
   StepBackwardOutlined
 } from '@ant-design/icons'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 interface IFormStructure {
   [key: string]: any
@@ -627,7 +629,9 @@ Object ID: ${currentObject.id}`}
             }
             icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
           >
-            <Button type="danger">Delete Object</Button>
+            <TierWrapper tier={tierMap.DELETE_OBJECT_BY_ID.tier}>
+              <Button type="danger">Delete Object</Button>
+            </TierWrapper>
           </Popconfirm>
         </div>
       </Col>

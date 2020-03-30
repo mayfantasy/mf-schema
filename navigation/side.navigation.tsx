@@ -9,6 +9,7 @@ import {
   FileTextOutlined,
   TeamOutlined
 } from '@ant-design/icons'
+import { tierMap } from '../helpers/tier.helper'
 
 export const sideNavItems: INavItem[] = [
   {
@@ -23,7 +24,7 @@ export const sideNavItems: INavItem[] = [
   },
   {
     key: 'collection',
-    open: false,
+    open: true,
     name: (
       <span>
         <FolderOpenOutlined />
@@ -34,12 +35,14 @@ export const sideNavItems: INavItem[] = [
       {
         key: 'collection-create',
         url: pageRoutes.createCollection,
-        name: 'Create'
+        name: 'Create',
+        tier: tierMap.CREATE_COLLECTION.tier
       },
       {
         key: 'collection-list',
         url: pageRoutes.listCollections,
-        name: 'List'
+        name: 'List',
+        tier: tierMap.GET_COLLECTION_LIST.tier
       }
     ]
   },
@@ -56,23 +59,26 @@ export const sideNavItems: INavItem[] = [
       {
         key: 'schema-create',
         url: pageRoutes.createSchema,
-        name: 'Create'
+        name: 'Create',
+        tier: tierMap.CREATE_SCHEMA.tier
       },
       {
         key: 'schema-create-from-json',
         url: pageRoutes.createSchemaFromJson,
-        name: 'Create from JSON'
+        name: 'Create from JSON',
+        tier: tierMap.CREATE_SCHEMA.tier
       },
       {
         key: 'schema-list',
         url: pageRoutes.listSchemas,
-        name: 'List'
+        name: 'List',
+        tier: tierMap.GET_SCHEMA_LIST.tier
       }
     ]
   },
   {
     key: 'user',
-    open: false,
+    open: true,
     name: (
       <span>
         <UserOutlined />
@@ -83,18 +89,21 @@ export const sideNavItems: INavItem[] = [
       {
         key: 'user-create',
         url: pageRoutes.createUser,
-        name: 'Create'
+        name: 'Create',
+        tier: tierMap.CREATE_USER.tier
       },
       {
         key: 'user-list',
         url: pageRoutes.listUsers,
-        name: 'List'
+        name: 'List',
+        tier: tierMap.GET_USER_LIST.tier
       }
     ]
   },
   {
     key: 'access-key',
-    open: false,
+    open: true,
+    tier: tierMap.GET_ACCESS_KEY_LIST.tier,
     name: (
       <span>
         <KeyOutlined />
@@ -105,18 +114,21 @@ export const sideNavItems: INavItem[] = [
       {
         key: 'access-key-create',
         url: pageRoutes.createAccessKey,
-        name: 'Create'
+        name: 'Create',
+        tier: tierMap.CREATE_ACCESS_KEY.tier
       },
       {
         key: 'access-key-list',
         url: pageRoutes.listAccessKeys,
-        name: 'List'
+        name: 'List',
+        tier: tierMap.GET_ACCESS_KEY_LIST.tier
       }
     ]
   },
   {
     key: 'team-member',
-    open: false,
+    open: true,
+    tier: tierMap.GET_MEMBER_LIST.tier,
     name: (
       <span>
         <TeamOutlined />
@@ -127,12 +139,14 @@ export const sideNavItems: INavItem[] = [
       {
         key: 'member-create',
         url: pageRoutes.createMember,
-        name: 'Create Member'
+        name: 'Create Member',
+        tier: tierMap.CREATE_MEMBER.tier
       },
       {
         key: 'member-list',
         url: pageRoutes.listMembers,
-        name: 'List'
+        name: 'List',
+        tier: tierMap.GET_MEMBER_LIST.tier
       }
     ]
   },

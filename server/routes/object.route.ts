@@ -21,8 +21,8 @@ import { parseObjectsFromXlsx } from '../../helpers/object.helper'
 import { getSchemaByHandle } from '../services/schema.service'
 import { IKeyValue } from '../../types/utils.type'
 
-export const createObjectRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const createObjectRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const params = ctx.params
   const payload = ctx.request.body as any
 
@@ -41,8 +41,10 @@ export const createObjectRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const updateObjectByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const updateObjectByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const params = ctx.params
   const payload = ctx.request.body
 
@@ -61,8 +63,10 @@ export const updateObjectByIdRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getObjectListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getObjectListRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const params = ctx.params
 
   /** Validation */
@@ -78,8 +82,10 @@ export const getObjectListRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getObjectByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getObjectByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
 
   const params = ctx.params
 
@@ -97,8 +103,10 @@ export const getObjectByIdRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const deleteObjectByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const deleteObjectByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const params = ctx.params
 
   /** Validation */
@@ -115,8 +123,10 @@ export const deleteObjectByIdRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const parseObjectsFromXlsxRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const parseObjectsFromXlsxRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const params = ctx.params
 
   const { collection_handle, schema_handle } = params
@@ -129,8 +139,10 @@ export const parseObjectsFromXlsxRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const updateOrCreateByHandleRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const updateOrCreateByHandleRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const params = ctx.params
   const payload = ctx.request.body
 

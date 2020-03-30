@@ -13,6 +13,8 @@ import {
   CheckCircleTwoTone,
   CloseCircleOutlined
 } from '@ant-design/icons'
+import TierLink from '../TierLink/TierLink'
+import { tierMap } from '../../helpers/tier.helper'
 
 interface IProps {
   currentSchema: ISchema
@@ -70,11 +72,12 @@ const ObjectsTable = (props: IProps) => {
             dataIndex: '_handle',
             key: '_handle',
             render: (handle: string, row: any) => (
-              <Link
+              <TierLink
                 href={`${pageRoutes.updateObject}?id=${row.id}&schema_handle=${currentSchema.handle}&collection_handle=${currentSchema.collection.handle}`}
+                tier={tierMap.UPDATE_OBJECT_BY_ID.tier}
               >
                 {handle}
-              </Link>
+              </TierLink>
             )
           },
           ...getShownFields().map((f) => ({

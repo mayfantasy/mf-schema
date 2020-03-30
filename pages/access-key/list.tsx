@@ -12,6 +12,8 @@ import { pageRoutes } from '../../navigation/page-routes'
 import Link from 'next/link'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 const AccessKeyListPage = () => {
   const accessKeyRequestStatus = new RequestStatus()
@@ -82,13 +84,15 @@ const AccessKeyListPage = () => {
       key: 'action',
       render: (id: string) => (
         <div>
-          <Button
-            type="danger"
-            disabled={deleteAccessKeyStatus.loading || true}
-            onClick={() => deleteAccessKey(id)}
-          >
-            Delete
-          </Button>
+          <TierWrapper tier={tierMap.DELETE_ACCESS_KEY.tier}>
+            <Button
+              type="danger"
+              disabled={deleteAccessKeyStatus.loading || true}
+              onClick={() => deleteAccessKey(id)}
+            >
+              Delete
+            </Button>
+          </TierWrapper>
         </div>
       )
     }

@@ -4,6 +4,8 @@ import Link from 'next/link'
 import Column from 'antd/lib/table/Column'
 import { ColumnProps } from 'antd/lib/table'
 import { pageRoutes } from '../../navigation/page-routes'
+import { tierMap } from '../../helpers/tier.helper'
+import TierLink from '../TierLink/TierLink'
 
 interface IProps {
   users: IUser[]
@@ -20,11 +22,12 @@ const UserTable = (props: IProps) => {
       render: (user: IUser) => {
         return (
           <div>
-            <Link href={`${pageRoutes.updateUser}?id=${user.id}`}>
-              <a>
-                {user.first_name} {user.last_name}
-              </a>
-            </Link>
+            <TierLink
+              tier={tierMap.UPDATE_USER.tier}
+              href={`${pageRoutes.updateUser}?id=${user.id}`}
+            >
+              {user.first_name} {user.last_name}
+            </TierLink>
           </div>
         )
       }

@@ -27,10 +27,11 @@ import {
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { IMember, IUpdateMemberPayload } from '../../types/member.type'
-import { memberTiers } from '../../helpers/member.helper'
+import { tiers, tierMap } from '../../helpers/tier.helper'
 import { IKeyValue } from '../../types/utils.type'
 import Link from 'next/link'
 import { QuestionCircleOutlined } from '@ant-design/icons'
+import TierWrapper from '../../components/TierButton/TierButton'
 
 interface IUpdateMemberFormValues extends IUpdateMemberPayload {
   confirm_password: string
@@ -250,13 +251,13 @@ const UpdateMemberPage = () => {
                 ]}
               >
                 <Select placeholder="Select a Role">
-                  {Object.keys(memberTiers).map((t) => {
+                  {Object.keys(tiers).map((t) => {
                     return (
                       <Select.Option
-                        value={(memberTiers as IKeyValue)[t].tier}
+                        value={(tiers as IKeyValue)[t].tier}
                         key={t}
                       >
-                        {(memberTiers as IKeyValue)[t].name}
+                        {(tiers as IKeyValue)[t].name}
                       </Select.Option>
                     )
                   })}
@@ -298,7 +299,9 @@ const UpdateMemberPage = () => {
                 onConfirm={() => deleteMember(currentMember.id)}
                 icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
               >
-                <Button type="danger">Delete Member</Button>
+                <TierWrapper tier={tierMap.DELETE_MEMBER.tier}>
+                  <Button type="danger">Delete Member</Button>
+                </TierWrapper>
               </Popconfirm>
             </Col>
           </Row>

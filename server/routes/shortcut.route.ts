@@ -9,8 +9,10 @@ import {
   deleteShortcutById
 } from '../services/shortcut.service'
 
-export const createShortcutRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const createShortcutRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IShortcutForm
 
   /** Validation */
@@ -23,16 +25,20 @@ export const createShortcutRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getShortcutListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getShortcutListRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const shorcuts = await getShortcutList(auth.api_key)
   ctx.body = {
     result: shorcuts
   }
 }
 
-export const deleteShortcutByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const deleteShortcutByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
 
   /** Validation */

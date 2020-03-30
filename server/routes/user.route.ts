@@ -24,8 +24,8 @@ import {
 } from '../validators/user.validator'
 import { validatePayload } from '../validators'
 
-export const createUserRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const createUserRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as ICreateUserPayload
 
   /** Validation */
@@ -38,8 +38,8 @@ export const createUserRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getUserListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getUserListRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const user = await getUserList(auth.api_key)
 
   ctx.body = {
@@ -47,8 +47,8 @@ export const getUserListRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getUserByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getUserByIdRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
 
   if (id) {
@@ -61,8 +61,8 @@ export const getUserByIdRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const updateUserRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const updateUserRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IUpdateUserInfoPayload
 
   /** Validation */
@@ -74,8 +74,8 @@ export const updateUserRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const deleteUserRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const deleteUserRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
 
   /** Validation */
@@ -90,8 +90,10 @@ export const deleteUserRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const updateUserMetaRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const updateUserMetaRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
   const payload = ctx.request.body as IUpdateUserMetaPayload
 
@@ -109,8 +111,10 @@ export const updateUserMetaRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const deleteUserMetaItemRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const deleteUserMetaItemRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
   const payload = ctx.request.body as IDeleteUserMetaItemPayload
 

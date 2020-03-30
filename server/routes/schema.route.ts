@@ -23,8 +23,8 @@ import {
   getSchemaListQuerySchema
 } from '../validators/schema.validatior'
 
-export const createSchemaRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const createSchemaRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as ICreateSchemaPayload
 
   /** Validation */
@@ -37,8 +37,8 @@ export const createSchemaRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const updateSchemaRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const updateSchemaRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IUpdateSchemaPayload
 
   /** Validation */
@@ -51,8 +51,10 @@ export const updateSchemaRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getSchemaListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getSchemaListRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const query = ctx.query as ISchemaListQuery
 
   /** Validation */
@@ -64,8 +66,10 @@ export const getSchemaListRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getSchemaByIdRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getSchemaByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const { id } = ctx.params
 
   if (id) {
@@ -78,8 +82,10 @@ export const getSchemaByIdRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getSchemaByHandleRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getSchemaByHandleRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const { handle } = ctx.params
 
   if (handle) {

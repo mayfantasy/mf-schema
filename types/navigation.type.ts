@@ -4,4 +4,5 @@ export interface INavItem {
   name: string | React.ReactNode
   children?: INavItem[]
   open?: boolean
+  tier?: number
 }

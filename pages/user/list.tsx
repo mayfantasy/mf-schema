@@ -14,6 +14,8 @@ import UserTable from '../../components/UserTable/UserTable'
 import { pageRoutes } from '../../navigation/page-routes'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 const UserListPage = () => {
   const userRequestStatus = new RequestStatus()
@@ -40,24 +42,6 @@ const UserListPage = () => {
     getUserList()
   }, [])
 
-  const columns = [
-    {
-      title: 'Name',
-      key: 'name',
-      render: (user: IUser) => {
-        return (
-          <div>
-            <Link href={`${pageRoutes.updateUser}?id=${user.id}`}>
-              <a>
-                {user.first_name} {user.last_name}
-              </a>
-            </Link>
-          </div>
-        )
-      }
-    }
-  ]
-
   return (
     <PageLayout
       breadCrumb={[
@@ -75,11 +59,13 @@ const UserListPage = () => {
       <PageHeader
         name="Users"
         buttons={
-          <Link href={pageRoutes.createUser}>
-            <Button type="primary">
-              <PlusCircleOutlined /> Add User
-            </Button>
-          </Link>
+          <TierWrapper tier={tierMap.CREATE_USER.tier}>
+            <Link href={pageRoutes.createUser}>
+              <Button type="primary">
+                <PlusCircleOutlined /> Add User
+              </Button>
+            </Link>
+          </TierWrapper>
         }
       />
       {userStatus.error && (
@@ -88,31 +74,7 @@ const UserListPage = () => {
 
       <br />
       <div>
-        {userStatus.loading ? (
-          <Loading />
-        ) : (
-          <UserTable
-            users={users}
-            // extraColumns={[
-            //   {
-            //     title: 'Actions',
-            //     dataIndex: 'id',
-            //     key: 'action',
-            //     render: (id: string) => (
-            //       <div>
-            //         <Button
-            //           type="danger"
-            //           disabled={deleteUserStatus.loading || true}
-            //           onClick={() => deleteUser(id)}
-            //         >
-            //           Delete
-            //         </Button>
-            //       </div>
-            //     )
-            //   }
-            // ]}
-          />
-        )}
+        {userStatus.loading ? <Loading /> : <UserTable users={users} />}
       </div>
     </PageLayout>
   )

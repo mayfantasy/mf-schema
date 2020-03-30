@@ -12,7 +12,7 @@ import { IMember } from '../../types/member.type'
 
 import Link from 'next/link'
 import { pageRoutes } from '../../navigation/page-routes'
-import { memberTiers } from '../../helpers/member.helper'
+import { tiers, findTierNameByLevel } from '../../helpers/tier.helper'
 import { IKeyValue } from '../../types/utils.type'
 import {
   CheckCircleTwoTone,
@@ -74,7 +74,7 @@ const MemberListPage = () => {
       title: 'Role',
       key: 'role',
       render: (member: IMember) => (
-        <span>{(memberTiers as IKeyValue)[member.tier].name}</span>
+        <span>{findTierNameByLevel(member.tier)}</span>
       )
     },
     {
@@ -117,7 +117,10 @@ const MemberListPage = () => {
       ]}
     >
       {createMemberStatus.error && (
-        <Alert message={createMemberStatus.error} type="error" closable />
+        <>
+          <Alert message={createMemberStatus.error} type="error" closable />
+          <br />
+        </>
       )}
 
       <Row justify="end"></Row>

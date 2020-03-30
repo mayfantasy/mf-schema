@@ -66,3 +66,10 @@ export const getUser = () => {
   const user = localStorage.getItem('user')
   return user ? JSON.parse(user) : null
 }
+
+export const getTier = (): number => {
+  if (getUser()) {
+    return getUser().tier
+  }
+  return 100
+}

@@ -58,6 +58,8 @@ import {
   CodeFilled,
   CodeOutlined
 } from '@ant-design/icons'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 const CodeEditor = dynamic({
   loader: () => import('../../components/CodeEditor/CodeEditor'),
   loading: () => <Loading />,
@@ -379,24 +381,33 @@ const SchemaListPage = () => {
               sub={currentSchema.handle}
               buttons={
                 <div>
-                  <Link
-                    href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
-                  >
-                    <Button type="primary">
-                      <EditOutlined />
-                      Edit Schema
-                    </Button>
-                  </Link>
-                  &nbsp;
-                  <Link
-                    href={`${pageRoutes.updateSchemaFromJson}?id=${currentSchema.id}`}
-                  >
-                    <Button type="default">
-                      <CodeOutlined />
-                      Edit from JSON
-                    </Button>
-                  </Link>
-                  &nbsp;
+                  <TierWrapper tier={tierMap.UPDATE_SCHEMA.tier}>
+                    <>
+                      <Link
+                        href={`${pageRoutes.updateSchema}?id=${currentSchema.id}`}
+                      >
+                        <Button type="primary">
+                          <EditOutlined />
+                          Edit Schema
+                        </Button>
+                      </Link>
+                      &nbsp;
+                    </>
+                  </TierWrapper>
+                  <TierWrapper tier={tierMap.UPDATE_SCHEMA.tier}>
+                    <>
+                      <Link
+                        href={`${pageRoutes.updateSchemaFromJson}?id=${currentSchema.id}`}
+                      >
+                        <Button type="default">
+                          <CodeOutlined />
+                          Edit from JSON
+                        </Button>
+                      </Link>
+                      &nbsp;
+                    </>
+                  </TierWrapper>
+
                   <Button type="default" onClick={() => setHideAPI(!hideAPI)}>
                     {hideAPI ? (
                       <StepBackwardOutlined />
@@ -414,27 +425,37 @@ const SchemaListPage = () => {
 
           <br />
           <div style={{ marginBottom: '20px' }}>
-            <Button onClick={handleAddObject} type="primary">
-              <PlusCircleOutlined /> Add Object
-            </Button>
-            &nbsp;
+            <TierWrapper tier={tierMap.CREATE_OBJECT.tier}>
+              <>
+                <Button onClick={handleAddObject} type="primary">
+                  <PlusCircleOutlined /> Add Object
+                </Button>
+                &nbsp;
+              </>
+            </TierWrapper>
             {!!objectListRequestStatus.loading && (
-              <Button
-                onClick={() =>
-                  getObjectList(
-                    currentSchema.collection.handle,
-                    currentSchema.handle
-                  )
-                }
-              >
-                <ReloadOutlined /> Reload Objects
-              </Button>
+              <TierWrapper tier={tierMap.GET_OBJECT_LIST.tier}>
+                <Button
+                  onClick={() =>
+                    getObjectList(
+                      currentSchema.collection.handle,
+                      currentSchema.handle
+                    )
+                  }
+                >
+                  <ReloadOutlined /> Reload Objects
+                </Button>
+              </TierWrapper>
             )}
-            &nbsp;
-            <Button onClick={() => setImportBoxOpen(!importBoxOpen)}>
-              <ImportOutlined />{' '}
-              {importBoxOpen ? 'Close Import' : 'Import Objects'}
-            </Button>
+            <TierWrapper tier={tierMap.CREATE_OBJECT.tier}>
+              <>
+                &nbsp;
+                <Button onClick={() => setImportBoxOpen(!importBoxOpen)}>
+                  <ImportOutlined />{' '}
+                  {importBoxOpen ? 'Close Import' : 'Import Objects'}
+                </Button>
+              </>
+            </TierWrapper>
           </div>
           {importBoxOpen && (
             <ImportObjectsBox

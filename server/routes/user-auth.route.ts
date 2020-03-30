@@ -27,8 +27,8 @@ import {
 } from '../validators/user-auth.validator'
 import { validatePayload } from '../validators'
 
-export const loginUserRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const loginUserRoute = (tier: number) => async (ctx: Koa.Context) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as ILoginPayload
 
   /** Validation */
@@ -41,8 +41,10 @@ export const loginUserRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const loginUserWithTokenRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const loginUserWithTokenRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IUserLoginWithTokenPayload
 
   /** Validation */
@@ -55,10 +57,10 @@ export const loginUserWithTokenRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const resetUserPasswordByCurrentPasswordRoute = async (
+export const resetUserPasswordByCurrentPasswordRoute = (tier: number) => async (
   ctx: Koa.Context
 ) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IResetUserPasswordByCurrentPasswordPayload
 
   /** Validation */
@@ -71,8 +73,10 @@ export const resetUserPasswordByCurrentPasswordRoute = async (
   }
 }
 
-export const resetUserEmailRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const resetUserEmailRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IResetUserEmailPayload
 
   validatePayload(resetUseremailPayloadSchema, payload)
@@ -83,8 +87,10 @@ export const resetUserEmailRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const sendRecoverEmailRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const sendRecoverEmailRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IUserSendRecoverEmailPayload
 
   /** Validation */
@@ -97,8 +103,10 @@ export const sendRecoverEmailRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const resetPasswordRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const resetPasswordRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as IUserResetPasswordPayload
   const { signature, password } = payload
 

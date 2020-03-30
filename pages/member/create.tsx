@@ -14,7 +14,7 @@ import { createMemberRequest } from '../../requests/member.request'
 import { useRouter } from 'next/router'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
-import { memberTiers } from '../../helpers/member.helper'
+import { tiers } from '../../helpers/tier.helper'
 import { IKeyValue } from '../../types/utils.type'
 
 interface ICreateMemberFormValues extends ICreateMemberPayload {
@@ -64,7 +64,7 @@ const CreateMemberPage = () => {
     password: '',
     confirm_password: '',
     active: false,
-    tier: memberTiers[3].tier
+    tier: tiers.writer.tier
   }
 
   return (
@@ -72,7 +72,8 @@ const CreateMemberPage = () => {
       breadCrumb={[
         {
           key: 'member',
-          name: 'Member'
+          name: 'Member',
+          url: pageRoutes.listMembers
         },
         {
           key: 'create',
@@ -151,13 +152,13 @@ const CreateMemberPage = () => {
               <Col span={24}>
                 <Form.Item label="Member Role" name="tier">
                   <Select placeholder="Select a Role">
-                    {Object.keys(memberTiers).map((t) => {
+                    {Object.keys(tiers).map((t) => {
                       return (
                         <Select.Option
-                          value={(memberTiers as IKeyValue)[t].tier}
+                          value={(tiers as IKeyValue)[t].tier}
                           key={t}
                         >
-                          {(memberTiers as IKeyValue)[t].name}
+                          {(tiers as IKeyValue)[t].name}
                         </Select.Option>
                       )
                     })}
@@ -202,17 +203,7 @@ const CreateMemberPage = () => {
               <Col span={24}>
                 <Form.Item shouldUpdate>
                   {() => (
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      disabled={isFormInvalid(form, [
-                        'email',
-                        'username',
-                        'password',
-                        'confirm_password',
-                        'active'
-                      ])}
-                    >
+                    <Button type="primary" htmlType="submit">
                       Submit
                     </Button>
                   )}

@@ -3,6 +3,8 @@ import { Row, Modal, Input, Button } from 'antd'
 import { useState } from 'react'
 import { IShortcutForm } from '../../types/shortcut.type'
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import TierWrapper from '../TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 interface IProps {
   id?: string
@@ -101,16 +103,18 @@ const ShortcutCard = (props: IProps) => {
             </a>
           </Link>
           {deleteShortcut && !deleting && (
-            <div
-              className="delete-button"
-              onClick={() => {
-                if (id) {
-                  deleteShortcut(id)
-                }
-              }}
-            >
-              <CloseCircleOutlined style={{ color: 'red' }} />
-            </div>
+            <TierWrapper tier={tierMap.DELETE_SHORTCUT.tier}>
+              <div
+                className="delete-button"
+                onClick={() => {
+                  if (id) {
+                    deleteShortcut(id)
+                  }
+                }}
+              >
+                <CloseCircleOutlined style={{ color: 'red' }} />
+              </div>
+            </TierWrapper>
           )}
         </div>
       ) : (

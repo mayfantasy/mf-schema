@@ -6,7 +6,7 @@ import { handleRxp } from '../../helpers/utils.helper'
 import { getAccountList } from '../services/account.service'
 import { IAccount } from '../../types/account.type'
 
-export const getAuth = async (ctx: Koa.Context) => {
+export const getAuth = async (ctx: Koa.Context, tier: number) => {
   const token = ctx.headers['authentication']
   const accessKey = ctx.headers['x-acc-k']
 
@@ -18,7 +18,17 @@ export const getAuth = async (ctx: Koa.Context) => {
       const account = await getAccountByEmail(email)
 
       const api_key = account.api_key
-      return { api_key, account_id: account.id }
+      const db_key = account.db_key
+
+      /**
+       * ||=======================================
+       * || Check if user have access to the route
+       */
+      if (tier < account.tier) {
+        throw new Error('Unauthorized.')
+      }
+
+      return { db_key, api_key, account_id: account.id }
     } else if (accessKey) {
       const accounts = await getAccountList()
       const foundAccount = accounts.find((a: IAccount) =>
@@ -26,7 +36,21 @@ export const getAuth = async (ctx: Koa.Context) => {
       )
 
       const api_key = foundAccount.api_key
-      return { api_key, account_id: foundAccount.id }
+      const db_key = foundAccount.db_key
+
+      /**
+       * ||=======================================
+       * || Check if user have access to the route
+       */
+      if (tier < foundAccount.tier) {
+        throw new Error('Unauthorized.')
+      }
+
+      return {
+        db_key,
+        api_key,
+        account_id: foundAccount.id
+      }
     } else {
       throw new Error('Unauthenticated.')
     }

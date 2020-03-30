@@ -12,7 +12,7 @@ import {
 } from '../validators/auth.validator'
 import { validatePayload } from '../validators'
 
-export const loginRoute = async (ctx: Koa.Context) => {
+export const loginRoute = (tier: number) => async (ctx: Koa.Context) => {
   const payload = ctx.request.body as ILoginPayload
 
   /** Validator */
@@ -28,13 +28,16 @@ export const loginRoute = async (ctx: Koa.Context) => {
       token,
       account: {
         email: account.email,
-        username: account.username
+        username: account.username,
+        tier: account.tier
       } as IBasicAccountInfo
     }
   }
 }
 
-export const loginWithTokenRoute = async (ctx: Koa.Context) => {
+export const loginWithTokenRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
   const payload = ctx.request.body as {
     token: string
   }
@@ -51,7 +54,8 @@ export const loginWithTokenRoute = async (ctx: Koa.Context) => {
     result: {
       account: {
         email: account.email,
-        username: account.username
+        username: account.username,
+        tier: account.tier
       } as IBasicAccountInfo
     }
   }

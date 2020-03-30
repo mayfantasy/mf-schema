@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import Link from 'next/link'
-import { getToken, removeToken, removeUser } from '../../helpers/auth.helper'
+import {
+  getToken,
+  removeToken,
+  removeUser,
+  getTier
+} from '../../helpers/auth.helper'
 import { loginWithTokenRequest } from '../../requests/auth.request'
 import { useRouter } from 'next/router'
 import { IBasicAccountInfo } from '../../types/account.type'
@@ -156,33 +161,39 @@ const PageLayout = (props: IProps) => {
                 .map((s) => s.key)}
             >
               {user
-                ? sideNavItems.map((s) =>
-                    !!s.children && s.children.length ? (
-                      <SubMenu key={s.key} title={<b>{s.name}</b>}>
-                        {s.children.map((c) => (
-                          <Menu.Item key={c.key}>
-                            {c.url ? (
-                              <Link href={c.url}>
-                                <a>{c.name}</a>
-                              </Link>
-                            ) : (
-                              <span>{c.name}</span>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </SubMenu>
-                    ) : (
-                      <Menu.Item key={s.key}>
-                        {s.url ? (
-                          <Link href={s.url}>
-                            <a>{s.name}</a>
-                          </Link>
-                        ) : (
-                          <span>{s.name}</span>
-                        )}
-                      </Menu.Item>
+                ? sideNavItems
+                    .filter((s) => (s.tier ? s.tier >= getTier() : true))
+                    .map((s) =>
+                      !!s.children && s.children.length ? (
+                        <SubMenu key={s.key} title={<b>{s.name}</b>}>
+                          {s.children
+                            .filter((s) =>
+                              s.tier ? s.tier >= getTier() : true
+                            )
+                            .map((c) => (
+                              <Menu.Item key={c.key}>
+                                {c.url ? (
+                                  <Link href={c.url}>
+                                    <a>{c.name}</a>
+                                  </Link>
+                                ) : (
+                                  <span>{c.name}</span>
+                                )}
+                              </Menu.Item>
+                            ))}
+                        </SubMenu>
+                      ) : (
+                        <Menu.Item key={s.key}>
+                          {s.url ? (
+                            <Link href={s.url}>
+                              <a>{s.name}</a>
+                            </Link>
+                          ) : (
+                            <span>{s.name}</span>
+                          )}
+                        </Menu.Item>
+                      )
                     )
-                  )
                 : []}
             </Menu>
           </Sider>

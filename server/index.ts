@@ -72,6 +72,7 @@ import {
   updateMemberRoute,
   deleteMemberRoute
 } from './routes/member.route'
+import { allTiers as t, tierMap } from '../helpers/tier.helper'
 
 const port = parseInt(process.env.PORT || '3001', 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -85,103 +86,199 @@ app.prepare().then(() => {
   server.use(cors())
 
   // Auth
-  router.post('/api/auth/login', loginRoute)
-  router.post('/api/auth/token', loginWithTokenRoute)
+  router.post('/api/auth/login', loginRoute(tierMap.LOGIN.tier))
+  router.post(
+    '/api/auth/token',
+    loginWithTokenRoute(tierMap.LOGIN_WITH_TOKEN.tier)
+  )
 
   // Access Key
-  router.post('/api/access-key/create', createAccessKeyRoute)
-  router.get('/api/access-key/list', getAccessKeyListRoute)
-  router.delete('/api/access-key/delete/:id', deleteAccessKeyRoute)
+  router.post(
+    '/api/access-key/create',
+    createAccessKeyRoute(tierMap.CREATE_ACCESS_KEY.tier)
+  )
+
+  router.get(
+    '/api/access-key/list',
+    getAccessKeyListRoute(tierMap.GET_ACCESS_KEY_LIST.tier)
+  )
+  router.delete(
+    '/api/access-key/delete/:id',
+    deleteAccessKeyRoute(tierMap.DELETE_ACCESS_KEY.tier)
+  )
 
   // Create account
-  router.post('/api/account/create', createAccountRoute)
+  router.post(
+    '/api/account/create',
+    createAccountRoute(tierMap.CREATE_ACCOUNT.tier)
+  )
 
   // Collection
-  router.post('/api/collection/create', createCollectionRoute)
-  router.get('/api/collection/list', getCollectionListRoute)
-  router.get('/api/collection/get/:id', getCollectionByIdRoute)
+  router.post(
+    '/api/collection/create',
+    createCollectionRoute(tierMap.CREATE_COLLECTION.tier)
+  )
+  router.get(
+    '/api/collection/list',
+    getCollectionListRoute(tierMap.GET_COLLECTION_LIST.tier)
+  )
+  router.get(
+    '/api/collection/get/:id',
+    getCollectionByIdRoute(tierMap.GET_COLLECTION_BY_ID.tier)
+  )
 
   // Schema
-  router.post('/api/schema/create', createSchemaRoute)
-  router.get('/api/schema/list', getSchemaListRoute)
-  router.put('/api/schema/update', updateSchemaRoute)
-  router.get('/api/schema/get/:id', getSchemaByIdRoute)
-  router.get('/api/schema/get/handle/:handle', getSchemaByHandleRoute)
+  router.post(
+    '/api/schema/create',
+    createSchemaRoute(tierMap.CREATE_SCHEMA.tier)
+  )
+  router.get(
+    '/api/schema/list',
+    getSchemaListRoute(tierMap.GET_SCHEMA_LIST.tier)
+  )
+  router.put(
+    '/api/schema/update',
+    updateSchemaRoute(tierMap.UPDATE_SCHEMA.tier)
+  )
+  router.get(
+    '/api/schema/get/:id',
+    getSchemaByIdRoute(tierMap.GET_SCHEMA_BY_ID.tier)
+  )
+  router.get(
+    '/api/schema/get/handle/:handle',
+    getSchemaByHandleRoute(tierMap.GET_SCHEMA_BY_HANDLE.tier)
+  )
 
   // Storage
-  router.post('/api/storage/upload-image', uploadImageRoute)
-  router.get('/api/storage/list-image', getImageListRoute)
-  router.post('/api/storage/delete-image', deleteImageRoute)
+  router.post(
+    '/api/storage/upload-image',
+    uploadImageRoute(tierMap.UPLOAD_IMAGE.tier)
+  )
+  router.get(
+    '/api/storage/list-image',
+    getImageListRoute(tierMap.GET_IMAGE_LIST.tier)
+  )
+  router.post(
+    '/api/storage/delete-image',
+    deleteImageRoute(tierMap.DELETE_IMAGE.tier)
+  )
 
   // Object
   router.post(
     '/api/object/:collection_handle/:schema_handle/create',
-    createObjectRoute
+    createObjectRoute(tierMap.CREATE_OBJECT.tier)
   )
   router.post(
     '/api/object/:collection_handle/:schema_handle/parse',
-    parseObjectsFromXlsxRoute
+    parseObjectsFromXlsxRoute(tierMap.PARSE_OBJECTS.tier)
   )
   router.get(
     '/api/object/:collection_handle/:schema_handle/list',
-    getObjectListRoute
+    getObjectListRoute(tierMap.GET_OBJECT_LIST.tier)
   )
   router.put(
     '/api/object/:collection_handle/:schema_handle/update/:id',
-    updateObjectByIdRoute
+    updateObjectByIdRoute(tierMap.UPDATE_OBJECT_BY_ID.tier)
   )
   router.get(
     '/api/object/:collection_handle/:schema_handle/get/:id',
-    getObjectByIdRoute
+    getObjectByIdRoute(tierMap.GET_OBJECT_BY_ID.tier)
   )
   router.delete(
     '/api/object/:collection_handle/:schema_handle/delete/:id',
-    deleteObjectByIdRoute
+    deleteObjectByIdRoute(tierMap.DELETE_OBJECT_BY_ID.tier)
   )
   router.post(
     '/api/object/:collection_handle/:schema_handle/update_or_create/:handle',
-    updateOrCreateByHandleRoute
+    updateOrCreateByHandleRoute(tierMap.UPDATE_OR_CREATE_OBJECT_BY_HANDLE.tier)
   )
-  router.get(
-    '/api/object/:collection_handle/:schema_handle/get-template/:id',
-    getObjectByIdRoute
-  )
+  // router.get(
+  //   '/api/object/:collection_handle/:schema_handle/get-template/:id',
+  //   getObjectByIdRoute
+  // )
 
   // User
-  router.post('/api/user/create', createUserRoute)
-  router.get('/api/user/list', getUserListRoute)
-  router.get('/api/user/get/:id', getUserByIdRoute)
-  router.put('/api/user/update', updateUserRoute)
-  router.delete('/api/user/delete/:id', deleteUserRoute)
+  router.post('/api/user/create', createUserRoute(tierMap.CREATE_USER.tier))
+  router.get('/api/user/list', getUserListRoute(tierMap.GET_USER_LIST.tier))
+  router.get('/api/user/get/:id', getUserByIdRoute(tierMap.GET_USER_BY_ID.tier))
+  router.put('/api/user/update', updateUserRoute(tierMap.UPDATE_USER.tier))
+  router.delete(
+    '/api/user/delete/:id',
+    deleteUserRoute(tierMap.DELETE_USER.tier)
+  )
 
   // User Meta
-  router.post('/api/user/meta/update/:id', updateUserMetaRoute)
-  router.post('/api/user/meta/delete/:id', deleteUserMetaItemRoute)
+  router.post(
+    '/api/user/meta/update/:id',
+    updateUserMetaRoute(tierMap.UPDATE_USER_META.tier)
+  )
+  router.post(
+    '/api/user/meta/delete/:id',
+    deleteUserMetaItemRoute(tierMap.DELETE_USER_META_ITEM.tier)
+  )
   // User Auth
-  router.post('/api/user/login', loginUserRoute)
-  router.post('/api/user/token', loginUserWithTokenRoute)
+  router.post('/api/user/login', loginUserRoute(tierMap.USER_LOGIN.tier))
+  router.post(
+    '/api/user/token',
+    loginUserWithTokenRoute(tierMap.USER_LOGIN_WITH_TOKEN.tier)
+  )
   router.post(
     '/api/user/reset-password-by-current-password',
-    resetUserPasswordByCurrentPasswordRoute
+    resetUserPasswordByCurrentPasswordRoute(
+      tierMap.USER_RESET_PASSWORD_BY_CURRENT_PASSWORD.tier
+    )
   )
-  router.post('/api/user/reset-email', resetUserEmailRoute)
-  router.post('/api/user/send-recover-email', sendRecoverEmailRoute)
-  router.post('/api/user/reset-password', resetPasswordRoute)
+  router.post(
+    '/api/user/reset-email',
+    resetUserEmailRoute(tierMap.USER_RESET_EMAIL.tier)
+  )
+  router.post(
+    '/api/user/send-recover-email',
+    sendRecoverEmailRoute(tierMap.USER_SEND_RECOVER_EMAIL.tier)
+  )
+  router.post(
+    '/api/user/reset-password',
+    resetPasswordRoute(tierMap.USER_RESET_PASSWORD.tier)
+  )
 
   // Member
-  router.post('/api/member/create', createMemberRoute)
-  router.get('/api/member/list', getMemberListRoute)
-  router.get('/api/member/get/:id', getMemberByIdRoute)
-  router.put('/api/member/update', updateMemberRoute)
-  router.delete('/api/member/delete/:id', deleteMemberRoute)
+  router.post(
+    '/api/member/create',
+    createMemberRoute(tierMap.CREATE_MEMBER.tier)
+  )
+  router.get(
+    '/api/member/list',
+    getMemberListRoute(tierMap.GET_MEMBER_LIST.tier)
+  )
+  router.get(
+    '/api/member/get/:id',
+    getMemberByIdRoute(tierMap.GET_MEMBER_BY_ID.tier)
+  )
+  router.put(
+    '/api/member/update',
+    updateMemberRoute(tierMap.UPDATE_MEMBER_BY_ID.tier)
+  )
+  router.delete(
+    '/api/member/delete/:id',
+    deleteMemberRoute(tierMap.DELETE_MEMBER.tier)
+  )
 
   // Shortcut
-  router.post('/api/shortcut/create', createShortcutRoute)
-  router.get('/api/shortcut/list', getShortcutListRoute)
-  router.delete('/api/shortcut/delete/:id', deleteShortcutByIdRoute)
+  router.post(
+    '/api/shortcut/create',
+    createShortcutRoute(tierMap.CREATE_SHORTCUT.tier)
+  )
+  router.get(
+    '/api/shortcut/list',
+    getShortcutListRoute(tierMap.GET_SHORTCUT_LIST.tier)
+  )
+  router.delete(
+    '/api/shortcut/delete/:id',
+    deleteShortcutByIdRoute(tierMap.DELETE_SHORTCUT.tier)
+  )
 
   // Email
-  router.post('/api/email/send', sendEmailRoute)
+  router.post('/api/email/send', sendEmailRoute(tierMap.SEND_EMAIL.tier))
 
   // SSR Pages
   router.get('*', async (ctx) => {

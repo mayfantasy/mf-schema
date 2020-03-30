@@ -7,7 +7,9 @@ import {
 import { clientCreateAccountPayloadSchema } from '../validators/account.validator'
 import { validatePayload } from '../validators'
 
-export const createAccountRoute = async (ctx: Koa.Context) => {
+export const createAccountRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
   const payload = ctx.request.body as IClientCreateAccountPayload
 
   /** Validation */

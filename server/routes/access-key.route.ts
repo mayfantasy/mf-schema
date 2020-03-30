@@ -9,8 +9,10 @@ import {
 import { createAccessKeyPayloadSchema } from '../validators/access-key.validator'
 import { validatePayload } from '../validators'
 
-export const createAccessKeyRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const createAccessKeyRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const payload = ctx.request.body as ICreateAccessKeyPayload
 
   /** Validation */
@@ -27,16 +29,20 @@ export const createAccessKeyRoute = async (ctx: Koa.Context) => {
   }
 }
 
-export const getAccessKeyListRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const getAccessKeyListRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const accessKeys = await getAccessKeyList(auth.api_key)
   ctx.body = {
     result: accessKeys
   }
 }
 
-export const deleteAccessKeyRoute = async (ctx: Koa.Context) => {
-  const auth = (await getAuth(ctx)) || ({} as any)
+export const deleteAccessKeyRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
   const id = ctx.params.id
   const accessKey = await deleteAccessKeyById(auth.api_key, auth.account_id, id)
 

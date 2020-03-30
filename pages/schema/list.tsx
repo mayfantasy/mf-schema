@@ -13,6 +13,9 @@ import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { pageRoutes } from '../../navigation/page-routes'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
+import TierLink from '../../components/TierLink/TierLink'
 
 const columns = [
   {
@@ -21,9 +24,12 @@ const columns = [
     key: 'name',
     render: (name: string, schema: ISchema) => (
       <div>
-        <Link href={`${pageRoutes.schemaDetail}?id=${schema.id}`}>
-          <a target="_blank">{name}</a>
-        </Link>
+        <TierLink
+          href={`${pageRoutes.schemaDetail}?id=${schema.id}`}
+          tier={tierMap.GET_SCHEMA_BY_ID.tier}
+        >
+          {name}
+        </TierLink>
         <br />
         <small>{schema.handle}</small>
       </div>
@@ -34,9 +40,12 @@ const columns = [
     dataIndex: 'collection',
     render: (collection: ICollection) => (
       <div>
-        <Link href={`${pageRoutes.collectionDetail}?id=${collection.id}`}>
+        <TierLink
+          href={`${pageRoutes.collectionDetail}?id=${collection.id}`}
+          tier={tierMap.GET_COLLECTION_BY_ID.tier}
+        >
           {collection.name}
-        </Link>
+        </TierLink>
       </div>
     )
   },
@@ -110,11 +119,13 @@ const SchemaListPage = () => {
       <PageHeader
         name="Schemas"
         buttons={
-          <Link href={pageRoutes.createSchema}>
-            <Button type="primary">
-              <PlusCircleOutlined /> Add Schema
-            </Button>
-          </Link>
+          <TierWrapper tier={tierMap.CREATE_SCHEMA.tier}>
+            <Link href={pageRoutes.createSchema}>
+              <Button type="primary">
+                <PlusCircleOutlined /> Add Schema
+              </Button>
+            </Link>
+          </TierWrapper>
         }
       />
       <br />

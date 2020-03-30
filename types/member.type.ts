@@ -23,9 +23,3 @@ export interface IUpdateMemberPayload {
   active: boolean
   password: string
 }
-
-export interface IMemberTier {
-  name: string
-  tier: number
-  key: string
-}

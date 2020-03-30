@@ -11,6 +11,9 @@ import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import TierLink from '../../components/TierLink/TierLink'
+import { tierMap } from '../../helpers/tier.helper'
+import TierWrapper from '../../components/TierButton/TierButton'
 
 const columns: ColumnProps<ICollection>[] = [
   {
@@ -19,9 +22,12 @@ const columns: ColumnProps<ICollection>[] = [
     render: (collection: ICollection) => {
       return (
         <div>
-          <Link href={`${pageRoutes.collectionDetail}?id=${collection.id}`}>
-            <a>{collection.name}</a>
-          </Link>
+          <TierLink
+            tier={tierMap.GET_COLLECTION_BY_ID.tier}
+            href={`${pageRoutes.collectionDetail}?id=${collection.id}`}
+          >
+            {collection.name}
+          </TierLink>
         </div>
       )
     }
@@ -74,11 +80,13 @@ const CollectionListPage = () => {
       <PageHeader
         name="Collections"
         buttons={
-          <Link href={pageRoutes.createCollection}>
-            <Button type="primary">
-              <PlusCircleOutlined /> Add Collection
-            </Button>
-          </Link>
+          <TierWrapper tier={tierMap.CREATE_COLLECTION.tier}>
+            <Link href={pageRoutes.createCollection}>
+              <Button type="primary">
+                <PlusCircleOutlined /> Add Collection
+              </Button>
+            </Link>
+          </TierWrapper>
         }
       />
       {collectionStatus.error && (

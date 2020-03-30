@@ -10,6 +10,8 @@ import { Typography, Row, Alert } from 'antd'
 import ShortcutCard from '../ShortcutCard/ShortcutCard'
 import { pageRoutes } from '../../navigation/page-routes'
 import Loading from '../Loading/Loading'
+import TierWrapper from '../TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
 
 interface IProps {}
 
@@ -111,11 +113,13 @@ const ShortcutList = (props: IProps) => {
                 />
               )
             })}
-            <ShortcutCard
-              isAdd={true}
-              creating={createShortcutStatus.loading}
-              createShortcut={createShortcut}
-            />
+            <TierWrapper tier={tierMap.CREATE_SHORTCUT.tier}>
+              <ShortcutCard
+                isAdd={true}
+                creating={createShortcutStatus.loading}
+                createShortcut={createShortcut}
+              />
+            </TierWrapper>
           </Row>
         </div>
       )}
