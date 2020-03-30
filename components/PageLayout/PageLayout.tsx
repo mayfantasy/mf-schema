@@ -86,11 +86,19 @@ const PageLayout = (props: IProps) => {
         body {
           // font-family: 'Rajdhani', sans-serif;
           font-family: 'Roboto', sans-serif;
+          a {
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
 
         .mf-page-layout {
           li.ant-menu-item:first-child {
             margin-top: 0;
+          }
+          .ant-menu-item-selected > a {
+            color: white;
           }
           .header {
             display: flex;
@@ -114,7 +122,7 @@ const PageLayout = (props: IProps) => {
           <div className="logo">
             <Link href="/">
               <a>
-                <img src="/logo_monfent.png" />
+                <img src="/logo-monfent.png" />
               </a>
             </Link>
           </div>
@@ -148,12 +156,15 @@ const PageLayout = (props: IProps) => {
         <Layout>
           <Sider
             width={user ? 200 : 0}
-            style={{ background: '#000', height: 'auto' }}
-            theme="dark"
+            style={{
+              // background: '#000',
+              height: 'auto'
+            }}
+            // theme="dark"
           >
             <Menu
               mode="inline"
-              theme="dark"
+              // theme="dark"
               style={{ height: '100%', borderRight: 0 }}
               defaultSelectedKeys={getDefaultSelectedKeys()}
               defaultOpenKeys={sideNavItems

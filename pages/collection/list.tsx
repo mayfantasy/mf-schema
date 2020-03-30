@@ -99,6 +99,8 @@ const CollectionListPage = () => {
           <Loading />
         ) : (
           <Table
+            size="small"
+            bordered
             pagination={false}
             dataSource={collections}
             columns={columns}

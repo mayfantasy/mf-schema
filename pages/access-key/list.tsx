@@ -134,7 +134,13 @@ const AccessKeyListPage = () => {
         {accessKeyStatus.loading || deleteAccessKeyStatus.loading ? (
           <Loading />
         ) : (
-          <Table pagination={false} dataSource={accessKeys} columns={columns} />
+          <Table
+            size="small"
+            bordered
+            pagination={false}
+            dataSource={accessKeys}
+            columns={columns}
+          />
         )}
       </div>
     </PageLayout>

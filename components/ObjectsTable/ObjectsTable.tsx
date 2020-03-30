@@ -63,6 +63,8 @@ const ObjectsTable = (props: IProps) => {
         </Badge>
       </div>
       <Table
+        size="small"
+        bordered
         rowSelection={rowSelection}
         dataSource={objectList}
         pagination={false}

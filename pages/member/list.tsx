@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
 import { AxiosError } from 'axios'
 import Loading from '../../components/Loading/Loading'
-import { Alert, Table, Button, Row } from 'antd'
+import { Alert, Table, Button, Row, Tag } from 'antd'
 import { RequestStatus } from '../../helpers/request'
 import {
   getMemberListRequest,
@@ -78,13 +78,13 @@ const MemberListPage = () => {
       )
     },
     {
-      title: 'Active',
+      title: 'Status',
       key: 'status',
       render: (member: IMember) =>
         member.active ? (
-          <CheckCircleOutlined style={{ color: 'green' }} />
+          <Tag color="green">Active</Tag>
         ) : (
-          <CloseCircleOutlined style={{ color: 'red' }} />
+          <Tag color="red">Inactive</Tag>
         )
     }
 
@@ -139,7 +139,7 @@ const MemberListPage = () => {
         {createMemberStatus.loading ? (
           <Loading />
         ) : (
-          <Table dataSource={members} columns={columns} />
+          <Table size="small" bordered dataSource={members} columns={columns} />
         )}
       </div>
     </PageLayout>

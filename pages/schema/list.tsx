@@ -165,7 +165,13 @@ const SchemaListPage = () => {
         {schemaStatus.loading ? (
           <Loading />
         ) : (
-          <Table pagination={false} dataSource={schemas} columns={columns} />
+          <Table
+            size="small"
+            bordered
+            pagination={false}
+            dataSource={schemas}
+            columns={columns}
+          />
         )}
       </div>
     </PageLayout>
