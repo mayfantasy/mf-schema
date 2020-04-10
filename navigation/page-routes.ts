@@ -1,7 +1,7 @@
 export const pageRoutes = {
   home: '/',
   login: '/login',
-  register: 'register',
+  register: '/register',
   createAccessKey: '/access-key/create',
   listAccessKeys: '/access-key/list',
   createCollection: '/collection/create',

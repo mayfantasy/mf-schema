@@ -28,22 +28,31 @@ const PageLayout = (props: IProps) => {
   const { children, breadCrumb } = props
   const [user, setUser] = useState<IBasicAccountInfo | null>(null)
   const router = useRouter()
+
   useEffect(() => {
     if (window) {
       const token = getToken()
       if (token) {
-        loginWithTokenRequest({ token })
-          .then((res) => {
-            const user = res.data.result.account
-            setUser(user)
-          })
-          .catch((e) => {
-            removeToken()
-            removeUser()
-            if (router.pathname !== pageRoutes.register) {
-              router.push(pageRoutes.login)
-            }
-          })
+        if (
+          router.pathname !== pageRoutes.register &&
+          router.pathname !== pageRoutes.login
+        ) {
+          loginWithTokenRequest({ token })
+            .then((res) => {
+              const user = res.data.result.account
+              setUser(user)
+            })
+            .catch((e) => {
+              removeToken()
+              removeUser()
+              if (router.pathname !== pageRoutes.register) {
+                router.push(pageRoutes.login)
+              }
+            })
+        } else {
+          removeToken()
+          removeUser()
+        }
       }
     } else {
       console.log('Window not found.')
