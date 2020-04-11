@@ -24,7 +24,7 @@ const columns: ColumnProps<ICollection>[] = [
         <div>
           <TierLink
             tier={tierMap.GET_COLLECTION_BY_ID.tier}
-            href={`${pageRoutes.collectionDetail}?id=${collection.id}`}
+            href={`${pageRoutes.updateCollection}?id=${collection.id}`}
           >
             {collection.name}
           </TierLink>

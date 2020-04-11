@@ -15,7 +15,11 @@ import {
   CaretUpOutlined,
   CaretDownOutlined
 } from '@ant-design/icons'
-import { ISchemaFieldDef, ESchemaFieldType } from '../../types/schema.type'
+import {
+  ISchemaFieldDef,
+  ESchemaFieldType,
+  mapSchemaFieldTypeKeyToName
+} from '../../types/schema.type'
 import FormFieldLabel from '../FormFieldLabel/FormFieldLabel'
 import SchemaKeyField from '../SchemaKeyField/SchemaKeyField'
 import { enumToKeyArray } from '../../helpers/utils.helper'
@@ -196,14 +200,23 @@ const SchemaField = (props: IProps) => {
                     >
                       <Select placeholder="Select a type">
                         {enumToKeyArray(ESchemaFieldType).map((t) => (
-                          <Select.Option value={t} key={t}>
-                            {t}
+                          <Select.Option
+                            value={t}
+                            key={t}
+                            onChange={() => {
+                              form.resetFields()
+                            }}
+                          >
+                            {mapSchemaFieldTypeKeyToName(t as ESchemaFieldType)}
                           </Select.Option>
                         ))}
                       </Select>
                     </Form.Item>
                   ) : (
-                    <SchemaKeyField name="Type" value={def.type} />
+                    <SchemaKeyField
+                      name="Type"
+                      value={mapSchemaFieldTypeKeyToName(def.type)}
+                    />
                   )}
                 </Col>
               </Row>
@@ -300,20 +313,33 @@ const SchemaField = (props: IProps) => {
                 </Col> */}
 
                 {/* Show on list */}
-                <Col span={12}>
-                  {editMode ? (
-                    <Form.Item
-                      label={<FormFieldLabel>Show in List ?</FormFieldLabel>}
-                      key="show"
-                      name="show"
-                      valuePropName="checked"
-                    >
-                      <Checkbox />
-                    </Form.Item>
-                  ) : (
-                    <SchemaKeyField name="Show in Table ?" value={def.show} />
-                  )}
-                </Col>
+                <Form.Item noStyle shouldUpdate>
+                  {() => {
+                    const isPassword =
+                      form.getFieldValue('type') === ESchemaFieldType.password
+                    return (
+                      <Col span={12}>
+                        {editMode ? (
+                          <Form.Item
+                            label={
+                              <FormFieldLabel>Show in List ?</FormFieldLabel>
+                            }
+                            key="show"
+                            name="show"
+                            valuePropName="checked"
+                          >
+                            <Checkbox disabled={isPassword} />
+                          </Form.Item>
+                        ) : (
+                          <SchemaKeyField
+                            name="Show in Table ?"
+                            value={isPassword ? false : def.show}
+                          />
+                        )}
+                      </Col>
+                    )
+                  }}
+                </Form.Item>
               </Row>
               <br />
               {/* Options */}

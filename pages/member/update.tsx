@@ -294,15 +294,15 @@ const UpdateMemberPage = () => {
               </Form.Item>
             </Col>
             <Col>
-              <Popconfirm
-                title="Are you sure？"
-                onConfirm={() => deleteMember(currentMember.id)}
-                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-              >
-                <TierWrapper tier={tierMap.DELETE_MEMBER.tier}>
+              <TierWrapper tier={tierMap.DELETE_MEMBER.tier}>
+                <Popconfirm
+                  title="Are you sure？"
+                  onConfirm={() => deleteMember(currentMember.id)}
+                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                >
                   <Button type="danger">Delete Member</Button>
-                </TierWrapper>
-              </Popconfirm>
+                </Popconfirm>
+              </TierWrapper>
             </Col>
           </Row>
         </Form>

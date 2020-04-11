@@ -129,12 +129,12 @@ const StorageImagesSelector = (props: IProps) => {
         onOk={onOk}
         width={800}
         footer={[
-          <Popconfirm
-            title="Deleting image from library can not be undone, are you sure？"
-            onConfirm={onDelete}
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          >
-            <TierWrapper tier={tierMap.DELETE_IMAGE.tier}>
+          <TierWrapper tier={tierMap.DELETE_IMAGE.tier}>
+            <Popconfirm
+              title="Deleting image from library can not be undone, are you sure？"
+              onConfirm={onDelete}
+              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            >
               <Button
                 style={{ marginRight: '8px' }}
                 key="delete"
@@ -144,8 +144,8 @@ const StorageImagesSelector = (props: IProps) => {
               >
                 Delete this image
               </Button>
-            </TierWrapper>
-          </Popconfirm>,
+            </Popconfirm>
+          </TierWrapper>,
           <Button key="back" onClick={onCancel}>
             Cancel
           </Button>,

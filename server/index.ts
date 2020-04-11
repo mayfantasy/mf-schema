@@ -14,14 +14,17 @@ import { loginRoute, loginWithTokenRoute } from './routes/auth.route'
 import {
   createCollectionRoute,
   getCollectionListRoute,
-  getCollectionByIdRoute
+  getCollectionByIdRoute,
+  deleteCollectionByIdRoute,
+  updateCollectionRoute
 } from './routes/collection.route'
 import {
   createSchemaRoute,
   getSchemaListRoute,
   getSchemaByIdRoute,
   updateSchemaRoute,
-  getSchemaByHandleRoute
+  getSchemaByHandleRoute,
+  deleteSchemaByIdRoute
 } from './routes/schema.route'
 import {
   createObjectRoute,
@@ -126,6 +129,14 @@ app.prepare().then(() => {
     '/api/collection/get/:id',
     getCollectionByIdRoute(tierMap.GET_COLLECTION_BY_ID.tier)
   )
+  router.put(
+    '/api/collection/update',
+    updateCollectionRoute(tierMap.UPDATE_COLLECTION_BY_ID.tier)
+  )
+  router.delete(
+    '/api/collection/delete/:id',
+    deleteCollectionByIdRoute(tierMap.DELETE_COLLECTION_BY_ID.tier)
+  )
 
   // Schema
   router.post(
@@ -143,6 +154,10 @@ app.prepare().then(() => {
   router.get(
     '/api/schema/get/:id',
     getSchemaByIdRoute(tierMap.GET_SCHEMA_BY_ID.tier)
+  )
+  router.delete(
+    '/api/schema/delete/:id',
+    deleteSchemaByIdRoute(tierMap.DELETE_SCHEMA_BY_ID.tier)
   )
   router.get(
     '/api/schema/get/handle/:handle',

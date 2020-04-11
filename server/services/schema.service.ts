@@ -114,6 +114,17 @@ export const getSchemaById = async (api_key: string, id: string) => {
   }
 }
 
+export const deleteSchemaById = async (api_key: string, id: string) => {
+  const clientDB = client(api_key)
+  const schema: any = await clientDB.query(
+    q.Delete(q.Ref(q.Collection('schema'), id))
+  )
+
+  return {
+    id: schema.ref.id
+  }
+}
+
 export const getSchemaByHandle = async (api_key: string, handle: string) => {
   const clientDB = client(api_key)
   const schema: any = await clientDB.query(

@@ -389,15 +389,15 @@ const UserUpdatePage = () => {
           >
             Submit
           </Button>
-          <Popconfirm
-            title="Are you sure？"
-            onConfirm={() => deleteUser(router.query.id as string)}
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          >
-            <TierWrapper tier={tierMap.DELETE_USER.tier}>
+          <TierWrapper tier={tierMap.DELETE_USER.tier}>
+            <Popconfirm
+              title="Are you sure？"
+              onConfirm={() => deleteUser(router.query.id as string)}
+              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            >
               <Button type="danger">Delete</Button>
-            </TierWrapper>
-          </Popconfirm>
+            </Popconfirm>
+          </TierWrapper>
         </Row>
       </div>
     )

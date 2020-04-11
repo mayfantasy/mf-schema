@@ -41,7 +41,7 @@ const columns = [
     render: (collection: ICollection) => (
       <div>
         <TierLink
-          href={`${pageRoutes.collectionDetail}?id=${collection.id}`}
+          href={`${pageRoutes.updateCollection}?id=${collection.id}`}
           tier={tierMap.GET_COLLECTION_BY_ID.tier}
         >
           {collection.name}

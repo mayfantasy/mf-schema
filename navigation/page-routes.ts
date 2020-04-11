@@ -7,7 +7,6 @@ export const pageRoutes = {
   createCollection: '/collection/create',
   updateCollection: '/collection/update',
   listCollections: '/collection/list',
-  collectionDetail: '/collection/detail',
   updateObject: '/object/update',
   createSchema: '/schema/create',
   createSchemaFromJson: '/schema/create-from-json',

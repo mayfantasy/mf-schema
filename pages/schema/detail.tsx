@@ -203,6 +203,9 @@ const SchemaListPage = () => {
           case ESchemaFieldType.string:
             value = ''
             break
+          case ESchemaFieldType.password:
+            value = ''
+            break
           case ESchemaFieldType.number:
             value = 0
             break
@@ -248,6 +251,9 @@ const SchemaListPage = () => {
       let value: any
       switch (type) {
         case ESchemaFieldType.string:
+          value = e.target.value
+          break
+        case ESchemaFieldType.password:
           value = e.target.value
           break
         case ESchemaFieldType.number:
@@ -513,6 +519,15 @@ const SchemaListPage = () => {
                     case ESchemaFieldType.string:
                       input = (
                         <Input
+                          style={{ width: '100%' }}
+                          value={value}
+                          onChange={(e: any) => handleFieldChange(e, type, key)}
+                        />
+                      )
+                      break
+                    case ESchemaFieldType.password:
+                      input = (
+                        <Input.Password
                           style={{ width: '100%' }}
                           value={value}
                           onChange={(e: any) => handleFieldChange(e, type, key)}

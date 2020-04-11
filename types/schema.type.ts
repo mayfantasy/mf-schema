@@ -6,6 +6,7 @@ interface IKeyValue {
 }
 export enum ESchemaFieldType {
   string = 'string',
+  password = 'password',
   number = 'number',
   boolean = 'boolean',
   image = 'image',
@@ -18,6 +19,36 @@ export enum ESchemaFieldType {
   string_single_select = 'string_single_select',
   string_multi_select = 'string_multi_select'
 }
+
+export const mapSchemaFieldTypeKeyToName = (key: ESchemaFieldType): string => {
+  switch (key) {
+    case ESchemaFieldType.string:
+      return 'String'
+    case ESchemaFieldType.password:
+      return 'Password'
+    case ESchemaFieldType.number:
+      return 'Number'
+    case ESchemaFieldType.boolean:
+      return 'Boolean'
+    case ESchemaFieldType.image:
+      return 'Image'
+    case ESchemaFieldType.textarea:
+      return 'Text Box'
+    case ESchemaFieldType.datepicker:
+      return 'Date'
+    case ESchemaFieldType.string_array:
+      return 'String List'
+    case ESchemaFieldType.rich_text:
+      return 'Article'
+    case ESchemaFieldType.string_single_select:
+      return 'Single Select'
+    case ESchemaFieldType.string_multi_select:
+      return 'Multiple Select'
+    default:
+      return 'String'
+  }
+}
+
 export interface ISchemaFieldDef {
   type: ESchemaFieldType
   options?: string[]

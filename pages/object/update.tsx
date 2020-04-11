@@ -275,6 +275,9 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.string:
         value = e.target.value
         break
+      case ESchemaFieldType.password:
+        value = e.target.value
+        break
       case ESchemaFieldType.number:
         value = e
         break
@@ -326,6 +329,15 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.string:
         input = (
           <Input
+            style={{ width: '100%' }}
+            value={value}
+            onChange={(e: any) => handleFieldChange(e, type, key)}
+          />
+        )
+        break
+      case ESchemaFieldType.password:
+        input = (
+          <Input.Password
             style={{ width: '100%' }}
             value={value}
             onChange={(e: any) => handleFieldChange(e, type, key)}
@@ -618,21 +630,21 @@ Object ID: ${currentObject.id}`}
         <br />
         <br />
         <div>
-          <Popconfirm
-            title="Are you sure？"
-            onConfirm={() =>
-              deleteCurrentObject(
-                router.query.collection_handle as string,
-                router.query.schema_handle as string,
-                router.query.id as string
-              )
-            }
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-          >
-            <TierWrapper tier={tierMap.DELETE_OBJECT_BY_ID.tier}>
+          <TierWrapper tier={tierMap.DELETE_OBJECT_BY_ID.tier}>
+            <Popconfirm
+              title="Are you sure？"
+              onConfirm={() =>
+                deleteCurrentObject(
+                  router.query.collection_handle as string,
+                  router.query.schema_handle as string,
+                  router.query.id as string
+                )
+              }
+              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            >
               <Button type="danger">Delete Object</Button>
-            </TierWrapper>
-          </Popconfirm>
+            </Popconfirm>
+          </TierWrapper>
         </div>
       </Col>
       {!hideUsers && (

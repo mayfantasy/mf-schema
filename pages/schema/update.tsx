@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import PageLayout from '../../components/PageLayout/PageLayout'
-import { Form, Button, Alert, Row, Col, Input } from 'antd'
+import {
+  Form,
+  Button,
+  Alert,
+  Row,
+  Col,
+  Input,
+  Popconfirm,
+  message,
+  Typography
+} from 'antd'
 import Loading from '../../components/Loading/Loading'
 import {
   ISchemaFieldDef,
@@ -10,7 +20,8 @@ import {
 } from '../../types/schema.type'
 import {
   updateSchemaRequest,
-  getSchemaByIdRequest
+  getSchemaByIdRequest,
+  deleteSchemaByIdRequest
 } from '../../requests/schema.request'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
@@ -21,6 +32,9 @@ import Link from 'next/link'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { useForm } from 'antd/lib/form/util'
 import SchemaField from '../../components/shema/SchemaField'
+import TierWrapper from '../../components/TierButton/TierButton'
+import { tierMap } from '../../helpers/tier.helper'
+import { QuestionCircleOutlined } from '@ant-design/icons'
 
 interface IProps {}
 
@@ -83,6 +97,29 @@ const UpdateSchemaPage = (props: IProps) => {
       })
       .catch((err: AxiosError) => {
         setUpdateSchemaStatus(updateSchemaRequestStatus.error(err))
+      })
+  }
+
+  /**
+   * || ===============
+   * || Delete schema
+   */
+  const deleteSchemaRequestStatus = new RequestStatus()
+  const [deleteSchemaStatus, setDeleteSchemaStatus] = useState(
+    deleteSchemaRequestStatus.status
+  )
+  const deleteSchema = () => {
+    // Delete schema
+    console.log('sdf')
+    setDeleteSchemaStatus(deleteSchemaRequestStatus.loading())
+    deleteSchemaByIdRequest(router.query.id as string)
+      .then(() => {
+        setDeleteSchemaStatus(deleteSchemaRequestStatus.success())
+        router.push(pageRoutes.listSchemas)
+        message.success('Schema deleted successfully.')
+      })
+      .catch((err: AxiosError) => {
+        setDeleteSchemaStatus(deleteSchemaRequestStatus.error(err))
       })
   }
 
@@ -171,7 +208,6 @@ const UpdateSchemaPage = (props: IProps) => {
       ...currentSchema,
       def: newDef
     })
-    console.log(index)
   }
 
   const onEditDef = (key: string | null) => {
@@ -196,7 +232,6 @@ const UpdateSchemaPage = (props: IProps) => {
       ...currentSchema,
       def: newDef
     })
-    console.log(currentSchema)
     setActiveDefKey(null)
   }
 
@@ -270,8 +305,15 @@ const UpdateSchemaPage = (props: IProps) => {
         </>
       )}
 
+      {deleteSchemaStatus.error && (
+        <>
+          <Alert message={deleteSchemaStatus.error} type="error" closable />
+          <br />
+        </>
+      )}
+
       <div style={{ height: '70%' }}>
-        {updateSchemaStatus.loading ? (
+        {updateSchemaStatus.loading || deleteSchemaStatus.loading ? (
           <Loading />
         ) : (
           <div style={{ width: '100%', maxWidth: '800px' }}>
@@ -316,7 +358,7 @@ const UpdateSchemaPage = (props: IProps) => {
             {/* Meta */}
             <div>
               <Link
-                href={`${pageRoutes.collectionDetail}?id=${currentSchema.collection.id}`}
+                href={`${pageRoutes.updateCollection}?id=${currentSchema.collection.id}`}
               >
                 <a>{currentSchema.collection.name}</a>
               </Link>
@@ -328,7 +370,6 @@ const UpdateSchemaPage = (props: IProps) => {
               layout="vertical"
               form={metaForm}
               initialValues={initialMetaFormValues}
-              onFinish={(values: any) => console.log(values)}
             >
               <Row gutter={2}>
                 <Col span={12}>
@@ -435,7 +476,28 @@ const UpdateSchemaPage = (props: IProps) => {
                 }
               />
             </Form>
-            <Row justify="end">{SubmitButton}</Row>
+            <Row justify="space-between">
+              <TierWrapper tier={tierMap.DELETE_SCHEMA_BY_ID.tier}>
+                <Popconfirm
+                  title={
+                    <Typography.Text type="danger">
+                      This schema will be permernently removed,
+                      <br />
+                      all the objects under this schema will be removed as the
+                      sametime,
+                      <br />
+                      are you sure?
+                    </Typography.Text>
+                  }
+                  onConfirm={() => deleteSchema()}
+                  icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                >
+                  <Button type="danger">Delete</Button>
+                </Popconfirm>
+              </TierWrapper>
+
+              {SubmitButton}
+            </Row>
             <br />
             <br />
             <br />

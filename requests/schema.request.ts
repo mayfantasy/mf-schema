@@ -23,6 +23,9 @@ export const getSchemaListRequest = (query: ISchemaListQuery) => {
 export const getSchemaByIdRequest = (id: string) => {
   return api.get(`/schema/get/${id}`)
 }
+export const deleteSchemaByIdRequest = (id: string) => {
+  return api.delete(`/schema/delete/${id}`)
+}
 
 export const getSchemaByHandleRequest = (handle: string) => {
   return api.get(`/schema/get/handle/${handle}`)

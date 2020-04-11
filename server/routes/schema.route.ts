@@ -13,7 +13,8 @@ import {
   getSchemaList,
   getSchemaById,
   updateSchema,
-  getSchemaByHandle
+  getSchemaByHandle,
+  deleteSchemaById
 } from '../services/schema.service'
 import { getAuth } from './helper'
 import { validatePayload } from '../validators'
@@ -74,6 +75,22 @@ export const getSchemaByIdRoute = (tier: number) => async (
 
   if (id) {
     const schema = await getSchemaById(auth.api_key, id)
+    ctx.body = {
+      result: schema
+    }
+  } else {
+    throw new Error('Invalid Schema ID.')
+  }
+}
+
+export const deleteSchemaByIdRoute = (tier: number) => async (
+  ctx: Koa.Context
+) => {
+  const auth = (await getAuth(ctx, tier)) || ({} as any)
+  const { id } = ctx.params
+
+  if (id) {
+    const schema = await deleteSchemaById(auth.api_key, id)
     ctx.body = {
       result: schema
     }

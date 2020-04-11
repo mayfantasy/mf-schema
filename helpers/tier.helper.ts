@@ -49,11 +49,14 @@ export const tierMap = {
   CREATE_COLLECTION: allTiers.admin,
   GET_COLLECTION_LIST: allTiers.writer,
   GET_COLLECTION_BY_ID: allTiers.admin,
+  UPDATE_COLLECTION_BY_ID: allTiers.admin,
+  DELETE_COLLECTION_BY_ID: allTiers.admin,
   // Schema
   CREATE_SCHEMA: allTiers.admin,
   GET_SCHEMA_LIST: allTiers.writer,
   UPDATE_SCHEMA: allTiers.admin,
   GET_SCHEMA_BY_ID: allTiers.writer,
+  DELETE_SCHEMA_BY_ID: allTiers.admin,
   GET_SCHEMA_BY_HANDLE: allTiers.writer,
   // Storage
   UPLOAD_IMAGE: allTiers.writer,
