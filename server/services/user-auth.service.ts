@@ -123,8 +123,8 @@ export const sendRecoverEmail = async (
 ) => {
   const { email, entry_name, entry_url } = payload
 
-  const RECOVER_EMAIL_ADDRESS = env.RECOVER_EMAIL_ADDRESS
-  const RECOVER_EMAIL_PASSWORD = env.RECOVER_EMAIL_PASSWORD
+  const RECOVER_EMAIL_SENDER = env.RECOVER_EMAIL_SENDER
+  const RECOVER_EMAIL_SENDER_PASSWORD = env.RECOVER_EMAIL_SENDER_PASSWORD
 
   const recoverSignature = generateResetUserEmailJWTToken(email)
 
@@ -132,12 +132,12 @@ export const sendRecoverEmail = async (
     {
       service: 'hotmail',
       auth: {
-        user: RECOVER_EMAIL_ADDRESS,
-        pass: RECOVER_EMAIL_PASSWORD
+        user: RECOVER_EMAIL_SENDER,
+        pass: RECOVER_EMAIL_SENDER_PASSWORD
       }
     },
     {
-      from: RECOVER_EMAIL_ADDRESS,
+      from: RECOVER_EMAIL_SENDER,
       to: email,
       subject: `no-reply - ${entry_name} - Recover password`,
       html: `<p>Please click this link to reset your password:<br><a href="${entry_url}?signature=${recoverSignature}"><b>Reset Password</b></a>`
