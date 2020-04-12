@@ -321,8 +321,8 @@ const ObjectUpdatePage = () => {
     options: any[],
     name: string | null,
     grid: number | null,
-    helper: string | null,
-    helper_image: string | null
+    helper: string | null | undefined,
+    helper_image: string | null | undefined
   ) => {
     let input
     switch (type) {

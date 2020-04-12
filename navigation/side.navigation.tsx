@@ -73,6 +73,12 @@ export const sideNavItems: INavItem[] = [
         url: pageRoutes.listSchemas,
         name: 'List',
         tier: tierMap.GET_SCHEMA_LIST.tier
+      },
+      {
+        key: 'schema-store',
+        url: pageRoutes.schemaStore,
+        name: 'Store',
+        tier: tierMap.CREATE_SCHEMA.tier
       }
     ]
   },

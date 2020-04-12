@@ -54,12 +54,12 @@ export interface ISchemaFieldDef {
   options?: string[]
   key: string
   name: string
-  helper: string
-  order: number
+  helper?: string
+  order?: number
   grid: number
-  new_line: boolean
+  new_line?: boolean
   show: boolean
-  helper_image: string
+  helper_image?: string
 }
 
 /**
@@ -95,6 +95,15 @@ export interface ISchema {
   def: ISchemaFieldDef[]
   collection_id: string
   collection: ICollection
+}
+
+export interface IStoreSchema {
+  name: string
+  handle: string
+  description: string
+  description_image?: string
+  def: ISchemaFieldDef[]
+  collection_id: string
 }
 
 export interface IUpdateSchemaPayload {

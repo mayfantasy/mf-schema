@@ -53,6 +53,11 @@ const columns = [
     title: 'Description',
     dataIndex: 'description',
     key: 'description'
+  },
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id'
   }
 ]
 

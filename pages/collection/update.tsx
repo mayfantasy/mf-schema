@@ -162,6 +162,7 @@ const UpdateCollectionPage = () => {
           <PageHeader
             name={collection.name}
             sub={collection.handle}
+            description={`ID: ${collection.id}`}
             buttons={
               <Link href={`${pageRoutes.listCollections}?id=${collection.id}`}>
                 <Button>Back</Button>

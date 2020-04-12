@@ -5,7 +5,7 @@ interface IProps {
   name: string
   sub?: string
   buttons?: React.ReactNode
-  description?: string
+  description?: string | React.ReactNode
 }
 const PageHeader = (props: IProps) => {
   const { name, sub, description, buttons } = props

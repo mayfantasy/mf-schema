@@ -60,6 +60,7 @@ import {
 } from '@ant-design/icons'
 import TierWrapper from '../../components/TierButton/TierButton'
 import { tierMap } from '../../helpers/tier.helper'
+import SchemaDefinitionCollapse from '../../components/SchemaDefinitionCollapse/SchemaDefinitionCollapse'
 const CodeEditor = dynamic({
   loader: () => import('../../components/CodeEditor/CodeEditor'),
   loading: () => <Loading />,
@@ -425,7 +426,13 @@ const SchemaListPage = () => {
                   </Button>
                 </div>
               }
-              description={currentSchema.description}
+              description={
+                <div>
+                  ID: {currentSchema.id}
+                  <br />
+                  {currentSchema.description}
+                </div>
+              }
             />
           </div>
 
@@ -674,46 +681,7 @@ const SchemaListPage = () => {
         {!hideAPI && (
           <Col span={11}>
             <div style={{ padding: '0 0 0 15px' }}>
-              <Collapse bordered={false}>
-                <Collapse.Panel header="Data Definition" key="1">
-                  <Descriptions
-                    layout="vertical"
-                    bordered
-                    size="small"
-                    style={{ overflowX: 'scroll' }}
-                    column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
-                  >
-                    {currentSchema.def.map((d) => {
-                      return (
-                        <Descriptions.Item
-                          label={
-                            <div>
-                              <FormFieldLabel>{d.key}</FormFieldLabel>
-
-                              <div>
-                                <small>{d.name}</small>
-                              </div>
-                            </div>
-                          }
-                          key={d.key}
-                        >
-                          <div>{d.helper}</div>
-
-                          {d.helper_image && (
-                            <>
-                              <br />
-                              <div>
-                                <ImageViewer src={d.helper_image} />
-                              </div>
-                            </>
-                          )}
-                          <div></div>
-                        </Descriptions.Item>
-                      )
-                    })}
-                  </Descriptions>
-                </Collapse.Panel>
-              </Collapse>
+              <SchemaDefinitionCollapse defs={currentSchema.def} />
 
               <Collapse bordered={false}>
                 <Collapse.Panel header="API" key="1">

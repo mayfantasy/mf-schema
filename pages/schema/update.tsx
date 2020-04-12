@@ -350,7 +350,13 @@ const UpdateSchemaPage = (props: IProps) => {
                   )}
                 </Row>
               }
-              description={currentSchema ? currentSchema.description : ''}
+              description={
+                <div>
+                  ID: {currentSchema.id}
+                  <br />
+                  {currentSchema.description}
+                </div>
+              }
             />
             <br />
             <br />
