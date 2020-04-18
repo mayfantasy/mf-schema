@@ -46,13 +46,8 @@ const UserListPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'user',
-          name: 'User'
-        },
-        {
-          key: 'list',
-          url: pageRoutes.listUsers,
-          name: 'List'
+          key: 'users',
+          name: 'Users'
         }
       ]}
     >

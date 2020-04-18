@@ -50,27 +50,21 @@ const CreateCollectionPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'collection',
-          name: 'Collection'
+          key: 'collections',
+          name: 'Collections'
         },
         {
           key: 'create',
-          url: pageRoutes.createCollection,
           name: 'Create'
         }
       ]}
     >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '800px'
-        }}
-      >
+      <div className="w-max-800">
         <PageHeader
           name="Create Collection"
           buttons={
-            <Link href="/collection/list">
-              <Button>Back</Button>
+            <Link href={pageRoutes.listCollections}>
+              <Button>Back to List</Button>
             </Link>
           }
         />

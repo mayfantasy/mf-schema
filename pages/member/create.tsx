@@ -71,21 +71,27 @@ const CreateMemberPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'member',
-          name: 'Member',
+          key: 'members',
+          name: 'Members',
           url: pageRoutes.listMembers
         },
         {
           key: 'create',
-          url: pageRoutes.createMember,
           name: 'Create'
         }
       ]}
     >
-      <div style={{ width: '70%' }}>
+      <div className="w-max-800">
         <PageHeader
           name="Create Team Member"
           description="Create a team member with different roles"
+          buttons={
+            <>
+              <Link href={pageRoutes.listMembers}>
+                <Button>Back to List</Button>
+              </Link>
+            </>
+          }
         />
         <br />
         {createMemberStatus.error && (

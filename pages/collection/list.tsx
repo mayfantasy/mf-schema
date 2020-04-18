@@ -77,7 +77,6 @@ const CollectionListPage = () => {
         },
         {
           key: 'list',
-          url: pageRoutes.listCollections,
           name: 'List'
         }
       ]}

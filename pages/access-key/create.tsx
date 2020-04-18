@@ -11,6 +11,8 @@ import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
 import { useForm } from 'antd/lib/form/util'
 import { isFormInvalid } from '../../helpers/form.helper'
+import PageHeader from '../../components/PageHeader/PageHeader'
+import Link from 'next/link'
 
 const CreateAccessKeyPage = () => {
   /**
@@ -51,7 +53,8 @@ const CreateAccessKeyPage = () => {
       breadCrumb={[
         {
           key: 'access-key',
-          name: 'AccessKey'
+          name: 'Access Key',
+          url: pageRoutes.listAccessKeys
         },
         {
           key: 'create',
@@ -60,17 +63,29 @@ const CreateAccessKeyPage = () => {
         }
       ]}
     >
-      {accessKeyStatus.error && (
-        <Alert message={accessKeyStatus.error} type="error" closable />
-      )}
-      <br />
-      <div style={{ height: '70%' }}>
+      <div className="w-max-800">
+        {accessKeyStatus.error && (
+          <Alert message={accessKeyStatus.error} type="error" closable />
+        )}
+        <br />
+        <PageHeader
+          name="Create Access Key"
+          description="Create access key for your website or app."
+          buttons={
+            <>
+              <Link href={pageRoutes.listAccessKeys}>
+                <Button>Back to List</Button>
+              </Link>
+            </>
+          }
+        />
+        <br />
         {accessKeyStatus.loading ? (
           <Loading />
         ) : accessKeyStatus.success ? (
           <div style={{ color: 'green' }}>AccessKey created successfully.</div>
         ) : (
-          <div style={{ width: '100%', maxWidth: '800px' }}>
+          <div>
             <Form
               form={form}
               layout="vertical"

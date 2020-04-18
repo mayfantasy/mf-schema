@@ -97,13 +97,12 @@ const CreateSchemaPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
+          key: 'schemas',
           url: pageRoutes.listSchemas,
-          name: 'Schema'
+          name: 'Schemas'
         },
         {
           key: 'create',
-          url: pageRoutes.createSchema,
           name: 'Create'
         }
       ]}
@@ -254,18 +253,17 @@ const CreateSchemaPage = () => {
    */
   return layout(
     <>
-      {createSchemaStatus.error && (
-        <>
-          <Alert message={createSchemaStatus.error} type="error" closable />
-          <br />
-        </>
-      )}
-
-      <div style={{ height: '70%' }}>
+      <div className="w-max-800">
+        {createSchemaStatus.error && (
+          <>
+            <Alert message={createSchemaStatus.error} type="error" closable />
+            <br />
+          </>
+        )}
         {createSchemaStatus.loading ? (
           <Loading />
         ) : (
-          <div style={{ width: '100%', maxWidth: '800px' }}>
+          <div>
             {createSchemaStatus.success && (
               <Alert
                 message="Schema created successfully."
@@ -429,7 +427,7 @@ const CreateSchemaPage = () => {
             </Form>
 
             <br />
-            <Row justify="end">{submitButton}</Row>
+            <Row>{submitButton}</Row>
             <br />
             <br />
             <br />

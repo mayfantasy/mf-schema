@@ -24,6 +24,7 @@ const CodeEditor = dynamic({
 const UpdateSchemaFromJsonPage = () => {
   const [error, setError] = useState('')
   const [currentSchemaJSON, setCurrentSchemaJSON] = useState<string>('')
+  const [currentSchema, setCurrentSchema] = useState<ISchema | null>(null)
 
   /**
    * ||========================
@@ -73,6 +74,7 @@ const UpdateSchemaFromJsonPage = () => {
       .then((res) => {
         setGetCurrentSchemaStatus(getCurrentSchemaReq.success())
         const data = res.data.result
+        setCurrentSchema(data)
         setCurrentSchemaJSON(JSON.stringify(data, null, ' '))
       })
       .catch((err) => {
@@ -93,13 +95,17 @@ const UpdateSchemaFromJsonPage = () => {
       <PageLayout
         breadCrumb={[
           {
-            key: 'schema',
+            key: 'schemas',
             url: pageRoutes.listSchemas,
-            name: 'Schema'
+            name: 'Schemas'
+          },
+          {
+            key: 'detail',
+            name: currentSchema?.name,
+            url: `${pageRoutes.schemaDetail}?id=${currentSchema?.id}`
           },
           {
             key: 'update-schema-from-json',
-            url: pageRoutes.updateSchemaFromJson,
             name: 'Update From JSON'
           }
         ]}
@@ -124,7 +130,7 @@ const UpdateSchemaFromJsonPage = () => {
   }
 
   return layout(
-    <div style={{ width: '70%' }}>
+    <div className="w-max-800">
       {updateSchemaStatus.error && (
         <Alert
           message={updateSchemaStatus.error}
@@ -152,7 +158,7 @@ const UpdateSchemaFromJsonPage = () => {
         {updateSchemaStatus.loading ? (
           <Loading />
         ) : (
-          <div style={{ width: '100%', maxWidth: '800px' }}>
+          <div>
             {updateSchemaStatus.success && (
               <>
                 <Alert message="Schema updated successfully." type="success" />

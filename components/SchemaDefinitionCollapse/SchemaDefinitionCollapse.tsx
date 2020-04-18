@@ -5,12 +5,13 @@ import FormFieldLabel from '../FormFieldLabel/FormFieldLabel'
 
 interface IProps {
   defs: ISchemaFieldDef[]
+  open?: boolean
 }
 
 const SchemaDefinitionCollapse = (props: IProps) => {
-  const { defs } = props
+  const { defs, open } = props
   return (
-    <Collapse activeKey="1" bordered={false}>
+    <Collapse defaultActiveKey={open ? '1' : undefined} bordered={false}>
       <Collapse.Panel header="Data Definition" key="1">
         <Descriptions
           layout="vertical"

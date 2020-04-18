@@ -50,18 +50,17 @@ const CreateSchemaFromJsonPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
+          key: 'schemas',
           url: pageRoutes.listSchemas,
-          name: 'Schema'
+          name: 'Schemas'
         },
         {
           key: 'create-schema-from-json',
-          url: pageRoutes.createSchemaFromJson,
           name: 'Create From JSON'
         }
       ]}
     >
-      <div style={{ width: '70%' }}>
+      <div className="w-max-800">
         {schemaStatus.error && (
           <Alert
             message={schemaStatus.error}
@@ -75,7 +74,7 @@ const CreateSchemaFromJsonPage = () => {
         <div>
           <PageHeader
             name="Create Schema from JSON"
-            description="If you are copying from other schema, you must change the schema_handle field."
+            description="If you are copying from other schema, please udpate the schema_handle field."
           />
         </div>
         <br />
@@ -85,7 +84,7 @@ const CreateSchemaFromJsonPage = () => {
           ) : schemaStatus.success ? (
             <div style={{ color: 'green' }}>Schema created successfully.</div>
           ) : (
-            <div style={{ width: '100%', maxWidth: '800px' }}>
+            <div>
               <CodeEditor
                 value={json}
                 onChange={(value: string) => {

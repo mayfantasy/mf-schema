@@ -23,6 +23,7 @@ import { pageRoutes } from '../../navigation/page-routes'
 import { useForm } from 'antd/lib/form/util'
 import { confirmPasswordRule, isFormInvalid } from '../../helpers/form.helper'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import Link from 'next/link'
 
 const CreateUserPage = () => {
   /**
@@ -66,17 +67,17 @@ const CreateUserPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'user',
-          name: 'User'
+          key: 'users',
+          name: 'Users',
+          url: pageRoutes.listUsers
         },
         {
           key: 'create',
-          url: pageRoutes.createUser,
           name: 'Create'
         }
       ]}
     >
-      <div style={{ height: '70%' }}>
+      <div className="w-max-800">
         {createUserStatus.error && (
           <>
             <Alert message={createUserStatus.error} type="error" closable />
@@ -86,6 +87,13 @@ const CreateUserPage = () => {
         <PageHeader
           name="Create User"
           description="Create user for your website or app."
+          buttons={
+            <>
+              <Link href={pageRoutes.listUsers}>
+                <Button>Back to List</Button>
+              </Link>
+            </>
+          }
         />
         <br />
         {createUserStatus.loading ? (
@@ -93,40 +101,47 @@ const CreateUserPage = () => {
         ) : createUserStatus.success ? (
           <div style={{ color: 'green' }}>User created successfully.</div>
         ) : (
-          <div style={{ width: '100%', maxWidth: '800px' }}>
+          <div>
             <Form
               layout="vertical"
               form={form}
               onFinish={(values) => onFinish(values as ICreateUserPayload)}
             >
-              <Form.Item
-                label="E-mail"
-                name="email"
-                rules={[
-                  {
-                    type: 'email',
-                    message: 'The input is not valid E-mail!'
-                  },
-                  {
-                    required: true,
-                    message: 'Please input your E-mail!'
-                  }
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input the Username'
-                  }
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              <Row gutter={2}>
+                <Col span={12}>
+                  <Form.Item
+                    label="E-mail"
+                    name="email"
+                    rules={[
+                      {
+                        type: 'email',
+                        message: 'The input is not valid E-mail!'
+                      },
+                      {
+                        required: true,
+                        message: 'Please input your E-mail!'
+                      }
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    label="Username"
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input the Username'
+                      }
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+
               <Row gutter={2}>
                 <Col span={12}>
                   <Form.Item
@@ -213,6 +228,7 @@ const CreateUserPage = () => {
                 </Col>
               </Row>
 
+              <br />
               <Form.Item shouldUpdate>
                 {() => (
                   <Button

@@ -159,13 +159,13 @@ const SchemaListPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
+          key: 'schemas',
           url: pageRoutes.listSchemas,
-          name: 'Schema'
+          name: 'Schemas'
         },
         {
           key: 'detail',
-          name: 'Detail'
+          name: currentSchema?.name
         }
       ]}
     >

@@ -131,13 +131,17 @@ const UpdateSchemaPage = (props: IProps) => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
+          key: 'schemas',
           url: pageRoutes.listSchemas,
-          name: 'Schema'
+          name: 'Schemas'
+        },
+        {
+          key: 'detail',
+          name: currentSchema?.name,
+          url: `${pageRoutes.schemaDetail}?id=${currentSchema?.id}`
         },
         {
           key: 'edit',
-          url: pageRoutes.updateSchema,
           name: 'Edit'
         }
       ]}
@@ -298,25 +302,24 @@ const UpdateSchemaPage = (props: IProps) => {
    */
   return layout(
     <>
-      {updateSchemaStatus.error && (
-        <>
-          <Alert message={updateSchemaStatus.error} type="error" closable />
-          <br />
-        </>
-      )}
+      <div className="w-max-800">
+        {updateSchemaStatus.error && (
+          <>
+            <Alert message={updateSchemaStatus.error} type="error" closable />
+            <br />
+          </>
+        )}
 
-      {deleteSchemaStatus.error && (
-        <>
-          <Alert message={deleteSchemaStatus.error} type="error" closable />
-          <br />
-        </>
-      )}
-
-      <div style={{ height: '70%' }}>
+        {deleteSchemaStatus.error && (
+          <>
+            <Alert message={deleteSchemaStatus.error} type="error" closable />
+            <br />
+          </>
+        )}
         {updateSchemaStatus.loading || deleteSchemaStatus.loading ? (
           <Loading />
         ) : (
-          <div style={{ width: '100%', maxWidth: '800px' }}>
+          <div>
             {updateSchemaStatus.success && (
               <Alert
                 message="Schema updated successfully."
@@ -334,12 +337,6 @@ const UpdateSchemaPage = (props: IProps) => {
                     href={`${pageRoutes.schemaDetail}?id=${currentSchema.id}`}
                   >
                     <Button type="default">View Schema</Button>
-                  </Link>
-                  &nbsp;
-                  <Link
-                    href={`${pageRoutes.updateSchemaFromJson}?id=${currentSchema.id}`}
-                  >
-                    <Button type="default">Edit from JSON</Button>
                   </Link>
                   &nbsp;
                   {SubmitButton}

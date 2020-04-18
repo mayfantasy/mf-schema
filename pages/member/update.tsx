@@ -126,13 +126,12 @@ const UpdateMemberPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'member',
-          name: 'Member',
+          key: 'members',
+          name: 'Members',
           url: pageRoutes.listMembers
         },
         {
           key: 'update',
-          url: pageRoutes.updateMember,
           name: 'Update'
         }
       ]}
@@ -154,7 +153,7 @@ const UpdateMemberPage = () => {
   }
 
   return layout(
-    <div style={{ width: '70%' }}>
+    <div className="w-max-800">
       <PageHeader
         name="Update Team Member"
         buttons={

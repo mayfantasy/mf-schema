@@ -15,10 +15,11 @@ import {
 interface IProps {
   value: string
   onChange: any
+  width?: string
 }
 
 const ImageUploader = (props: IProps) => {
-  const { value, onChange } = props
+  const { value, onChange, width } = props
   const [imageUrl, setImageUrl] = useState<string | null>(value || null)
 
   useEffect(() => {
@@ -95,7 +96,7 @@ const ImageUploader = (props: IProps) => {
         <>
           <br />
           <div style={{ maxWidth: '500px' }}>
-            <ImageViewer src={imageUrl || ''} />
+            <ImageViewer width={width} src={imageUrl || ''} />
           </div>
           <br />
           <Row>

@@ -114,162 +114,167 @@ const UpdateCollectionPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'collection',
-          name: 'Collection'
-        },
-        {
-          key: 'create',
-          url: pageRoutes.createCollection,
-          name: 'List'
+          key: 'collections',
+          name: 'Collections',
+          url: pageRoutes.listCollections
         },
         {
           key: 'update',
-          url: `${pageRoutes.updateCollection}?id=${router.query.id}`,
           name: 'Update'
         }
       ]}
     >
-      {updateCollectionStatus.success && (
-        <>
-          <Alert type="success" message="Collection updated successfully." />
-          <br />
-        </>
-      )}
-      {getCollectionStatus.error && (
-        <>
-          <Alert type="error" message={getCollectionStatus.error} />
-          <br />
-        </>
-      )}
-      {updateCollectionStatus.error && (
-        <>
-          <Alert type="error" message={updateCollectionStatus.error} />
-          <br />
-        </>
-      )}
-      {deleteCollectionStatus.error && (
-        <>
-          <Alert type="error" message={deleteCollectionStatus.error} />
-          <br />
-        </>
-      )}
-      {getCollectionStatus.loading ||
-      updateCollectionStatus.loading ||
-      deleteCollectionStatus.loading ? (
-        <Loading />
-      ) : collection ? (
-        <>
-          <PageHeader
-            name={collection.name}
-            sub={collection.handle}
-            description={`ID: ${collection.id}`}
-            buttons={
-              <Link href={`${pageRoutes.listCollections}?id=${collection.id}`}>
-                <Button>Back</Button>
-              </Link>
-            }
-          />
-          <br />
-          <div>
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={(values) =>
-                onFinish(values as IUpdateCollectionPayload)
+      <div className="w-max-800">
+        {updateCollectionStatus.success && (
+          <>
+            <Alert type="success" message="Collection updated successfully." />
+            <br />
+          </>
+        )}
+        {getCollectionStatus.error && (
+          <>
+            <Alert type="error" message={getCollectionStatus.error} />
+            <br />
+          </>
+        )}
+        {updateCollectionStatus.error && (
+          <>
+            <Alert type="error" message={updateCollectionStatus.error} />
+            <br />
+          </>
+        )}
+        {deleteCollectionStatus.error && (
+          <>
+            <Alert type="error" message={deleteCollectionStatus.error} />
+            <br />
+          </>
+        )}
+        {getCollectionStatus.loading ||
+        updateCollectionStatus.loading ||
+        deleteCollectionStatus.loading ? (
+          <Loading />
+        ) : collection ? (
+          <>
+            <PageHeader
+              name={collection.name}
+              sub={collection.handle}
+              description={`ID: ${collection.id}`}
+              buttons={
+                <Link
+                  href={`${pageRoutes.listCollections}?id=${collection.id}`}
+                >
+                  <Button>Back to List</Button>
+                </Link>
               }
-              initialValues={collection}
-            >
-              <Row gutter={2}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Handle"
-                    name="handle"
-                    required
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Collection handle is required.'
+            />
+            <br />
+            <div>
+              <Form
+                form={form}
+                layout="vertical"
+                onFinish={(values) =>
+                  onFinish(values as IUpdateCollectionPayload)
+                }
+                initialValues={collection}
+              >
+                <Row gutter={2}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Handle"
+                      name="handle"
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Collection handle is required.'
+                        }
+                      ]}
+                    >
+                      <Input disabled />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Name"
+                      name="name"
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Collection name is required.'
+                        }
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Description"
+                      name="description"
+                      required
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Please provide collection description'
+                        }
+                      ]}
+                    >
+                      <Input.TextArea
+                        autoSize={{
+                          minRows: 8
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <br />
+                <Row justify="space-between">
+                  <TierWrapper tier={tierMap.DELETE_COLLECTION_BY_ID.tier}>
+                    <Form.Item shouldUpdate>
+                      {() => {
+                        return (
+                          <Button htmlType="submit" type="primary">
+                            Submit
+                          </Button>
+                        )
+                      }}
+                    </Form.Item>
+                  </TierWrapper>
+                  <TierWrapper tier={tierMap.DELETE_COLLECTION_BY_ID.tier}>
+                    <Popconfirm
+                      title={
+                        <Typography.Text type="danger">
+                          This collection will be permernently removed,
+                          <br />
+                          all the schemas and objects under this collection will
+                          be removed at the sametime,
+                          <br />
+                          are you sure?
+                        </Typography.Text>
                       }
-                    ]}
-                  >
-                    <Input disabled />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Name"
-                    name="name"
-                    required
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Collection name is required.'
+                      onConfirm={() =>
+                        deleteCollection(router.query.id as string)
                       }
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  <Form.Item
-                    label="Description"
-                    name="description"
-                    required
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please provide collection description'
-                      }
-                    ]}
-                  >
-                    <Input.TextArea />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <br />
-              <Row justify="space-between">
-                <TierWrapper tier={tierMap.DELETE_COLLECTION_BY_ID.tier}>
-                  <Popconfirm
-                    title={
-                      <Typography.Text type="danger">
-                        This collection will be permernently removed,
-                        <br />
-                        all the schemas and objects under this collection will
-                        be removed at the sametime,
-                        <br />
-                        are you sure?
-                      </Typography.Text>
-                    }
-                    onConfirm={() =>
-                      deleteCollection(router.query.id as string)
-                    }
-                    icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                  >
-                    <Button type="danger">Delete</Button>
-                  </Popconfirm>
-                </TierWrapper>
-                <TierWrapper tier={tierMap.DELETE_COLLECTION_BY_ID.tier}>
-                  <Form.Item shouldUpdate>
-                    {() => {
-                      return (
-                        <Button htmlType="submit" type="primary">
-                          Submit
-                        </Button>
-                      )
-                    }}
-                  </Form.Item>
-                </TierWrapper>
-              </Row>
-            </Form>
-          </div>
-        </>
-      ) : (
-        <Button onClick={() => getCollectionDetail(router.query.id as string)}>
-          Load
-        </Button>
-      )}
+                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                    >
+                      <Button type="danger">Delete</Button>
+                    </Popconfirm>
+                  </TierWrapper>
+                </Row>
+              </Form>
+            </div>
+          </>
+        ) : (
+          <Button
+            onClick={() => getCollectionDetail(router.query.id as string)}
+          >
+            Load
+          </Button>
+        )}
+      </div>
     </PageLayout>
   )
 }

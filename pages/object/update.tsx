@@ -213,20 +213,18 @@ const ObjectUpdatePage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
+          key: 'schemas',
           url: pageRoutes.listSchemas,
-          name: 'Schema'
+          name: 'Schemas'
         },
         {
-          key: 'objects',
-          url: `${pageRoutes.schemaDetail}?id=${
-            currentObject ? currentObject.schema.id : ''
-          }`,
-          name: 'Objects'
+          key: 'schema Detail',
+          url: `${pageRoutes.schemaDetail}?id=${currentObject?.schema.id}`,
+          name: currentObject?.schema.name
         },
         {
-          key: 'update',
-          name: 'Update'
+          key: 'update-object',
+          name: 'Update Object'
         }
       ]}
     >

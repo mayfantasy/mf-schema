@@ -101,10 +101,31 @@ const PageLayout = (props: IProps) => {
             }
           }
         }
+        .w-max-800 {
+          width: 100%;
+          max-width: 800px;
+        }
 
         .mf-page-layout {
+          .ant-select-item-option-selected {
+            .ant-select-item-option-content {
+              color: white;
+            }
+          }
+          .ant-table tbody > tr.ant-table-row-selected > td {
+            background-color: white;
+          }
           li.ant-menu-item:first-child {
             margin-top: 0;
+          }
+          .ant-menu-item-selected {
+            & > a {
+              color: white;
+              &:hover {
+                color: white;
+              }
+            }
+            color: white;
           }
           .ant-menu-item-selected > a {
             color: white;

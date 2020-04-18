@@ -111,12 +111,12 @@ const SchemaListPage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
-          name: 'Schema'
+          key: 'schemas',
+          name: 'Schemas',
+          url: pageRoutes.listSchemas
         },
         {
           key: 'create',
-          url: pageRoutes.listSchemas,
           name: 'List'
         }
       ]}
@@ -124,13 +124,23 @@ const SchemaListPage = () => {
       <PageHeader
         name="Schemas"
         buttons={
-          <TierWrapper tier={tierMap.CREATE_SCHEMA.tier}>
-            <Link href={pageRoutes.createSchema}>
-              <Button type="primary">
-                <PlusCircleOutlined /> Add Schema
-              </Button>
-            </Link>
-          </TierWrapper>
+          <>
+            <TierWrapper tier={tierMap.CREATE_SCHEMA.tier}>
+              <Link href={pageRoutes.createSchema}>
+                <Button type="primary">
+                  <PlusCircleOutlined /> Add Schema
+                </Button>
+              </Link>
+            </TierWrapper>
+            &nbsp;
+            <TierWrapper tier={tierMap.CREATE_SCHEMA.tier}>
+              <Link href={pageRoutes.createSchemaFromJson}>
+                <Button type="primary">
+                  <PlusCircleOutlined /> Add Schema from JSON
+                </Button>
+              </Link>
+            </TierWrapper>
+          </>
         }
       />
       <br />

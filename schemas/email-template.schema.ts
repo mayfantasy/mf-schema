@@ -5,7 +5,7 @@ export const emailSchema: IStoreSchema = {
   collection_id: '__PUT_A_COLLECTION_ID_HERE__',
   handle: 'email_template',
   description:
-    'Email template schema that support basic mustache syntax and used on send email api.',
+    'Email template schema that supports basic mustache syntax and can be used with send email api.',
   def: [
     {
       key: 'email-service',

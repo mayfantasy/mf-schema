@@ -99,11 +99,6 @@ const SchemaStorePage = () => {
     <PageLayout
       breadCrumb={[
         {
-          key: 'schema',
-          url: pageRoutes.listSchemas,
-          name: 'Schema'
-        },
-        {
           key: 'store',
           url: pageRoutes.schemaStore,
           name: 'Store'
@@ -147,7 +142,7 @@ const SchemaStorePage = () => {
         >
           {current && current.type === 'definition' && (
             <div>
-              <SchemaDefinitionCollapse defs={current.schema.def} />
+              <SchemaDefinitionCollapse defs={current.schema.def} open />
             </div>
           )}
           {current && current.type === 'json' && (

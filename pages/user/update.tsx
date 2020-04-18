@@ -168,19 +168,13 @@ const UserUpdatePage = () => {
     delete userWithoutMeta.meta
     const meta = user.meta
     content = (
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '800px'
-        }}
-      >
+      <div className="w-max-800 ">
         {updateUserStatus.error && (
           <>
             <Alert message={updateUserStatus.error} type="error" closable />
             <br />
           </>
         )}
-
         {updateUserStatus.success && (
           <>
             <Alert
@@ -191,10 +185,9 @@ const UserUpdatePage = () => {
             <br />
           </>
         )}
-
         <PageHeader
           name={`${user.last_name} ${user.first_name}`}
-          sub={`${user.email}, ${user.phone}`}
+          description={`${user.email}, ${user.phone}`}
           buttons={
             <>
               <Link href={pageRoutes.listUsers}>
@@ -204,7 +197,6 @@ const UserUpdatePage = () => {
           }
         />
         <br />
-        <br />
         <div>
           <div>
             <Row>
@@ -212,6 +204,7 @@ const UserUpdatePage = () => {
                 <FormFieldLabel>Profile Image</FormFieldLabel>
                 <div>
                   <ImageUploader
+                    width="200px"
                     value={form.profile_img}
                     onChange={(image: string) => {
                       setForm({
@@ -225,7 +218,7 @@ const UserUpdatePage = () => {
             </Row>
             <br />
             <Row>
-              <Col span={24}>
+              <Col span={12}>
                 <FormFieldLabel>Email</FormFieldLabel>
                 <Input
                   value={form.email}
@@ -237,10 +230,7 @@ const UserUpdatePage = () => {
                   }
                 />
               </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col span={24}>
+              <Col span={12}>
                 <FormFieldLabel>Username</FormFieldLabel>
                 <Input
                   value={form.username}
@@ -253,9 +243,6 @@ const UserUpdatePage = () => {
                 />
               </Col>
             </Row>
-
-            <br />
-
             <br />
             <Row gutter={2}>
               <Col span={12}>
@@ -381,6 +368,7 @@ const UserUpdatePage = () => {
               })}
           </>
         }
+        <br />
         <Row justify="space-between">
           <Button
             loading={updateUserStatus.loading}
