@@ -241,6 +241,12 @@ const SchemaListPage = () => {
       setForm(initialDef)
     }
 
+    const cancelAddObject = () => {
+      if (form) {
+        setForm(null)
+      }
+    }
+
     /**
      *
      * @param e field event
@@ -487,13 +493,17 @@ const SchemaListPage = () => {
               <Card
                 title="Add Object"
                 extra={
-                  <Button
-                    type="primary"
-                    onClick={handleSaveObject}
-                    disabled={!handle}
-                  >
-                    Save Object
-                  </Button>
+                  <>
+                    <Button
+                      type="primary"
+                      onClick={handleSaveObject}
+                      disabled={!handle}
+                    >
+                      Save Object
+                    </Button>
+                    &nbsp;
+                    <Button onClick={cancelAddObject}>Cancel</Button>
+                  </>
                 }
               >
                 <Row>
@@ -511,137 +521,167 @@ const SchemaListPage = () => {
                 </Row>
                 <br />
                 <br />
-                {Object.keys(form).map((field) => {
-                  const type = form[field].meta.type
-                  const key = form[field].meta.key
-                  const name = form[field].meta.name
-                  const options = form[field].meta.options || []
-                  const grid = form[field].meta.grid
-                  const newLine = form[field].meta.new_line
-                  const show = form[field].meta.show
-                  const helper = form[field].meta.helper
-                  const value = form[field].value
-                  let input
-                  switch (type) {
-                    case ESchemaFieldType.string:
-                      input = (
-                        <Input
-                          style={{ width: '100%' }}
-                          value={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.password:
-                      input = (
-                        <Input.Password
-                          style={{ width: '100%' }}
-                          value={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.number:
-                      input = (
-                        <InputNumber
-                          style={{ width: '100%' }}
-                          value={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.boolean:
-                      input = (
-                        <Checkbox
-                          checked={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.textarea:
-                      input = (
-                        <Input.TextArea
-                          autoSize={{ minRows: 8 }}
-                          style={{ width: '100%' }}
-                          value={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.datepicker:
-                      input = (
-                        <div>
-                          <DatePicker
+                <Row
+                  gutter={4}
+                  style={{
+                    marginBottom: '15px'
+                  }}
+                >
+                  {Object.keys(form).map((field) => {
+                    const type = form[field].meta.type
+                    const key = form[field].meta.key
+                    const name = form[field].meta.name
+                    const options = form[field].meta.options || []
+                    const grid = form[field].meta.grid
+                    const newLine = form[field].meta.new_line
+                    const show = form[field].meta.show
+                    const helper = form[field].meta.helper
+                    const value = form[field].value
+                    let input
+                    switch (type) {
+                      case ESchemaFieldType.string:
+                        input = (
+                          <Input
+                            style={{ width: '100%' }}
                             value={value}
                             onChange={(e: any) =>
                               handleFieldChange(e, type, key)
                             }
                           />
-                        </div>
-                      )
-                      break
-                    case ESchemaFieldType.image:
-                      input = (
-                        <ImageUploader
-                          value={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.string_array:
-                      input = (
-                        <StringArray
-                          value={value}
-                          onChange={(v: string[]) => {
-                            handleFieldChange(v, type, key)
-                          }}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.rich_text:
-                      input = (
-                        <RichTextField
-                          value={value}
-                          onChange={(v: string) => {
-                            handleFieldChange(v, type, key)
-                          }}
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.string_single_select:
-                      input = (
-                        <SingleSelect
-                          value={value}
-                          options={options}
-                          onChange={(v: string) =>
-                            handleFieldChange(v, type, key)
-                          }
-                        />
-                      )
-                      break
-                    case ESchemaFieldType.string_multi_select:
-                      input = (
-                        <MultiSelect
-                          value={value || []}
-                          options={options}
-                          onChange={(v: string[]) =>
-                            handleFieldChange(v, type, key)
-                          }
-                        />
-                      )
-                      break
-                    default:
-                      input = (
-                        <Input
-                          value={value}
-                          onChange={(e: any) => handleFieldChange(e, type, key)}
-                        />
-                      )
-                      break
-                  }
-                  return (
-                    <Row style={{ marginBottom: '15px' }} key={key}>
-                      <Col span={Number(grid)}>
+                        )
+                        break
+                      case ESchemaFieldType.password:
+                        input = (
+                          <Input.Password
+                            style={{ width: '100%' }}
+                            value={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.number:
+                        input = (
+                          <InputNumber
+                            style={{ width: '100%' }}
+                            value={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.boolean:
+                        input = (
+                          <Checkbox
+                            checked={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.textarea:
+                        input = (
+                          <Input.TextArea
+                            style={{ width: '100%' }}
+                            autoSize={{ minRows: 8 }}
+                            value={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.datepicker:
+                        input = (
+                          <div>
+                            <DatePicker
+                              value={value}
+                              onChange={(e: any) =>
+                                handleFieldChange(e, type, key)
+                              }
+                            />
+                          </div>
+                        )
+                        break
+                      case ESchemaFieldType.image:
+                        input = (
+                          <ImageUploader
+                            value={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.string_array:
+                        input = (
+                          <StringArray
+                            value={value}
+                            onChange={(v: string[]) => {
+                              handleFieldChange(v, type, key)
+                            }}
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.rich_text:
+                        input = (
+                          <RichTextField
+                            value={value}
+                            onChange={(v: string) => {
+                              handleFieldChange(v, type, key)
+                            }}
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.string_single_select:
+                        input = (
+                          <SingleSelect
+                            value={value}
+                            options={options}
+                            onChange={(v: string) =>
+                              handleFieldChange(v, type, key)
+                            }
+                          />
+                        )
+                        break
+                      case ESchemaFieldType.string_multi_select:
+                        input = (
+                          <MultiSelect
+                            value={value || []}
+                            options={options}
+                            onChange={(v: string[]) =>
+                              handleFieldChange(v, type, key)
+                            }
+                          />
+                        )
+                        break
+                      default:
+                        input = (
+                          <Input
+                            style={{ width: '100%' }}
+                            value={value}
+                            onChange={(e: any) =>
+                              handleFieldChange(e, type, key)
+                            }
+                          />
+                        )
+                        break
+                    }
+                    return (
+                      <Col
+                        style={{
+                          marginBottom: '20px',
+                          padding: '15px',
+                          borderLeft: '3px solid #eee',
+                          backgroundColor: '#f6f7f8',
+                          borderRadius: '3px'
+                        }}
+                        key={key}
+                        span={Number(grid || 24)}
+                      >
                         <FormFieldLabel>{key}</FormFieldLabel>&nbsp;&nbsp;
                         <Typography.Text type="secondary">
                           <small>{name}</small>
@@ -654,9 +694,9 @@ const SchemaListPage = () => {
                           </Typography.Text>
                         )}
                       </Col>
-                    </Row>
-                  )
-                })}
+                    )
+                  })}
+                </Row>
               </Card>
             )}
           </div>

@@ -430,6 +430,7 @@ const ObjectUpdatePage = () => {
       default:
         input = (
           <Input
+            style={{ width: '100%' }}
             value={value}
             onChange={(e: any) => handleFieldChange(e, type, key)}
           />
