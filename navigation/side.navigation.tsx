@@ -32,7 +32,8 @@ export const sideNavItems: INavItem[] = [
         <FolderOpenOutlined />
         Collection
       </span>
-    )
+    ),
+    tier: tierMap.GET_COLLECTION_LIST.tier
     // children: [
     //   {
     //     key: 'collection-create',
@@ -51,38 +52,40 @@ export const sideNavItems: INavItem[] = [
   {
     key: 'schema',
     open: true,
+    url: pageRoutes.listSchemas,
     name: (
       <span>
         <BuildOutlined />
         Schema
       </span>
     ),
-    children: [
-      // {
-      //   key: 'schema-create',
-      //   url: pageRoutes.createSchema,
-      //   name: 'Create',
-      //   tier: tierMap.CREATE_SCHEMA.tier
-      // },
-      // {
-      //   key: 'schema-create-from-json',
-      //   url: pageRoutes.createSchemaFromJson,
-      //   name: 'Create from JSON',
-      //   tier: tierMap.CREATE_SCHEMA.tier
-      // },
-      {
-        key: 'schema-list',
-        url: pageRoutes.listSchemas,
-        name: 'List',
-        tier: tierMap.GET_SCHEMA_LIST.tier
-      },
-      {
-        key: 'schema-store',
-        url: pageRoutes.schemaStore,
-        name: 'Store',
-        tier: tierMap.CREATE_SCHEMA.tier
-      }
-    ]
+    tier: tierMap.GET_SCHEMA_LIST.tier
+    //  children: [
+    //    {
+    //      key: 'schema-create',
+    //      url: pageRoutes.createSchema,
+    //      name: 'Create',
+    //      tier: tierMap.CREATE_SCHEMA.tier
+    //    },
+    //    {
+    //      key: 'schema-create-from-json',
+    //      url: pageRoutes.createSchemaFromJson,
+    //      name: 'Create from JSON',
+    //      tier: tierMap.CREATE_SCHEMA.tier
+    //    },
+    //    {
+    //      key: 'schema-list',
+    //      url: pageRoutes.listSchemas,
+    //      name: 'List',
+    //      tier: tierMap.GET_SCHEMA_LIST.tier
+    //    },
+    //    {
+    //      key: 'schema-store',
+    //      url: pageRoutes.schemaStore,
+    //      name: 'Store',
+    //      tier: tierMap.CREATE_SCHEMA.tier
+    //    }
+    //  ]
   },
   {
     key: 'user',
@@ -93,7 +96,8 @@ export const sideNavItems: INavItem[] = [
         <UserOutlined />
         User
       </span>
-    )
+    ),
+    tier: tierMap.GET_USER_LIST.tier
     // children: [
     //   {
     //     key: 'user-create',

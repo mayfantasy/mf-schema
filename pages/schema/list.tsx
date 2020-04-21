@@ -11,7 +11,7 @@ import { RequestStatus } from '../../helpers/request'
 import { getCollectionListRequest } from '../../requests/collection.request'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { pageRoutes } from '../../navigation/page-routes'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { PlusCircleOutlined, ShoppingOutlined } from '@ant-design/icons'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import TierWrapper from '../../components/TierButton/TierButton'
 import { tierMap } from '../../helpers/tier.helper'
@@ -137,6 +137,14 @@ const SchemaListPage = () => {
               <Link href={pageRoutes.createSchemaFromJson}>
                 <Button type="primary">
                   <PlusCircleOutlined /> Add Schema from JSON
+                </Button>
+              </Link>
+            </TierWrapper>
+            &nbsp;
+            <TierWrapper tier={tierMap.CREATE_SCHEMA.tier}>
+              <Link href={pageRoutes.listSchemas}>
+                <Button type="primary">
+                  <ShoppingOutlined /> Schema Store
                 </Button>
               </Link>
             </TierWrapper>
