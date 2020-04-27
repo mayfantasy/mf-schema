@@ -105,8 +105,17 @@ const PageLayout = (props: IProps) => {
           width: 100%;
           max-width: 800px;
         }
+        .shadow-1 {
+          box-shadow: 0 7px 10px -5px;
+        }
+        .shadow-2 {
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+        }
 
         .mf-page-layout {
+          .ant-layout {
+            background-color: white;
+          }
           .ant-select-item-option-selected {
             .ant-select-item-option-content {
               color: white;
@@ -118,17 +127,17 @@ const PageLayout = (props: IProps) => {
           li.ant-menu-item:first-child {
             margin-top: 0;
           }
-          .ant-menu-item-selected {
-            & > a {
-              color: white;
-              &:hover {
-                color: white;
-              }
-            }
-            color: white;
-          }
+          // .ant-menu-item-selected {
+          //   & > a {
+          //     color: white;
+          //     &:hover {
+          //       color: white;
+          //     }
+          //   }
+          //   color: white;
+          // }
           .ant-menu-item-selected > a {
-            color: white;
+            color: black;
           }
           .header {
             display: flex;
@@ -238,7 +247,14 @@ const PageLayout = (props: IProps) => {
                 : []}
             </Menu>
           </Sider>
-          <Layout style={{ padding: '0 24px 24px' }}>
+          <Layout
+            style={{
+              padding: '0 24px 24px',
+              backgroundColor: '#f0f2f3'
+              // backgroundImage: 'url("/leaves-pattern-1.png")',
+              // backgroundRepeat: 'repeat'
+            }}
+          >
             {!!breadCrumb && (
               <Breadcrumb style={{ margin: '16px 0' }}>
                 {breadCrumb.map((b) => (
@@ -257,7 +273,11 @@ const PageLayout = (props: IProps) => {
 
             <Content
               style={{
-                background: '#fff',
+                backgroundColor:
+                  router.pathname !== pageRoutes.register &&
+                  router.pathname !== pageRoutes.login
+                    ? 'white'
+                    : 'transparent',
                 padding: 24,
                 margin: 0,
                 minHeight: 280,

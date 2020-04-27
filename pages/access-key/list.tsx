@@ -135,6 +135,7 @@ const AccessKeyListPage = () => {
           <Loading />
         ) : (
           <Table
+            className="shadow-2"
             size="small"
             bordered
             pagination={false}

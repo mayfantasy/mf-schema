@@ -111,6 +111,7 @@ const SchemaStorePage = () => {
       />
       <br />
       <Table
+        className="shadow-2"
         dataSource={[emailSchema, productSchema]}
         columns={columns}
         bordered

@@ -47,6 +47,8 @@ const ShortcutCard = (props: IProps) => {
         {`
           .shortcut--general {
             border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
             padding: 8px;
             height: 200px;
             width: 200px;

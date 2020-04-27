@@ -66,7 +66,7 @@ const LoginPage = () => {
       ]}
     >
       <Row justify="center" align="middle">
-        <Card style={{ width: '100%', maxWidth: '500px' }}>
+        <Card className="shadow-1" style={{ width: '100%', maxWidth: '500px' }}>
           <PageHeader name="login" />
           {loginStatus.error && (
             <Alert message={loginStatus.error} type="error" closable />

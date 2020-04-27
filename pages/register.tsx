@@ -61,7 +61,7 @@ const RegisterPage = () => {
       ]}
     >
       <Row justify="center" align="middle">
-        <Card style={{ width: '100%', maxWidth: '500px' }}>
+        <Card className="shadow-1" style={{ width: '100%', maxWidth: '500px' }}>
           <PageHeader name="register" />
           {registerStatus.error && (
             <Alert message={registerStatus.error} type="error" closable />

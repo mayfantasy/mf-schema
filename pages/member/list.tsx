@@ -138,7 +138,14 @@ const MemberListPage = () => {
         {createMemberStatus.loading ? (
           <Loading />
         ) : (
-          <Table size="small" bordered dataSource={members} columns={columns} />
+          <Table
+            className="shadow-2"
+            size="small"
+            bordered
+            dataSource={members}
+            columns={columns}
+            pagination={false}
+          />
         )}
       </div>
     </PageLayout>

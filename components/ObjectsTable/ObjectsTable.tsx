@@ -42,6 +42,7 @@ const ObjectsTable = (props: IProps) => {
    */
   const rowSelection = {
     onChange: (_: any, _selectedRows: any) => {
+      console.log(_, _selectedRows)
       setSelectedRows(_selectedRows)
     }
   }
@@ -63,10 +64,11 @@ const ObjectsTable = (props: IProps) => {
         </Badge>
       </div>
       <Table
+        className="shadow-2"
         size="small"
         bordered
         rowSelection={rowSelection}
-        dataSource={objectList}
+        dataSource={objectList.map((d, i) => ({ ...d, key: i }))}
         pagination={false}
         columns={[
           {

@@ -58,6 +58,7 @@ const UserTable = (props: IProps) => {
   ]
   return (
     <Table
+      className="shadow-2"
       size="small"
       bordered
       pagination={false}
