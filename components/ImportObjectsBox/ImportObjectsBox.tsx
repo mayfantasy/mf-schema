@@ -32,6 +32,10 @@ const ImportObjectsBox = (props: IProps) => {
   const [importErrors, setImportErrors] = useState<string[]>([])
   const [importStatus, setImportStatus] = useState(initImportStatus)
 
+  /**
+   * ||==============================
+   * || Import
+   */
   const onImportProducts = async () => {
     let status = { ...importStatus }
     const errors = [...importErrors]
@@ -65,10 +69,19 @@ const ImportObjectsBox = (props: IProps) => {
     setImportErrors(errors)
   }
 
+  /**
+   * ||==============================
+   * || Download
+   */
   const onDownloadTemplate = () => {
     const keys = ['_handle', ...schema.def.map((d) => d.key).sort()]
     downloadXlsxFile(document, [keys], `${schema.handle}-template`)
   }
+
+  /**
+   * ||==============================
+   * || Render
+   */
   return (
     <>
       <style jsx>{`

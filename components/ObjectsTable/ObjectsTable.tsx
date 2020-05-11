@@ -48,10 +48,11 @@ const ObjectsTable = (props: IProps) => {
   }
 
   const onDownloadObjects = () => {
-    const data = convertObjectsToXlsxData(
-      selectedRows,
-      currentSchema.def.map((d) => d.key)
-    )
+    const data = convertObjectsToXlsxData(selectedRows, [
+      '_handle',
+      ...currentSchema.def.map((d) => d.key)
+    ])
+    console.log(selectedRows)
     downloadXlsxFile(document, data, 'object-download')
   }
   return (
