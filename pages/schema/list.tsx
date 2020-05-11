@@ -142,7 +142,7 @@ const SchemaListPage = () => {
             </TierWrapper>
             &nbsp;
             <TierWrapper tier={tierMap.CREATE_SCHEMA.tier}>
-              <Link href={pageRoutes.listSchemas}>
+              <Link href={pageRoutes.schemaStore}>
                 <Button type="primary">
                   <ShoppingOutlined /> Schema Store
                 </Button>
