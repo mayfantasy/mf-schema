@@ -66,7 +66,7 @@ const ImageArrayUploader = (props: IProps) => {
     <>
       <Row gutter={2}>
         {value &&
-          value.length &&
+          !!value.length &&
           value.map((v, i) => (
             <Col
               xs={8}
