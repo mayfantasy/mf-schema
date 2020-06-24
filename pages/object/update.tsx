@@ -49,6 +49,7 @@ import {
 } from '@ant-design/icons'
 import TierWrapper from '../../components/TierButton/TierButton'
 import { tierMap } from '../../helpers/tier.helper'
+import ImageArrayUploader from '../../components/ImageArrayUploader/ImageArrayUploader'
 
 interface IFormStructure {
   [key: string]: any
@@ -290,6 +291,9 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.image:
         value = e
         break
+      case ESchemaFieldType.image_array:
+        value = e
+        break
       case ESchemaFieldType.string_array:
         value = e
         break
@@ -384,6 +388,15 @@ const ObjectUpdatePage = () => {
       case ESchemaFieldType.image:
         input = (
           <ImageUploader
+            value={value || []}
+            onChange={(e: any) => handleFieldChange(e, type, key)}
+          />
+        )
+        break
+      // Image Array ---
+      case ESchemaFieldType.image_array:
+        input = (
+          <ImageArrayUploader
             value={value}
             onChange={(e: any) => handleFieldChange(e, type, key)}
           />

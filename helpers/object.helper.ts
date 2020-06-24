@@ -86,6 +86,10 @@ export const parseObjectsFromXlsx = (
               o[_key] = i[_key] ? i[_key].split('||') : ''
               break
             }
+            case ESchemaFieldType.image_array: {
+              o[_key] = i[_key] ? i[_key].split('||') : ''
+              break
+            }
             default: {
               o[_key] = i[_key]
             }

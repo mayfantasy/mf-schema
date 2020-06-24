@@ -61,6 +61,7 @@ import {
 import TierWrapper from '../../components/TierButton/TierButton'
 import { tierMap } from '../../helpers/tier.helper'
 import SchemaDefinitionCollapse from '../../components/SchemaDefinitionCollapse/SchemaDefinitionCollapse'
+import ImageArrayUploader from '../../components/ImageArrayUploader/ImageArrayUploader'
 const CodeEditor = dynamic({
   loader: () => import('../../components/CodeEditor/CodeEditor'),
   loading: () => <Loading />,
@@ -221,6 +222,8 @@ const SchemaListPage = () => {
             break
           case ESchemaFieldType.image:
             value = ''
+          case ESchemaFieldType.image_array:
+            value = []
           case ESchemaFieldType.string_array:
             value = []
           case ESchemaFieldType.rich_text:
@@ -276,6 +279,8 @@ const SchemaListPage = () => {
           value = e
           break
         case ESchemaFieldType.image:
+          value = e
+        case ESchemaFieldType.image_array:
           value = e
         case ESchemaFieldType.string_array:
           value = e
@@ -614,6 +619,12 @@ const SchemaListPage = () => {
                               handleFieldChange(e, type, key)
                             }
                           />
+                        )
+                        break
+                      // Image array ---
+                      case ESchemaFieldType.image_array:
+                        input = (
+                          <ImageArrayUploader value={[]} onChange={() => {}} />
                         )
                         break
                       case ESchemaFieldType.string_array:

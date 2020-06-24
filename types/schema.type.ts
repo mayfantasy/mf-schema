@@ -10,6 +10,7 @@ export enum ESchemaFieldType {
   number = 'number',
   boolean = 'boolean',
   image = 'image',
+  image_array = 'image_array',
   // array = 'array',
   // object = 'object',
   textarea = 'textarea',
@@ -32,6 +33,8 @@ export const mapSchemaFieldTypeKeyToName = (key: ESchemaFieldType): string => {
       return 'Boolean'
     case ESchemaFieldType.image:
       return 'Image'
+    case ESchemaFieldType.image_array:
+      return 'Image List'
     case ESchemaFieldType.textarea:
       return 'Text Box'
     case ESchemaFieldType.datepicker:
