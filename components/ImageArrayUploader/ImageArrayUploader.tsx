@@ -69,6 +69,7 @@ const ImageArrayUploader = (props: IProps) => {
           !!value.length &&
           value.map((v, i) => (
             <Col
+              key={i}
               xs={8}
               style={{
                 marginBottom: '20px',
