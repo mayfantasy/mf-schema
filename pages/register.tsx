@@ -47,7 +47,7 @@ const RegisterPage = () => {
   }
 
   const onFinish = () => {
-    register
+    register()
   }
 
   return (
@@ -144,16 +144,10 @@ const RegisterPage = () => {
                     <Input.Password />
                   </Form.Item>
                   <br />
-                  <Form.Item shouldUpdate>
-                    {() => (
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        disabled={isFormInvalid(form)}
-                      >
-                        Register
-                      </Button>
-                    )}
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Register
+                    </Button>
                   </Form.Item>
                 </Form>
               </div>
