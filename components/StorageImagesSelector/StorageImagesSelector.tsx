@@ -12,6 +12,7 @@ import { color } from '../../helpers/color.helper'
 import { QuestionCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons'
 import TierWrapper from '../TierButton/TierButton'
 import { tierMap } from '../../helpers/tier.helper'
+import { isPdf } from '../../helpers/utils.helper'
 
 interface IProps {
   onSelect: (img: IImageListEntry) => void
@@ -194,7 +195,11 @@ const StorageImagesSelector = (props: IProps) => {
                     >
                       <div
                         className="image-item__wrapper"
-                        style={{ backgroundImage: `url(${img.link})` }}
+                        style={{
+                          backgroundImage: isPdf(img.link)
+                            ? 'url("/pdf_file_icon.png")'
+                            : `url(${img.link})`
+                        }}
                       >
                         {/* <img className="image-item" src={img}  /> */}
                         {isActive && (

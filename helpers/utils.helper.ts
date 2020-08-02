@@ -42,3 +42,7 @@ export const downloadXlsxFile = (
   document.body.appendChild(link)
   link.click()
 }
+
+export const isPdf = (url: string) => {
+  return url.includes('.pdf')
+}

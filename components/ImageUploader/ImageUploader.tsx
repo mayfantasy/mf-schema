@@ -100,7 +100,11 @@ const ImageUploader = (props: IProps) => {
           </div>
           <br />
           <Row>
-            <Button type="default" style={{ marginRight: '5px' }}>
+            <Button
+              href={imageUrl}
+              type="default"
+              style={{ marginRight: '5px' }}
+            >
               <CloudDownloadOutlined />
               Download
             </Button>
