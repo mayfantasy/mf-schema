@@ -1,19 +1,14 @@
 import HomeLayout from '../components/HomeLayout/HomeLayout'
 
-const HomePage = () => {
+const AboutPage = () => {
   return (
-    <HomeLayout>
+    <HomeLayout showLogo>
       <div className="w-100p h-100p layout justify-center align-center">
         <div className="w-300">
-          <div>
-            <img className="w-100p" src="/logo-monfent.png" />
-          </div>
-          <p>
-            Completely <b>FREE.</b>
-          </p>
+          <div>About us</div>
         </div>
       </div>
     </HomeLayout>
   )
 }
-export default HomePage
+export default AboutPage

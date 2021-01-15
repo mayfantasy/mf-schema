@@ -15,7 +15,7 @@ import { pageRoutes } from '../../navigation/page-routes'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import Link from 'next/link'
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
-import { useForm } from 'antd/lib/form/util'
+import { useForm } from 'antd/lib/form/Form'
 
 import { getCollectionListRequest } from '../../requests/collection.request'
 import { ICollection } from '../../types/collection.type'

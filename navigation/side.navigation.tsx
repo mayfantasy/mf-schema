@@ -15,7 +15,7 @@ import { tierMap } from '../helpers/tier.helper'
 export const sideNavItems: INavItem[] = [
   {
     key: 'dashboard',
-    url: pageRoutes.home,
+    url: pageRoutes.dashboard,
     name: (
       <span>
         <AppstoreOutlined />

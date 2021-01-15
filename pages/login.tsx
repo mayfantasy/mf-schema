@@ -21,7 +21,7 @@ import { AxiosError } from 'axios'
 import { RequestStatus } from '../helpers/request'
 import Link from 'next/link'
 import { pageRoutes } from '../navigation/page-routes'
-import { useForm } from 'antd/lib/form/util'
+import { useForm } from 'antd/lib/form/Form'
 import { isFormInvalid } from '../helpers/form.helper'
 import PageHeader from '../components/PageHeader/PageHeader'
 
@@ -43,7 +43,7 @@ const LoginPage = () => {
         setToken(token)
         setUser(user)
 
-        router.push(pageRoutes.home)
+        router.push(pageRoutes.dashboard)
       })
       .catch((err: AxiosError) => {
         console.log(err)

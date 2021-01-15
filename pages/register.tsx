@@ -10,7 +10,7 @@ import { RequestStatus } from '../helpers/request'
 import { pageRoutes } from '../navigation/page-routes'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form'
-import { useForm } from 'antd/lib/form/util'
+import { useForm } from 'antd/lib/form/Form'
 import { isFormInvalid, confirmPasswordRule } from '../helpers/form.helper'
 import PageHeader from '../components/PageHeader/PageHeader'
 
@@ -56,13 +56,13 @@ const RegisterPage = () => {
         {
           key: 'register-page',
           url: pageRoutes.register,
-          name: 'register'
+          name: 'Register'
         }
       ]}
     >
       <Row justify="center" align="middle">
         <Card className="shadow-1" style={{ width: '100%', maxWidth: '500px' }}>
-          <PageHeader name="register" />
+          <PageHeader name="Register" />
           {registerStatus.error && (
             <Alert message={registerStatus.error} type="error" closable />
           )}

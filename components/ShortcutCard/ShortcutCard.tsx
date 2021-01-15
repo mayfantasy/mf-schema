@@ -53,7 +53,7 @@ const ShortcutCard = (props: IProps) => {
             height: 200px;
             width: 200px;
             cursor: pointer;
-            color: #ccc;
+            color: #aaa;
             text-align: center;
             &:hover {
               border: 1px solid #aaa;

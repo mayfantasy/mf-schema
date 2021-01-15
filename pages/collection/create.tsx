@@ -13,7 +13,7 @@ import { RequestStatus } from '../../helpers/request'
 import { pageRoutes } from '../../navigation/page-routes'
 import Link from 'next/link'
 import { isFormInvalid } from '../../helpers/form.helper'
-import { useForm } from 'antd/lib/form/util'
+import { useForm } from 'antd/lib/form/Form'
 
 const CreateCollectionPage = () => {
   const [form] = useForm()

@@ -1,5 +1,9 @@
 export const pageRoutes = {
   home: '/',
+  about: '/about',
+  documentation: '/documentation',
+  features: '/features',
+  dashboard: '/dashboard',
   login: '/login',
   register: '/register',
   createAccessKey: '/access-key/create',

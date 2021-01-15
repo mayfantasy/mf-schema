@@ -14,7 +14,6 @@ import { INavItem } from '../../types/navigation.type'
 import { sideNavItems } from '../../navigation/side.navigation'
 import { headerItems } from '../../navigation/header.navigation'
 import { pageRoutes } from '../../navigation/page-routes'
-import 'antd/dist/antd.less'
 
 interface IProps {
   children: React.ReactNode
@@ -127,17 +126,8 @@ const PageLayout = (props: IProps) => {
           li.ant-menu-item:first-child {
             margin-top: 0;
           }
-          // .ant-menu-item-selected {
-          //   & > a {
-          //     color: white;
-          //     &:hover {
-          //       color: white;
-          //     }
-          //   }
-          //   color: white;
-          // }
           .ant-menu-item-selected > a {
-            color: black;
+            color: white;
           }
           .header {
             display: flex;

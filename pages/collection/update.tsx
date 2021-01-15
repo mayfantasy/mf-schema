@@ -28,7 +28,7 @@ import {
 import FormFieldLabel from '../../components/FormFieldLabel/FormFieldLabel'
 import { pageRoutes } from '../../navigation/page-routes'
 import Link from 'next/link'
-import { useForm } from 'antd/lib/form/util'
+import { useForm } from 'antd/lib/form/Form'
 import { required } from 'joi'
 import TierWrapper from '../../components/TierButton/TierButton'
 import { tierMap } from '../../helpers/tier.helper'
