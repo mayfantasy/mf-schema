@@ -100,7 +100,7 @@ const UserUpdatePage = () => {
     if (id) {
       getUser(id as string)
     }
-  }, [])
+  }, [router.query])
 
   /**
    * ||=================
@@ -383,7 +383,9 @@ const UserUpdatePage = () => {
               onConfirm={() => deleteUser(router.query.id as string)}
               icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
             >
-              <Button type="danger">Delete</Button>
+              <Button type="primary" danger>
+                Delete
+              </Button>
             </Popconfirm>
           </TierWrapper>
         </Row>

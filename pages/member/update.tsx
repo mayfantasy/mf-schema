@@ -68,7 +68,7 @@ const UpdateMemberPage = () => {
 
   useEffect(() => {
     getCurrentMember()
-  }, [])
+  }, [router.query])
 
   /**
    * ||=================
@@ -299,7 +299,9 @@ const UpdateMemberPage = () => {
                   onConfirm={() => deleteMember(currentMember.id)}
                   icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                 >
-                  <Button type="danger">Delete Member</Button>
+                  <Button type="primary" danger>
+                    Delete Member
+                  </Button>
                 </Popconfirm>
               </TierWrapper>
             </Col>

@@ -106,6 +106,7 @@ const SchemaListPage = () => {
   const [hideAPI, setHideAPI] = useState(true)
 
   const router = useRouter()
+  const id = router.query.id
 
   /**
    *
@@ -146,11 +147,10 @@ const SchemaListPage = () => {
   }
 
   useEffect(() => {
-    const { id } = router.query
     if (id) {
       getCurrentSchema(id as string)
     }
-  }, [])
+  }, [router.query])
 
   /**
    * Set content

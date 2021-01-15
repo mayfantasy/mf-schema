@@ -86,7 +86,8 @@ const AccessKeyListPage = () => {
         <div>
           <TierWrapper tier={tierMap.DELETE_ACCESS_KEY.tier}>
             <Button
-              type="danger"
+              type="primary"
+              danger
               disabled={deleteAccessKeyStatus.loading || true}
               onClick={() => deleteAccessKey(id)}
             >

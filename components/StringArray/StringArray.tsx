@@ -48,7 +48,7 @@ const StringArray = (props: IProps) => {
               />
             </Col>
             <Col span={4}>
-              <Button onClick={() => onRemoveItem(index)} type="danger">
+              <Button onClick={() => onRemoveItem(index)} type="primary" danger>
                 X
               </Button>
             </Col>

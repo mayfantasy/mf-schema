@@ -88,7 +88,7 @@ const UpdateSchemaFromJsonPage = () => {
     if (id) {
       getCurrentSchema(id as string)
     }
-  }, [])
+  }, [router.query])
 
   const layout = (content: React.ReactNode) => {
     return (

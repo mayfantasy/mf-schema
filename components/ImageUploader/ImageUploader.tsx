@@ -109,7 +109,8 @@ const ImageUploader = (props: IProps) => {
               Download
             </Button>
             <Button
-              type="danger"
+              type="primary"
+              danger
               onClick={() => {
                 setImageUrl(null)
                 onChange(null)

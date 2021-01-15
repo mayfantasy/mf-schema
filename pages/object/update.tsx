@@ -176,7 +176,6 @@ const ObjectUpdatePage = () => {
       _handle: handle,
       ...form
     }
-    console.log(form)
     const { collection_handle, schema_handle, id } = router.query
     updateCurrentObject(
       collection_handle as string,
@@ -195,7 +194,11 @@ const ObjectUpdatePage = () => {
         id as string
       )
     }
-  }, [])
+  }, [
+    router.query.collection_handle as string,
+    router.query.schema_handle as string,
+    router.query.id as string
+  ])
 
   /**
    * Hot Key Save
@@ -654,7 +657,9 @@ Object ID: ${currentObject.id}`}
               }
               icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
             >
-              <Button type="danger">Delete Object</Button>
+              <Button type="primary" danger>
+                Delete Object
+              </Button>
             </Popconfirm>
           </TierWrapper>
         </div>

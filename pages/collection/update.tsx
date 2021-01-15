@@ -67,7 +67,7 @@ const UpdateCollectionPage = () => {
       const id = router.query.id as string
       getCollectionDetail(id)
     }
-  }, [])
+  }, [router.query])
 
   //** Delete Collection */
   const deleteCollectionReq = new RequestStatus()
@@ -98,7 +98,6 @@ const UpdateCollectionPage = () => {
     const id = router.query.id as string
     setUpdateCollectionStatus(updateCollectionReq.loading())
     updateCollectionRequest({
-      id,
       ...payload
     })
       .then(() => {
@@ -260,7 +259,9 @@ const UpdateCollectionPage = () => {
                       }
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                     >
-                      <Button type="danger">Delete</Button>
+                      <Button type="primary" danger>
+                        Delete
+                      </Button>
                     </Popconfirm>
                   </TierWrapper>
                 </Row>

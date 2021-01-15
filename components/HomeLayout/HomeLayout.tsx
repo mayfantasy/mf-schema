@@ -12,7 +12,7 @@ const HomeLayout = (props: IProps) => {
   const { children, showLogo } = props
   return (
     <div className="layout vertical page-home h-100vh">
-      <div className="cb-grey-5 flex-1 relative">
+      <div className="bg-grey-5 flex-1 relative">
         <HomeHeader showLogo={showLogo || false} />
         <div className="absolute w-100p h-100p top-0 left-0">
           <ParticlesBg />
@@ -21,12 +21,12 @@ const HomeLayout = (props: IProps) => {
       </div>
       {/* <div className="layout horizontal h-70">
         <Link href={pageRoutes.documentation}>
-          <a className="layout w-50p cf-white cb-dark-1 justify-center align-center hover-cb-dark-1-07">
+          <a className="layout w-50p fg-white bg-dark-1 justify-center align-center hover:bg-dark-1-07">
             Documentation
           </a>
         </Link>
         <Link href={pageRoutes.features}>
-          <a className="layout w-50p cf-black cb-primary justify-center align-center hover-cb-primary-07">
+          <a className="layout w-50p fg-black bg-primary justify-center align-center hover:bg-primary-07">
             Features
           </a>
         </Link>

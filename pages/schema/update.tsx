@@ -54,7 +54,7 @@ const UpdateSchemaPage = (props: IProps) => {
     if (id) {
       getCurrentSchema(id as string)
     }
-  }, [])
+  }, [router.query])
 
   /**
    * || ===============
@@ -495,7 +495,9 @@ const UpdateSchemaPage = (props: IProps) => {
                   onConfirm={() => deleteSchema()}
                   icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                 >
-                  <Button type="danger">Delete</Button>
+                  <Button type="primary" danger>
+                    Delete
+                  </Button>
                 </Popconfirm>
               </TierWrapper>
 

@@ -110,7 +110,8 @@ const SchemaField = (props: IProps) => {
                       <>
                         &nbsp;
                         <Button
-                          type="danger"
+                          type="primary"
+                          danger
                           onClick={() => removeField(index)}
                         >
                           Remove Field

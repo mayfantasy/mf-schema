@@ -141,7 +141,8 @@ const StorageImagesSelector = (props: IProps) => {
                 key="delete"
                 loading={delStatus.loading}
                 disabled={!activeImage || listStatus.loading}
-                type="danger"
+                type="primary"
+                danger
               >
                 Delete this image
               </Button>
