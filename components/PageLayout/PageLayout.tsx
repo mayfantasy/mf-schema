@@ -149,7 +149,7 @@ const PageLayout = (props: IProps) => {
       <Layout className="mf-page-layout">
         <Header className="header">
           <div className="logo">
-            <Link href="/">
+            <Link href={pageRoutes.dashboard}>
               <a>
                 <img src="/logo-monfent.png" />
               </a>
