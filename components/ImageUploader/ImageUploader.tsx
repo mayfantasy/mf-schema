@@ -32,15 +32,19 @@ const ImageUploader = (props: IProps) => {
   const uploadRequestStatus = new RequestStatus()
   const [uploadStatus, setUploadStatus] = useState(uploadRequestStatus.status)
   const beforeUpload = (file: File) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!')
+    console.log(file.type)
+    const isJpgOrPngOrPdf =
+      file.type === 'image/jpeg' ||
+      file.type === 'image/png' ||
+      file.type === 'application/pdf'
+    if (!isJpgOrPngOrPdf) {
+      message.error('You can only upload JPG/PNG/PDF file!')
     }
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
       message.error('Image must smaller than 2MB!')
     }
-    return isJpgOrPng && isLt2M
+    return isJpgOrPngOrPdf && isLt2M
   }
 
   const handleChange = (info: any) => {
@@ -69,7 +73,7 @@ const ImageUploader = (props: IProps) => {
     <>
       <div>
         <Upload
-          accept="image/*"
+          accept="image/*,.pdf"
           headers={{ Authentication: apiToken || '' }}
           name="mf_image_uploader"
           showUploadList={false}
