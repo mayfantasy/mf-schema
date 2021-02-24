@@ -20,7 +20,9 @@ export const createUser = async (
 
   // Check email uniqueness
   await clientDB.query(
-    q.Paginate(q.Match(q.Index('get_user_by_email'), payload.email))
+    q.Paginate(q.Match(q.Index('get_user_by_email'), payload.email), {
+      size: 500
+    })
   )
 
   // Create user
@@ -62,7 +64,7 @@ export const getUserList = async (api_key: string) => {
   const clientDB = client(api_key)
   const users: any = await clientDB.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_users'))),
+      q.Paginate(q.Match(q.Index('all_users')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )

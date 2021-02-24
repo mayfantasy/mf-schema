@@ -36,7 +36,9 @@ const validateObjectHandle = async (
 ) => {
   // Check handle uniqueness
   await client.query(
-    q.Paginate(q.Match(q.Index('get_object_by_handle'), object_handle))
+    q.Paginate(q.Match(q.Index('get_object_by_handle'), object_handle), {
+      size: 500
+    })
   )
 }
 
@@ -84,7 +86,8 @@ export const getObjectList = async (
   const objects: any = await clientDB.query(
     q.Map(
       q.Paginate(
-        q.Match(q.Index('get_objects_by_schema_handle'), schema_handle)
+        q.Match(q.Index('get_objects_by_schema_handle'), schema_handle),
+        { size: 500 }
       ),
       q.Lambda('X', q.Get(q.Var('X')))
     )

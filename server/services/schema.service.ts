@@ -17,7 +17,9 @@ export const createSchema = async (
 
   // Check handle uniqueness
   await clientDB.query(
-    q.Paginate(q.Match(q.Index('get_schema_by_handle'), payload.handle))
+    q.Paginate(q.Match(q.Index('get_schema_by_handle'), payload.handle), {
+      size: 500
+    })
   )
 
   // Create schema
@@ -61,14 +63,14 @@ export const getSchemaList = async (
 
   const allSchemas: any = await clientDB.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_schemas'))),
+      q.Paginate(q.Match(q.Index('all_schemas')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )
 
   const collections: any = await clientDB.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_collections'))),
+      q.Paginate(q.Match(q.Index('all_collections')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )

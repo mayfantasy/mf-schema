@@ -198,7 +198,7 @@ export const createAccount = async (payload: IClientCreateAccountPayload) => {
 export const getAccountList = async () => {
   const accounts: any = await accountDb.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_accounts'))),
+      q.Paginate(q.Match(q.Index('all_accounts')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )

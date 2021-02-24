@@ -30,7 +30,7 @@ export const getShortcutList = async (api_key: string) => {
   await createShortcutCollectionIfNotExist(clientDB)
   const shortcuts: any = await clientDB.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_shortcuts'))),
+      q.Paginate(q.Match(q.Index('all_shortcuts')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )

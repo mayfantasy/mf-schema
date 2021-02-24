@@ -22,7 +22,9 @@ export const createMember = async (
   // 1. Email in existing members already being checked by 'get_member_by_email'
   // 2. Email in existing accounts
   const account = (await accountDb.query(
-    q.Paginate(q.Match(q.Index('get_account_by_email'), payload.email))
+    q.Paginate(q.Match(q.Index('get_account_by_email'), payload.email), {
+      size: 500
+    })
   )) as any
 
   if (!account.data.length) {
@@ -86,7 +88,9 @@ export const updateMember = async (
 export const getMemberList = async (account_id: string) => {
   const members: any = await accountDb.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('get_members_by_account_id'), account_id)),
+      q.Paginate(q.Match(q.Index('get_members_by_account_id'), account_id), {
+        size: 500
+      }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )

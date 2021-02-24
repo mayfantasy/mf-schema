@@ -31,7 +31,7 @@ export const getCollectionList = async (api_key: string) => {
   const clientDB = client(api_key)
   const collections: any = await clientDB.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_collections'))),
+      q.Paginate(q.Match(q.Index('all_collections')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )

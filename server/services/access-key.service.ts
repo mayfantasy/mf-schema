@@ -42,7 +42,7 @@ export const getAccessKeyList = async (api_key: string) => {
   const clientDB = client(api_key)
   const accessKeys: any = await clientDB.query(
     q.Map(
-      q.Paginate(q.Match(q.Index('all_access_keys'))),
+      q.Paginate(q.Match(q.Index('all_access_keys')), { size: 500 }),
       q.Lambda('X', q.Get(q.Var('X')))
     )
   )
