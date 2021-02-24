@@ -73,6 +73,11 @@ const ObjectsTable = (props: IProps) => {
         pagination={false}
         columns={[
           {
+            title: 'object_id',
+            dataIndex: 'id',
+            key: 'id'
+          },
+          {
             title: 'Handle',
             dataIndex: '_handle',
             key: '_handle',
